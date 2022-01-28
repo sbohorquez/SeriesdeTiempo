@@ -1,0 +1,66 @@
+---
+title: "Series de Tiempo"
+author: |
+        | Santiago Bohorquez Correa
+        |
+        | Universidad EAFIT
+        | Escuela de Economía y Finanzas
+output:
+  revealjs::revealjs_presentation:
+    css: EAFIT.css
+    highlight: pygments
+    center: true
+    transition: slide
+---
+
+
+
+# Organización del Curso
+
+# Objetivo del curso
+
+Después de finalizar este curso los estudiantes deben de estar en capacidad de hacer predicciones de series macroeconómicas y financieras.      
+
+# Temas
+
+<ul>
+ <li> La predicción en el área económica y financiera.</li> 
+ <li> Características series de tiempo.</li> 
+ <li> Modelos lineales.</li>
+ <li> Modelos estacionales.</li>
+ <li> Modelos de heterocedasticidad condicional.</li>
+ <li> Modelos dinámicos con variables exógenas.</li>
+ <li> Análisis de intervención y modelos de transferencia.</li>
+ <li> Series de tiempo en el dominio de la frecuencia y modelos de  componentes no observables.</li> 
+</ul>
+
+# Evaluaciones
+
+<ul>
+ <li>Parcial 1 (25\%): Semana 9 </li>
+ <li>Parcial 2 (25\%): Semana 16 </li>
+ <li>Trabajo Aplicado (25\%): Semana 17 - Entrega y Presentaciones a programar </li>
+ <li> Seguimiento (25\%): Entrega proyecto trabajo final (10\%), Aportes al proyecto de clase. (15\%) </li>
+
+# Bibliografía
+
+Uriel, Ezequiel, Peiró Amado. (2000). Introducción al análisis de series temporales. Editorial AC. Madrid.
+
+Ruey S. Tsay (2002). Analysis of financial time series. Jhon Wiley \& Sons, INC.
+
+Hamilton, J. D. (1994). Time Series Analysis
+
+Robert H. Shumway y David S. Stoffer. (2006). Time series analysis and its applications with R examples.
+
+Davidson, J. (2000) Econometric Theory. Blackwell Publishing
+
+
+
+
+# Otras Observaciones
+
+Software recomendado: R
+
+Bibliografía en el Syllabus es auxiliar, el material de clase pretende ser auto-contenido de forma tal que tener los libros recomendados no es  <i>estrictamente</i> necesario, pero son valiosos para consultar dudas. 
+
+El horario de atención es con cita previa.
