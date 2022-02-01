@@ -1,0 +1,612 @@
+---
+title: "Características series de tiempo"
+author: |
+        | Santiago Bohorquez Correa
+        |
+        | Universidad EAFIT
+        | Escuela de Economía y Finanzas
+output:
+  revealjs::revealjs_presentation:
+    css: EAFIT.css
+    highlight: pygments
+    center: true
+    transition: slide
+---
+
+
+# Agregación temporal
+
+#
+
+<ul>
+<li> En general los econometristas trabajamos con tres tipos de datos:</li>
+<ul>
+<li> Corte transversal: Muchos individuos en un solo momento del tiempo</li>
+<li> Series de tiempo: Un individuo observado a través del tiempo.</li>
+<li> Panel de datos: Muchos individuo, observados por varios periodos de tiempo.</li>
+</ul>
+</ul>
+
+#
+
+<ul>
+<li> Cuando tenemos series de tiempo se puede hablar de mediciones en tiempo continuo y tiempo discreto.</li>
+<li> Nosotros trabajaremos en este curso en tiempo discreto. Ya que por lo general las series económicas son solo observadas en periodos dados.</li>
+<li> Inclusive las series financieras de alta frecuencia son consideradas en tiempo discreto, e.g. los precios intra-día de una acción se observan solo cuando se hace una venta pero no se observa el precio entre ventas.</li>
+</ul>
+
+#
+
+<ul>
+<li> El periodo de observación de los datos juega un papel importante en el manejo de las series, e.g. como veremos más adelante los efectos estacionales observados en una serie mensual difieren de una trimestral y los modelos escogidos para cada una dependerán de esto.</li>
+<li> Esto es conocido como agregación temporal.</li>
+
+#
+
+<ul>
+<li> Un supuesto importante de este tipo de datos requiere que los datos sean observados en periodos de tiempo divididos en intervalos iguales.</li>
+<li> Es decir, se espera que los datos sean observados durante todo el periodo de estudio.</li>
+</ul>
+
+
+
+# Introducción a los procesos Estocásticos
+
+#
+Para hacer predicciones sobre series económicas y testear teorías sobre su comportamiento, necesitamos hacer unos supuestos sobre su comportamiento:
+
+<ul>
+<li> Consideramos que existen leyes económicas que explican el comportamiento y la interacción de estas series.</li>
+<li> También existen componentes aleatorios inexplicables, debido a shocks al sistema, errores de los agentes, y distorsiones creadas por errores de medición, y agregación de agentes, bienes y tiempo.</li>  
+</ul>
+
+#
+Sea $x_t$ un vector de variables económicas de tamaño $m \times  1$ generadas en el tiempo $t$. Estas variables pueden estar correlacionadas contemporáneamente y a través del tiempo. La colección $\{ x_t, -\infty < t < \infty \}$ es llamada una secuencia (vectorial) aleatoria.   
+
+Un data set económico es un conjunto finito , e.g. $\left\{x_1,\dots,x_n\right\}$, de esta secuencia infinita.
+
+# Proceso Generador de datos
+
+#
+
+Definimos el proceso generador de datos (PGD) para estas variables como la función de probabilidad conjunta bajo la cual esta secuencia es generada, representando todas las influencias resaltadas.
+
+Gracias al hecho que el tiempo siempre fluye en la misma dirección, eventos pasados pueden ser tratados como dados para la explicación de eventos futuros. Esto es llamado condicionamiento secuencial y es fundamental para hacer predicciones. 
+
+#
+Asumamos, por simplicidad, que los datos tienen una función de distribución continua. Entonces, el PGD es representado por la densidad condicional
+
+\begin{equation}\label{eq:PGD}
+    D_t\left(x_{t} | \chi_{t} \right)
+\end{equation}
+
+donde $\chi_t=\sigma(x_{t-1},x_{t-2},x_{t-3},\dots)$. Esta notación es una simplificación para el $\sigma$-algebra representando el conocimiento del pasado del sistema. $\chi_t$ es el $\sigma$-algebra más pequeño bajo el cual las variables aleatorias $x_{t-j}$ son medibles para todo $j \geq 0$
+
+
+#
+En la ecuación \ref{eq:PGD} la densidad $D_t$ depende de $t$, porque no asumimos estacionariedad, en particular debemos hacer concesiones para características como variaciones estacionales, cambios de régimen, cambios regulatorios, entre otros. 
+
+Estos conceptos los veremos en futuras clases.  
+
+# PGD y Modelos
+
+#
+Un modelo econométrico dinámico es una familia de funciones de los datos que pretenden imitar aspectos del PGD, ya sea $D_t$ o funciones derivadas de $D_t$ como los momentos. 
+
+#
+Formalmente, un modelo es una familia de funciones
+
+\begin{equation}
+    \left\{ M \left(x_t,x_{t-1},x_{t-2}.\dots,d_t;\psi\right), \psi \in \Psi  \right\}, \Psi \subseteq \mathbb{R}^p 
+\end{equation}
+ 
+Los modelos dependen de una colección de parámetros, de cantidad $p$, denominados por $\psi$, y $\Psi$ son los valores admisibles de los parámetros (<em>espacio parámetrico</em>). El vector $d_t$ son variables tratadas como no-estocásticas, que tratan de capturar cambios en el PGD a través del tiempo.   
+   
+#
+
+<ul>
+<li>Puede parecer sorprendente que el PGD no se represente dependiendo de $\Psi$. Esto es debido a que la parametrización es una característica del modelo y no explícitamente del PGD.</li>
+<li> Un punto importante para resaltar es que pueden existir diferentes parametrizaciones para el PGD y estas pueden ser de interés para diferentes propósitos.</li>
+<li> El supuesto de especificación correcta del modelo, dice que existe un modelo que es idéntico al PGD.</li>
+</ul>
+
+# Modelos
+
+#
+Por lo general, se considera uno de los siguientes modelos:
+ \begin{align}
+     X_t = T_t + C_t + S_t + I_t \\
+     X_t = T_t \times C_t \times S_t \times I_t
+ \end{align}
+donde $X_t$ es la series observada, $T_t$ es la tendencia de largo plazo, $C_t$ es el ciclo económico, $S_t$ es el componente estacional, e $I_t$ las variaciones residuales.
+
+#
+<ul>
+<li> Los modelos de estimación que veremos en clase por lo general trataran de modelar el componente $C_t$ que es de interés económico.</li>
+<li> A menos que sea explícitamente modelado, e.g. modelos estacionales, los componentes $T_t$ y $S_t$ se toman como dados.</li>
+<li> La decisión sobre cual ecuación tomar como base es basada en conocimiento sobre el fenómeno estudiado.</li>
+</ul>
+
+
+# Conceptos básicos
+
+## Rezago Variable
+
+<ul>
+<li> El primer rezago de una variable $x_t$ se define como $x_{t-1}$.</li>
+<li> De la misma forma el rezago $j$ de $x_t$ es $x_{t-j}$.</li>
+<li> Cabe anotar que el rezago depende de la unidad de medida de la variable, e.g. si la variable esta medida anualmente $t-1$ es el año anterior, pero si esta medida mensualmente, $t-1$ es el mes anterior.</li> 
+</ul>
+
+## El operador de rezagos
+
+Sea $x_t$ una observación aleatoria de una serie de tiempo. Definimos el símbolo $L$ como:
+
+\begin{equation}
+    L x_t = x_{t-1}
+\end{equation}
+
+$L$ es lo que en matemáticas es conocido como un operador. No es un parámetro o un número pero puede ser tratado como tal para operaciones algebraicas, e.g. $L^2 x_t = L(L x_t) = L x_{t-1} = x_{t-2}$, en general $L^n x_t = x_{t-n}$  
+
+##
+    
+En adición, la expresión
+
+\begin{equation}
+    \alpha(L) = \alpha_0 + \alpha_1 L + \alpha_2 L^2 + \dots + \alpha_p L^p 
+\end{equation}
+
+es llamado el polinomio de orden p del operador de rezagos. 
+
+Y si lo aplicamos a un serie de tiempo, generamos una media móvil ponderada de la serie, i.e.
+
+\begin{equation}
+    \alpha(L)x_t = \alpha_0 + \alpha_1 x_{t-1} + \alpha_2 x_{t-2} + \dots + \alpha_p x_{t-p} 
+\end{equation}
+
+
+## El operador de diferencia
+    
+Otro operador usado es
+
+\begin{equation}
+    \Delta = 1 - L
+\end{equation}
+
+el operador de diferencia. $\Delta x_t = x_t - x_{t-1}$ es el cambio en $x$ en el periodo $t$. 
+
+
+##
+Es importante anotar la diferencia de notación entre
+
+\begin{equation}
+    \Delta_n = 1 - L^n
+\end{equation}
+
+que el operador de la diferencia de $n$ periodos, y
+
+\begin{equation}
+    \Delta^n = (1 - L)^n
+\end{equation}
+
+el operador de la diferencia de orden $n$, e.g. $\Delta_2 x_t = x_t - x_{t-2}$ y $\Delta^2 x_t= \Delta x_t - \Delta x_{t-1} = (x_t - x_{t-1}) - (x_{t-1} - x_{t-2})$ 
+
+
+
+## 
+
+<ul>
+<li> La primera diferencia del logaritmo de $x_t$ es $\Delta \ln (x_t) = \ln (x_t) - \ln (x_{t-1})$.</li>
+<li> El cambio porcentual de una serie de tiempo $x_t$ entre los periodos $t-1$ y $t$ es aproximadamente $100*\Delta \ln (x_t)$. Esta aproximación funciona mejor cuando el cambio porcentual es pequeño.<a href="https://sbohorquez.github.io/SeriesdeTiempo/CaracSeries.html#/Cambio-porcentual">Demostración</a></li>
+<li> Es común usar esta aproximación para anualizar crecimientos, por ejemplo con datos trimestrales, se obtiene así,  $4*100*\Delta \ln (x_t)$.</li>
+
+## Cambio porcentual
+
+##
+
+<ul>
+<li> El cambio del logaritmo de una variable es aproximadamente igual al cambio proporcional de dicha variable, i.e. $\ln (X + a) - \ln (X) \cong \frac{a}{X}$.</li> 
+<li> Ahora, remplazando $X$ con $x_{t-1}$ y $a$ con $\Delta x_t$. Y, sabiendo que, $x_t =  x_{t-1} + \Delta x_t$.</li>
+<li> Esto significa que el cambio proporcional entre los periodos $t$ y $t-1$ es aproximadamente, 
+    \begin{equation}
+       \Delta  \ln (x_t) = \ln (x_t) - \ln (x_{t-1}) =  \ln (x_{t-1} + \Delta x_t) - \ln (x_{t-1}) \cong \frac{\Delta x_t}{x_{t-1}}</li>
+</ul>    
+
+
+
+
+\begin{frame}{Proceso de innovación}
+
+Finalmente, definimos el proceso de innovación . Sea $\{\varepsilon, -\infty < t < \infty \}$ un proceso estocástico (o secuencia aleatoria) y sea $\mathcal{E}_{t-1}$ el $\sigma$-algebra de eventos predecibles cuando el pasado de $\varepsilon_t$ es conocido. Y asumimos
+
+\begin{align}
+    E(\varepsilon_t | \mathcal{E}_{t-1}) & = 0 \\
+    E(\varepsilon^2_t |  \mathcal{E}_{t-1}) & = \sigma^2 
+\end{align}
+
+Este es un proceso estacionario en el sentido débil, y no auto-correlacionado. Este tipo de proceso se conoce también como {\it ruido blanco}
+
+
+    
+\end{frame}
+
+
+\section{Correlación}
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}{Correlación}
+\begin{itemize}
+    \item Una de las principales características de las series de tiempo es la presencia de Auto-correlación o correlaci£n serial.
+    \item Ustedes posiblemente están familiarizados con el concepto de correlación entre dos variables, la auto-correlación implica correlación entre la serie y su pasado.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Correlación}\label{Autoco}
+
+
+\begin{block}{\emph{Autocovarianza:}}
+    Si la secuencia aleatoria $\{x_t\}$ tiene media $E[x_t]=\mu_t$ la autocovarianza esta dada por:
+    \begin{equation}
+    \begin{matrix}
+        cov[x_{t_1},x_{t_2}]  & = & E[(x_{t_1}-\mu_{t_1})(x_{t_2}-\mu_{t_2})] \\
+                & = & E[(x_{t_1}x_{t_2})] - \mu_{t_1}\mu_{t_2} \\
+                & & \hyperlink{Prueba:ac}{\beamergotobutton{Demostración}}
+    \end{matrix}
+    \end{equation}
+    
+\end{block}
+    
+\end{frame}
+
+\begin{frame}{Correlación}
+Ahora, definimos la auto-correlación como
+
+\begin{equation}
+    \rho_j = \frac{\gamma_j}{\gamma_0}
+\end{equation}
+ 
+\visible<2-> {La ventaja de usar la auto-correlación en vez de la auto-covarianza es que la auto-correlación siempre va a estar entre -1 y 1, dado que la covarianza siempre es igual o menor que la varianza.} 
+
+\end{frame}   
+
+\begin{frame}{Auto-correlación} 
+
+\begin{itemize}
+    \item Las auto-covarianzas y auto-correlaciones expuestas anteriormente son los valores poblacionales, estas pueden ser estimadas en una muestra de tamaño $T$ de la siguiente manera:
+    \begin{align}
+        \hat{\gamma_j} = &  \frac{1}{T} \sum^T_{t=j+1} (x_t - \Bar{x}_{j+1:T})(x_{t-j} - \Bar{x}_{1:T-j}) \\
+        \hat{\rho_j} = &  \frac{\hat{\gamma_j}}{\widehat{var(x_t)}}
+    \end{align}
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Auto-correlación} 
+
+\begin{itemize}
+    \item donde $\Bar{x}_{j+1:T}$ es el promedio muestral de $x_t$ usando las observaciones $t=j+1,j+2,\dots,T$
+    \item $\widehat{var(x_t)}$ es la varianza muestral de $x_t$.
+    \item<2-> Noten que la ecuación de la auto-covarianza se divide por $T$ y no $T-j$ como es usual cuando perdemos grados de libertad, la razón para esto es para poder hacer comparaciones entre diferentes ordenes de las auto-covarianzas.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Auto-correlación} 
+
+\begin{itemize}
+    \item La formula en la ecuación de las auto-correlaciones usa el supuesto que la varianza de $x_t$ y $x_{t-j}$ es la misma.
+    \item Este supuesto proviene de un supuesto más general llamado estacionareidad que es de fundamental importancia para el análisis de series de tiempo y que discutiremos en detalle más adelante.
+\end{itemize}
+\end{frame}
+
+\section{Estacionariedad}
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}{Estacionareidad}
+
+Para la correcta estimación de los modelos necesitamos dos supuestos del comportamiento del PGD, primero los definiremos en plabras simples y luego los definiremos formalmente:
+
+\begin{itemize}
+\item <2-> Estacionareidad: Existen dos tipos de estacionariedad, estacionariedad débil implica que la media y la varianza no dependen del tiempo, mientras que estacionariedad estricta implica que el PGD no depende del tiempo.
+\item <3-> Ergodicidad: Una secuencia es ergódica si el promedio de la muestra converge a la esperanza del conjunto. 
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Estacionareidad}
+
+\begin{block}{\emph{Estacionariedad débil:}}
+Una secuencia aleatoria $\{x_t\}$ es estacionaria débil (o estacionaria en covarianza) si la media, varianza y la secuencia de autocovarianzas\footnote{La autocovarianza de orden $j$  se define como $\gamma_j = cov(x_{t},x_{t-j})$} de orden $j$, para $j>0$ son independientes de $t$ 
+\end{block}
+
+
+\end{frame}
+
+\begin{frame}{Estacionareidad}
+
+\begin{block}{\emph{Estacionariedad Estricta:}}
+Una secuencia aleatoria $\{x_t\}$ es estacionaria estricta si para todo $k>0$ la distribución conjunta de todas las colecciones $(x_t,x_{t+1},x_{t+2},\dots,x_{t+k})$ no depende de $t$
+\end{block}
+
+\visible<2->{Estacionariedad estricta implica estacionariedad débil, pero lo contrario no siempre aplica.}
+
+\visible<3->{En el caso especial de la distribución normal, estacionariedad débil si implica estacionariedad estricta.} 
+    
+\end{frame}
+
+\begin{frame}{Ergodicidad}\label{ergodicidad}
+
+\begin{theorem}
+    Si $\{x_t\}$ es una secuencia estacionaria y ergódica, y $E(x_1)$ existe, entonces $\bar{x_n} \rightarrow E(x_1)$ con probabilidad 1.     
+\end{theorem}
+
+Donde $\bar{x_n} = \frac{1}{n} \sum_{t=0}^n x_t $  \hyperlink{estacionaria}{\beamergotobutton{Ejemplo}} 
+
+\end{frame}
+
+
+
+\begin{frame}{Descomposición de Wold}
+
+Wold (1938) demostró que si el proceso con media cero $x_t$ es estacionario en sentido débil, este se puede representar como
+
+\begin{equation}
+x_t = \sum_{j=0}^{\infty} \theta_j \varepsilon_{t-j} + \upsilon_t     
+\end{equation}
+
+donde $\theta_0 = 1$, $\sum_{j=0}^{\infty} \theta_j < \infty$, $\varepsilon_t$ cumple con las propiedas del procesos de innovación previamente definidas, $E[\upsilon_t \varepsilon_{t-j}] = 0$, y constantes $\alpha_0,\alpha_1,\alpha_2,\dots$  tal que $Var(\sum_{j=0}^{\infty}\alpha_j \upsilon_t)=0$ 
+\end{frame}
+
+\begin{frame}{Descomposición de Wold}
+
+Si definimos $\upsilon_t$ como una variable con media cero $z$, tal que $z$ no depende de $t$, cualquier combinación que cumpla con $\sum_{j=0}^{\infty} \alpha_i = 0$ satisface la definición anterior. 
+
+\visible<2->{En general, si $\upsilon_t = - \sum_{j=0}^{\infty} \frac{\alpha_j}{\alpha_o}\upsilon_{t-j}$ cumple con la condición. Este es un proceso deterministico, ya que puede ser predicho perfectamente un periodo antes. } 
+
+
+\end{frame}
+
+
+
+\begin{frame}{Procesos no estacionarios}
+\begin{itemize}
+    \item En economía existen diferentes series que no cumplen con el supuesto de estacionariedad, e.g. el producto interno bruto. Por lo tanto es importante incluir (algunos) procesos de este tipo en nuestros análisis.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Procesos estacionarios en Tendencia}
+
+consideremos el siguiente proceso con tendencia y $|\phi| < 1 $,
+
+\begin{equation}
+    x_t = \delta + \alpha t + \phi x_{t-1} + \varepsilon_t 
+\end{equation}
+
+\visible<2->{Si estimamos la media de este proceso vemos que depende del tiempo,
+
+\begin{align*}
+    E[x_t] & = E[\delta + \alpha t + \phi x_{t-1} + \varepsilon_t] 
+\end{align*}
+}    
+\end{frame}
+
+\begin{frame}{Procesos estacionarios en Tendencia}
+
+reemplazando obtenemos,
+
+\begin{align*}
+    E[x_t] & = E[\delta] + E[\alpha t] + E[\phi x_{t-1}] + E[\varepsilon_t] \\
+           & = \delta + \alpha t + \phi E[\delta + \alpha (t-1) + \phi x_{t-2} + \varepsilon_{t-1}] \\
+           & \vdots \\
+           & = \sum_{i=0}^n \phi^i (\delta + \alpha (t-i))  
+\end{align*}
+
+dado que $|\phi| < 1 $ y $n \rightarrow \infty $
+
+    
+\end{frame}
+
+
+\begin{frame}{Procesos estacionarios en Tendencia}
+
+por lo tanto la media sería,
+
+\begin{equation}
+    E[x_t]  = \frac{\delta + \alpha(\phi (t + 1) - t)}{(1-\phi)^2}
+\end{equation}
+
+y dado que depende de $t$ no sería estacionaria bajo nuestra definición de estacionariedad. 
+    
+\end{frame}
+
+
+\begin{frame}{Procesos estacionarios en Tendencia}
+
+\begin{itemize}
+    \item Sin embargo, noten que $t$ cumple con la condición de ser un procesos deterministico, ya que sabemos perfectamente el valor que va a tomar con antelación. 
+   \item<2-> Por lo tanto, podemos pensar en una transformación donde excluimos la tendencia deterministica de la serie permitiendo que la serie ya no dependa de $t$.
+   \item<3-> A este tipo de procesos se les conoce como procesos estacionarios en tendencia. Y es común su uso para filtros en economía.
+\end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Paseo aleatorio}
+
+Ahora veamos el caso del proceso definido como,
+
+\begin{equation}\label{eq:rw}
+    x_t = x_{t-1} + \varepsilon_t
+\end{equation}
+
+Este proceso es conocido como ``random walk'' o paseo aleatorio.
+
+\end{frame}
+
+
+\begin{frame}{Paseo aleatorio}\label{var:ar1}
+
+Miremos la varianza de este proceso, asumiendo $E[x_1]=0$
+
+\begin{align*}
+Var(x_t) & = E[(x_t - E[x_t])^2] \\
+         & = E[x_t^2] \\
+\visible<2->{  & = E[(x_{t-1} + \varepsilon_t)^2] } \\
+\visible<3->{  & = E[(x_{t-1})^2] + 2E[x_{t-1}\varepsilon_t] + E[\varepsilon_t^2] \\
+         & = E[x_{t-1}^2] + 0 + E[\varepsilon_t^2] \hyperlink{prueba:LIE}{\beamergotobutton{Prueba}} }
+\end{align*}    
+
+    
+\end{frame}
+
+\begin{frame}{Paseo aleatorio}
+
+Si seguimos iterando hacia atrás obtenemos
+
+
+\begin{align*}
+Var(x_t) & = E[( x_{t-2} + \varepsilon_{t-1})^2] + E[\varepsilon_t^2] \\
+         & =E[x_{t-2}^2] +  E[\varepsilon_{t-1}^2] + E[\varepsilon_t^2] \\
+\end{align*}
+
+\visible<2-> {Repitiendo este proceso, obtenemos
+
+\begin{align*}
+Var(x_t) & = E[x_{t-n}^2] + E[\varepsilon_{t-n}^2 ] + \dots  +  E[\varepsilon_{t-1}^2] + E[\varepsilon_t^2] \\
+\end{align*}    
+ }   
+\end{frame}
+
+\begin{frame}{Paseo aleatorio}
+
+Asumiendo $Var(x_1)= \sigma^2$,
+
+\begin{align*}
+Var(x_t) & = \sigma^2 + \sigma^2 + \dots  +  \sigma^2 + \sigma^2 \\
+        & = t \sigma^2
+\end{align*} 
+
+
+\visible<2->{Por lo tanto el proceso es no estacionario.}
+
+\end{frame}
+
+
+
+\begin{frame}{Paseo aleatorio}
+
+Finalmente, la auto-correlación esta dada por,
+
+\begin{align*}
+    \rho_{j,t} & = \frac{\gamma_{j,t}}{\sqrt{\gamma_{0,t}}\sqrt{\gamma_{0,t-j}}} \\
+\visible<2->{        & = \frac{(t-j)\sigma^2}{\sqrt{t \sigma^2} \sqrt{(t -j)\sigma^2} } } \\
+\visible<3->{        & = \frac{\sqrt{t-j}}{\sqrt{t}}}
+\end{align*}
+
+\end{frame}
+
+\begin{frame}{Paseo aleatorio}
+
+Sin embargo, podemos hacer uso del operador de diferencias para convertir esta serie en un proceso estacionario,
+
+\begin{equation}
+    w_t = \Delta x_t = x_t - x_{t-1} = \varepsilon_t
+\end{equation}
+
+donde $w_t$ es estacionario. 
+\end{frame}
+
+\begin{frame}{Paseo aleatorio}
+
+Acá pasamos de $x_t$ a $w_t$ pero siempre podemos hacer el proceso contrario en caso tal que deseemos conocer los valores de la serie original
+
+\begin{align*}
+    x_t & = w_t + x_{t-1} \\
+        & = w_t + w_{t-1} + x_{t-2} \\
+        & \vdots \\
+        & = w_t + w_{t-1} + w_{t-2} + w_{t-3} + \dots 
+\end{align*}
+
+por lo tanto el proceso $x_t$ se obtiene sumando o integrando el proceso $w_t$
+
+\end{frame}
+
+\begin{frame}{Paseo aleatorio}
+
+\begin{itemize}
+    \item Por esta razón, el paseo aleatorio hace parte de la clase de modelos integrados.
+    \item Los modelos integrados son aquellos que se pueden obtener mediante suma o integración de modelos estacionarios
+\end{itemize}
+
+\end{frame}
+
+
+\appendix
+
+\begin{frame}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}{Autocovarianza}
+\label{Prueba:ac}    
+\begin{equation*}
+\begin{matrix}
+E[(x_{t_1}-\mu_{t_1})(x_{t_2}-\mu_{t_2})] & = & E[(x_{t_1}x_{t_2} - x_{t_1}\mu_{t_2} -  \mu_{t_1}x_{t_2} +  \mu_{t_1}\mu_{t_2})] \\
+\visible<2->{& = & E[x_{t_1}x_{t_2}] - E[x_{t_1}\mu_{t_2}] - E[\mu_{t_1}x_{t_2}] + E[\mu_{t_1}\mu_{t_2}] }\\
+\visible<3->{& = & E[x_{t_1}x_{t_2}] - E[x_{t_1}]\mu_{t_2} - \mu_{t_1}E[x_{t_2}] +  \mu_{t_1}\mu_{t_2} }\\
+\visible<4->{ & = & E[x_{t_1}x_{t_2}] - \mu_{t_1}\mu_{t_2} - \mu_{t_1}\mu_{t_2} + \mu_{t_1}\mu_{t_2} }\\
+\visible<5->{& = & E[x_{t_1}x_{t_2}] - \mu_{t_1}\mu_{t_2}}
+\end{matrix}
+\end{equation*}
+    
+\hyperlink{Autoco}{\beamergotobutton{Autocovarianza}}
+\end{frame}
+
+
+\begin{frame}{Ejemplo Serie estacionaria}\label{estacionaria}
+
+   \begin{figure}
+       \centering
+      \includegraphics[width=2.5in,height=2in]{estacionaria.pdf}
+   \end{figure}
+    \hyperlink{ergodicidad}{\beamergotobutton{Volver}}
+\end{frame}
+
+\begin{frame}{Ejemplo Serie no estacionaria}
+
+   \begin{figure}
+       \centering
+      \includegraphics[width=2.5in,height=2in]{noestacionaria.pdf}
+   \end{figure}
+    \hyperlink{ergodicidad}{\beamergotobutton{Volver}}
+\end{frame}
+
+
+\begin{frame}{Propiedades de la esperanza}
+\label{esperanza}
+    \begin{align*}
+        E(X + Y) & = E(X) + E(Y) \\
+        E(k* X) & = k E(X) \text{ Para todo } k \in \mathbb{R} \\
+        E(X*Y) & = E(X) * E(Y) \text{ Sí y solo sí X y Y son independientes} \\
+        E(X) & = E[E(X | Y)]
+    \end{align*}
+     \hyperlink{ar1}{\beamergotobutton{Volver}}   
+\end{frame}
+
+\begin{frame}{Prueba No correlación}
+\label{prueba:LIE}
+\begin{align*}
+    E[\varepsilon_t x_{t-j}] & = E[E(\varepsilon_t x_{t-j} | \mathcal{E}_{t-1})]  \\
+             & = E[E(\varepsilon_t | \mathcal{E}_{t-1}) x_{t-j}] \\
+             & = 0
+\end{align*}
+
+para todo $j>0$.       \hyperlink{var:ar1}{\beamergotobutton{Volver}} 
+
+\end{frame}
+
