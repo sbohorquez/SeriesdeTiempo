@@ -130,7 +130,7 @@ donde $X_t$ es la series observada, $T_t$ es la tendencia de largo plazo, $C_t$ 
 
 # Conceptos básicos
 
-## Rezago Variable
+# Rezago Variable
 
 <ul>
 <li> El primer rezago de una variable $x_t$ se define como $x_{t-1}$.</li>
@@ -138,7 +138,7 @@ donde $X_t$ es la series observada, $T_t$ es la tendencia de largo plazo, $C_t$ 
 <li> Cabe anotar que el rezago depende de la unidad de medida de la variable, e.g. si la variable esta medida anualmente $t-1$ es el año anterior, pero si esta medida mensualmente, $t-1$ es el mes anterior.</li> 
 </ul>
 
-## El operador de rezagos
+# El operador de rezagos
 
 Sea $x_t$ una observación aleatoria de una serie de tiempo. Definimos el símbolo $L$ como:
 
@@ -148,7 +148,7 @@ Sea $x_t$ una observación aleatoria de una serie de tiempo. Definimos el símbo
 
 $L$ es lo que en matemáticas es conocido como un operador. No es un parámetro o un número pero puede ser tratado como tal para operaciones algebraicas, e.g. $L^2 x_t = L(L x_t) = L x_{t-1} = x_{t-2}$, en general $L^n x_t = x_{t-n}$  
 
-##
+#
     
 En adición, la expresión
 
@@ -165,7 +165,7 @@ Y si lo aplicamos a un serie de tiempo, generamos una media móvil ponderada de 
 \end{equation}
 
 
-## El operador de diferencia
+# El operador de diferencia
     
 Otro operador usado es
 
@@ -176,7 +176,7 @@ Otro operador usado es
 el operador de diferencia. $\Delta x_t = x_t - x_{t-1}$ es el cambio en $x$ en el periodo $t$. 
 
 
-##
+#
 Es importante anotar la diferencia de notación entre
 
 \begin{equation}
@@ -193,46 +193,41 @@ el operador de la diferencia de orden $n$, e.g. $\Delta_2 x_t = x_t - x_{t-2}$ y
 
 
 
-## 
+# 
 
 <ul>
 <li> La primera diferencia del logaritmo de $x_t$ es $\Delta \ln (x_t) = \ln (x_t) - \ln (x_{t-1})$.</li>
-<li> El cambio porcentual de una serie de tiempo $x_t$ entre los periodos $t-1$ y $t$ es aproximadamente $100*\Delta \ln (x_t)$. Esta aproximación funciona mejor cuando el cambio porcentual es pequeño.<a href="https://sbohorquez.github.io/SeriesdeTiempo/CaracSeries.html#/Cambio-porcentual">Demostración</a></li>
+<li> El cambio porcentual de una serie de tiempo $x_t$ entre los periodos $t-1$ y $t$ es aproximadamente $100*\Delta \ln (x_t)$. Esta aproximación funciona mejor cuando el cambio porcentual es pequeño.</li>
 <li> Es común usar esta aproximación para anualizar crecimientos, por ejemplo con datos trimestrales, se obtiene así,  $4*100*\Delta \ln (x_t)$.</li>
 
-## Cambio porcentual
 
-##
+## Cambio porcentual
 
 <ul>
 <li> El cambio del logaritmo de una variable es aproximadamente igual al cambio proporcional de dicha variable, i.e. $\ln (X + a) - \ln (X) \cong \frac{a}{X}$.</li> 
 <li> Ahora, remplazando $X$ con $x_{t-1}$ y $a$ con $\Delta x_t$. Y, sabiendo que, $x_t =  x_{t-1} + \Delta x_t$.</li>
 <li> Esto significa que el cambio proporcional entre los periodos $t$ y $t-1$ es aproximadamente, 
-    \begin{equation}
-       \Delta  \ln (x_t) = \ln (x_t) - \ln (x_{t-1}) =  \ln (x_{t-1} + \Delta x_t) - \ln (x_{t-1}) \cong \frac{\Delta x_t}{x_{t-1}}</li>
+    \begin{align}
+       \Delta  \ln (x_t) = \ln (x_t) - \ln (x_{t-1}) & =  \ln (x_{t-1} + \Delta x_t) - \ln (x_{t-1}) \\
+       & \cong \frac{\Delta x_t}{x_{t-1}}
+    \end{align}</li>
 </ul>    
 
+# Proceso de innovación
 
+Finalmente, definimos el proceso de innovación . Sea $\{\varepsilon, -\infty < t < \infty \}$ un proceso estocástico (o secuencia aleatoria) y sea $\mathcal{E}_{t-1}$ el $\sigma$-algebra de eventos predecibles cuando el pasado de $\varepsilon_t$ es conocido. 
 
-
-\begin{frame}{Proceso de innovación}
-
-Finalmente, definimos el proceso de innovación . Sea $\{\varepsilon, -\infty < t < \infty \}$ un proceso estocástico (o secuencia aleatoria) y sea $\mathcal{E}_{t-1}$ el $\sigma$-algebra de eventos predecibles cuando el pasado de $\varepsilon_t$ es conocido. Y asumimos
+#
+Y asumimos
 
 \begin{align}
     E(\varepsilon_t | \mathcal{E}_{t-1}) & = 0 \\
     E(\varepsilon^2_t |  \mathcal{E}_{t-1}) & = \sigma^2 
 \end{align}
 
-Este es un proceso estacionario en el sentido débil, y no auto-correlacionado. Este tipo de proceso se conoce también como {\it ruido blanco}
+Este es un proceso estacionario en el sentido débil, y no auto-correlacionado. Este tipo de proceso se conoce también como <em>ruido blanco</em>
 
-
-    
-\end{frame}
-
-
-\section{Correlación}
-\frame{\tableofcontents[currentsection]}
+# Correlación
 
 \begin{frame}{Correlación}
 \begin{itemize}
