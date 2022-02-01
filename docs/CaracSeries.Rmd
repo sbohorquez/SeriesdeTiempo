@@ -400,7 +400,7 @@ reemplazando obtenemos,
 dado que $|\phi| < 1$ y $n \rightarrow \infty$
 
 
-\begin{frame}{Procesos estacionarios en Tendencia}
+#
 
 por lo tanto la media sería,
 
@@ -409,21 +409,19 @@ por lo tanto la media sería,
 \end{equation}
 
 y dado que depende de $t$ no sería estacionaria bajo nuestra definición de estacionariedad. 
-    
-\end{frame}
+ 
+
+#
+
+<ul>
+<li> Sin embargo, noten que $t$ cumple con la condición de ser un procesos deterministico, ya que sabemos perfectamente el valor que va a tomar con antelación.</li> 
+<li> Por lo tanto, podemos pensar en una transformación donde excluimos la tendencia deterministica de la serie permitiendo que la serie ya no dependa de $t$.</li>
+<li> A este tipo de procesos se les conoce como procesos estacionarios en tendencia. Y es común su uso para filtros en economía.</li>
 
 
-\begin{frame}{Procesos estacionarios en Tendencia}
+# Paseo aleatorio
 
-\begin{itemize}
-    \item Sin embargo, noten que $t$ cumple con la condición de ser un procesos deterministico, ya que sabemos perfectamente el valor que va a tomar con antelación. 
-   \item<2-> Por lo tanto, podemos pensar en una transformación donde excluimos la tendencia deterministica de la serie permitiendo que la serie ya no dependa de $t$.
-   \item<3-> A este tipo de procesos se les conoce como procesos estacionarios en tendencia. Y es común su uso para filtros en economía.
-\end{itemize}
-    
-\end{frame}
-
-\begin{frame}{Paseo aleatorio}
+#
 
 Ahora veamos el caso del proceso definido como,
 
@@ -431,73 +429,71 @@ Ahora veamos el caso del proceso definido como,
     x_t = x_{t-1} + \varepsilon_t
 \end{equation}
 
-Este proceso es conocido como ``random walk'' o paseo aleatorio.
-
-\end{frame}
+Este proceso es conocido como "random walk" o paseo aleatorio.
 
 
-\begin{frame}{Paseo aleatorio}\label{var:ar1}
+
+#
 
 Miremos la varianza de este proceso, asumiendo $E[x_1]=0$
 
-\begin{align*}
+\begin{align}
 Var(x_t) & = E[(x_t - E[x_t])^2] \\
-         & = E[x_t^2] \\
-\visible<2->{  & = E[(x_{t-1} + \varepsilon_t)^2] } \\
-\visible<3->{  & = E[(x_{t-1})^2] + 2E[x_{t-1}\varepsilon_t] + E[\varepsilon_t^2] \\
-         & = E[x_{t-1}^2] + 0 + E[\varepsilon_t^2] \hyperlink{prueba:LIE}{\beamergotobutton{Prueba}} }
-\end{align*}    
+ & = E[(x_{t-1} + \varepsilon_t)^2]  \\
+  & = E[(x_{t-1})^2] + 2E[x_{t-1}\varepsilon_t] + E[\varepsilon_t^2] \\
+         & = E[x_{t-1}^2] + 0 + E[\varepsilon_t^2] 
+\end{align}    
 
-    
-\end{frame}
+## Prueba No correlación
+\begin{align}
+    E[\varepsilon_t x_{t-j}] & = E[E(\varepsilon_t x_{t-j} | \mathcal{E}_{t-1})]  \\
+             & = E[E(\varepsilon_t | \mathcal{E}_{t-1}) x_{t-j}] \\
+             & = 0
+\end{align}
 
-\begin{frame}{Paseo aleatorio}
+para todo $j>0$.  
+
+
+#
 
 Si seguimos iterando hacia atrás obtenemos
 
 
-\begin{align*}
+\begin{align}
 Var(x_t) & = E[( x_{t-2} + \varepsilon_{t-1})^2] + E[\varepsilon_t^2] \\
          & =E[x_{t-2}^2] +  E[\varepsilon_{t-1}^2] + E[\varepsilon_t^2] \\
-\end{align*}
+\end{align}
 
-\visible<2-> {Repitiendo este proceso, obtenemos
+Repitiendo este proceso, obtenemos
 
-\begin{align*}
+\begin{align}
 Var(x_t) & = E[x_{t-n}^2] + E[\varepsilon_{t-n}^2 ] + \dots  +  E[\varepsilon_{t-1}^2] + E[\varepsilon_t^2] \\
-\end{align*}    
- }   
-\end{frame}
+\end{align}    
 
-\begin{frame}{Paseo aleatorio}
+#
 
 Asumiendo $Var(x_1)= \sigma^2$,
 
-\begin{align*}
+\begin{align}
 Var(x_t) & = \sigma^2 + \sigma^2 + \dots  +  \sigma^2 + \sigma^2 \\
         & = t \sigma^2
-\end{align*} 
+\end{align} 
+
+Por lo tanto el proceso es no estacionario.
 
 
-\visible<2->{Por lo tanto el proceso es no estacionario.}
-
-\end{frame}
-
-
-
-\begin{frame}{Paseo aleatorio}
+#
 
 Finalmente, la auto-correlación esta dada por,
 
-\begin{align*}
+\begin{align}
     \rho_{j,t} & = \frac{\gamma_{j,t}}{\sqrt{\gamma_{0,t}}\sqrt{\gamma_{0,t-j}}} \\
-\visible<2->{        & = \frac{(t-j)\sigma^2}{\sqrt{t \sigma^2} \sqrt{(t -j)\sigma^2} } } \\
-\visible<3->{        & = \frac{\sqrt{t-j}}{\sqrt{t}}}
-\end{align*}
+        & = \frac{(t-j)\sigma^2}{\sqrt{t \sigma^2} \sqrt{(t -j)\sigma^2} } \\
+ & = \frac{\sqrt{t-j}}{\sqrt{t}}
+\end{align}
 
-\end{frame}
 
-\begin{frame}{Paseo aleatorio}
+#
 
 Sin embargo, podemos hacer uso del operador de diferencias para convertir esta serie en un proceso estacionario,
 
@@ -506,66 +502,24 @@ Sin embargo, podemos hacer uso del operador de diferencias para convertir esta s
 \end{equation}
 
 donde $w_t$ es estacionario. 
-\end{frame}
 
-\begin{frame}{Paseo aleatorio}
+#
 
 Acá pasamos de $x_t$ a $w_t$ pero siempre podemos hacer el proceso contrario en caso tal que deseemos conocer los valores de la serie original
 
-\begin{align*}
+\begin{align}
     x_t & = w_t + x_{t-1} \\
         & = w_t + w_{t-1} + x_{t-2} \\
         & \vdots \\
         & = w_t + w_{t-1} + w_{t-2} + w_{t-3} + \dots 
-\end{align*}
+\end{align}
 
 por lo tanto el proceso $x_t$ se obtiene sumando o integrando el proceso $w_t$
 
-\end{frame}
+#
 
-\begin{frame}{Paseo aleatorio}
+<ul>
+<li> Por esta razón, el paseo aleatorio hace parte de la clase de modelos integrados.</li>
+<li> Los modelos integrados son aquellos que se pueden obtener mediante suma o integración de modelos estacionarios,</li>
 
-\begin{itemize}
-    \item Por esta razón, el paseo aleatorio hace parte de la clase de modelos integrados.
-    \item Los modelos integrados son aquellos que se pueden obtener mediante suma o integración de modelos estacionarios
-\end{itemize}
-
-\end{frame}
-
-
-\appendix
-
-\begin{frame}
-
-\end{frame}
-
-
-
-
-
-
-
-
-\begin{frame}{Propiedades de la esperanza}
-\label{esperanza}
-    \begin{align*}
-        E(X + Y) & = E(X) + E(Y) \\
-        E(k* X) & = k E(X) \text{ Para todo } k \in \mathbb{R} \\
-        E(X*Y) & = E(X) * E(Y) \text{ Sí y solo sí X y Y son independientes} \\
-        E(X) & = E[E(X | Y)]
-    \end{align*}
-     \hyperlink{ar1}{\beamergotobutton{Volver}}   
-\end{frame}
-
-\begin{frame}{Prueba No correlación}
-\label{prueba:LIE}
-\begin{align*}
-    E[\varepsilon_t x_{t-j}] & = E[E(\varepsilon_t x_{t-j} | \mathcal{E}_{t-1})]  \\
-             & = E[E(\varepsilon_t | \mathcal{E}_{t-1}) x_{t-j}] \\
-             & = 0
-\end{align*}
-
-para todo $j>0$.       \hyperlink{var:ar1}{\beamergotobutton{Volver}} 
-
-\end{frame}
 
