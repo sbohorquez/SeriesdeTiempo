@@ -215,7 +215,7 @@ el operador de la diferencia de orden $n$, e.g. $\Delta_2 x_t = x_t - x_{t-2}$ y
 
 # Proceso de innovación
 
-Finalmente, definimos el proceso de innovación . Sea $\{\varepsilon, -\infty < t < \infty \}$ un proceso estocástico (o secuencia aleatoria) y sea $\mathcal{E}_{t-1}$ el $\sigma$-algebra de eventos predecibles cuando el pasado de $\varepsilon_t$ es conocido. 
+Finalmente, definimos el proceso de innovación . Sea $\{\varepsilon, -\infty < t < \infty \}$ un proceso estocástico (o secuencia aleatoria) y sea $\mathcal{E}_{t-1}$ el $\sigma$-algebra de eventos predecibles cuando el pasado de $\varepsilon_t$ es conocido.
 
 #
 Y asumimos
@@ -227,122 +227,125 @@ Y asumimos
 
 Este es un proceso estacionario en el sentido débil, y no auto-correlacionado. Este tipo de proceso se conoce también como <em>ruido blanco</em>
 
-# Correlación
+# Auto-Correlación
 
-\begin{frame}{Correlación}
-\begin{itemize}
-    \item Una de las principales características de las series de tiempo es la presencia de Auto-correlación o correlaci£n serial.
-    \item Ustedes posiblemente están familiarizados con el concepto de correlación entre dos variables, la auto-correlación implica correlación entre la serie y su pasado.
-\end{itemize}
-\end{frame}
+<ul>
+<li> Una de las principales características de las series de tiempo es la presencia de Auto-correlación o correlación serial.</li>
+<li> Ustedes posiblemente están familiarizados con el concepto de correlación entre dos variables, la auto-correlación implica correlación entre la serie y su pasado.</li>
 
-\begin{frame}{Correlación}\label{Autoco}
-
-
-\begin{block}{\emph{Autocovarianza:}}
-    Si la secuencia aleatoria $\{x_t\}$ tiene media $E[x_t]=\mu_t$ la autocovarianza esta dada por:
+#
+Si la secuencia aleatoria $\{x_t\}$ tiene media $E[x_t]=\mu_t$ la autocovarianza esta dada por:
     \begin{equation}
     \begin{matrix}
         cov[x_{t_1},x_{t_2}]  & = & E[(x_{t_1}-\mu_{t_1})(x_{t_2}-\mu_{t_2})] \\
-                & = & E[(x_{t_1}x_{t_2})] - \mu_{t_1}\mu_{t_2} \\
-                & & \hyperlink{Prueba:ac}{\beamergotobutton{Demostración}}
-    \end{matrix}
+                & = & E[(x_{t_1}x_{t_2})] - \mu_{t_1}\mu_{t_2} 
+      \end{matrix}
     \end{equation}
     
-\end{block}
-    
-\end{frame}
+## Autocovarianza
 
-\begin{frame}{Correlación}
+\begin{equation}
+\begin{matrix}
+E[(x_{t_1}-\mu_{t_1})(x_{t_2}-\mu_{t_2})]  =    E[(x_{t_1}x_{t_2} - x_{t_1}\mu_{t_2} -  \mu_{t_1}x_{t_2} +  \mu_{t_1}\mu_{t_2})] \\
+ =  E[x_{t_1}x_{t_2}] - E[x_{t_1}\mu_{t_2}] - E[\mu_{t_1}x_{t_2}] + E[\mu_{t_1}\mu_{t_2}] \\
+ =  E[x_{t_1}x_{t_2}] - E[x_{t_1}]\mu_{t_2} - \mu_{t_1}E[x_{t_2}] +  \mu_{t_1}\mu_{t_2} \\
+ =  E[x_{t_1}x_{t_2}] - \mu_{t_1}\mu_{t_2} - \mu_{t_1}\mu_{t_2} + \mu_{t_1}\mu_{t_2} \\
+ = E[x_{t_1}x_{t_2}] - \mu_{t_1}\mu_{t_2}
+\end{matrix}
+\end{equation}
+
+
+#
+
 Ahora, definimos la auto-correlación como
 
 \begin{equation}
     \rho_j = \frac{\gamma_j}{\gamma_0}
 \end{equation}
  
-\visible<2-> {La ventaja de usar la auto-correlación en vez de la auto-covarianza es que la auto-correlación siempre va a estar entre -1 y 1, dado que la covarianza siempre es igual o menor que la varianza.} 
+La ventaja de usar la auto-correlación en vez de la auto-covarianza es que la auto-correlación siempre va a estar entre -1 y 1, dado que la covarianza siempre es igual o menor que la varianza. 
 
-\end{frame}   
 
-\begin{frame}{Auto-correlación} 
+#
 
-\begin{itemize}
-    \item Las auto-covarianzas y auto-correlaciones expuestas anteriormente son los valores poblacionales, estas pueden ser estimadas en una muestra de tamaño $T$ de la siguiente manera:
+Las auto-covarianzas y auto-correlaciones expuestas anteriormente son los valores poblacionales, estas pueden ser estimadas en una muestra de tamaño $T$ de la siguiente manera:
     \begin{align}
-        \hat{\gamma_j} = &  \frac{1}{T} \sum^T_{t=j+1} (x_t - \Bar{x}_{j+1:T})(x_{t-j} - \Bar{x}_{1:T-j}) \\
+        \hat{\gamma_j} = &  \frac{1}{T} \sum^T_{t=j+1} (x_t - \bar{x}_{j+1:T})(x_{t-j} - \bar{x}_{1:T-j}) \\
         \hat{\rho_j} = &  \frac{\hat{\gamma_j}}{\widehat{var(x_t)}}
     \end{align}
 
-\end{itemize}
-\end{frame}
 
 
-\begin{frame}{Auto-correlación} 
+#
+<ul>
+<li> donde $\bar{x}_{j+1:T}$ es el promedio muestral de $x_t$ usando las observaciones $t=j+1,j+2,\dots,T$ </li>
+<li> $\widehat{var(x_t)}$ es la varianza muestral de $x_t$. </li>
+<li> Noten que la ecuación de la auto-covarianza se divide por $T$ y no $T-j$ como es usual cuando perdemos grados de libertad, la razón para esto es para poder hacer comparaciones entre diferentes ordenes de las auto-covarianzas.</li>
 
-\begin{itemize}
-    \item donde $\Bar{x}_{j+1:T}$ es el promedio muestral de $x_t$ usando las observaciones $t=j+1,j+2,\dots,T$
-    \item $\widehat{var(x_t)}$ es la varianza muestral de $x_t$.
-    \item<2-> Noten que la ecuación de la auto-covarianza se divide por $T$ y no $T-j$ como es usual cuando perdemos grados de libertad, la razón para esto es para poder hacer comparaciones entre diferentes ordenes de las auto-covarianzas.
-\end{itemize}
-\end{frame}
 
-\begin{frame}{Auto-correlación} 
+# 
 
-\begin{itemize}
-    \item La formula en la ecuación de las auto-correlaciones usa el supuesto que la varianza de $x_t$ y $x_{t-j}$ es la misma.
-    \item Este supuesto proviene de un supuesto más general llamado estacionareidad que es de fundamental importancia para el análisis de series de tiempo y que discutiremos en detalle más adelante.
-\end{itemize}
-\end{frame}
+<ul>
+<li> La formula en la ecuación de las auto-correlaciones usa el supuesto que la varianza de $x_t$ y $x_{t-j}$ es la misma.</li>
+<li> Este supuesto proviene de un supuesto más general llamado estacionareidad que es de fundamental importancia para el análisis de series de tiempo.</li>
 
-\section{Estacionariedad}
-\frame{\tableofcontents[currentsection]}
 
-\begin{frame}{Estacionareidad}
+# Estacionariedad
+
+
+# 
 
 Para la correcta estimación de los modelos necesitamos dos supuestos del comportamiento del PGD, primero los definiremos en plabras simples y luego los definiremos formalmente:
 
-\begin{itemize}
-\item <2-> Estacionareidad: Existen dos tipos de estacionariedad, estacionariedad débil implica que la media y la varianza no dependen del tiempo, mientras que estacionariedad estricta implica que el PGD no depende del tiempo.
-\item <3-> Ergodicidad: Una secuencia es ergódica si el promedio de la muestra converge a la esperanza del conjunto. 
-\end{itemize}
-
-\end{frame}
+<ul>
+<li> Estacionareidad: Existen dos tipos de estacionariedad, estacionariedad débil implica que la media y la varianza no dependen del tiempo, mientras que estacionariedad estricta implica que el PGD no depende del tiempo.</li>
+<li> Ergodicidad: Una secuencia es ergódica si el promedio de la muestra converge a la esperanza del conjunto.</li> 
 
 
-\begin{frame}{Estacionareidad}
+#
 
-\begin{block}{\emph{Estacionariedad débil:}}
-Una secuencia aleatoria $\{x_t\}$ es estacionaria débil (o estacionaria en covarianza) si la media, varianza y la secuencia de autocovarianzas\footnote{La autocovarianza de orden $j$  se define como $\gamma_j = cov(x_{t},x_{t-j})$} de orden $j$, para $j>0$ son independientes de $t$ 
-\end{block}
+<b>Estacionariedad débil:</b>
+Una secuencia aleatoria $\{x_t\}$ es estacionaria débil (o estacionaria en covarianza) si la media, varianza y la secuencia de autocovarianzas.
+
+La autocovarianza de orden $j$  se define como $\gamma_j = cov(x_{t},x_{t-j})$} de orden $j$, para $j>0$ son independientes de $t$ 
 
 
-\end{frame}
+#
 
-\begin{frame}{Estacionareidad}
+<b>Estacionariedad Estricta:</b>
 
-\begin{block}{\emph{Estacionariedad Estricta:}}
 Una secuencia aleatoria $\{x_t\}$ es estacionaria estricta si para todo $k>0$ la distribución conjunta de todas las colecciones $(x_t,x_{t+1},x_{t+2},\dots,x_{t+k})$ no depende de $t$
-\end{block}
 
-\visible<2->{Estacionariedad estricta implica estacionariedad débil, pero lo contrario no siempre aplica.}
+Estacionariedad estricta implica estacionariedad débil, pero lo contrario no siempre aplica.
 
-\visible<3->{En el caso especial de la distribución normal, estacionariedad débil si implica estacionariedad estricta.} 
+En el caso especial de la distribución normal, estacionariedad débil si implica estacionariedad estricta. 
     
-\end{frame}
 
-\begin{frame}{Ergodicidad}\label{ergodicidad}
 
-\begin{theorem}
-    Si $\{x_t\}$ es una secuencia estacionaria y ergódica, y $E(x_1)$ existe, entonces $\bar{x_n} \rightarrow E(x_1)$ con probabilidad 1.     
-\end{theorem}
+# Ergodicidad
 
-Donde $\bar{x_n} = \frac{1}{n} \sum_{t=0}^n x_t $  \hyperlink{estacionaria}{\beamergotobutton{Ejemplo}} 
 
-\end{frame}
+Si $\{x_t\}$ es una secuencia estacionaria y ergódica, y $E(x_1)$ existe, entonces $\bar{x_n} \rightarrow E(x_1)$ con probabilidad 1.     
+
+
+Donde $\bar{x_n} = \frac{1}{n} \sum_{t=0}^n x_t $  
 
 
 
-\begin{frame}{Descomposición de Wold}
+## Ejemplo Serie estacionaria
+
+<img src="img/estacionaria.png" alt="Ejemplo: Serie Estacionaria" width="900" height="450">  
+
+
+## Ejemplo Serie no estacionaria
+
+<img src="img/noestacionaria.png" alt="Ejemplo: Serie No Estacionaria" width="900" height="450">  
+
+
+
+# Descomposición de Wold
+
+#
 
 Wold (1938) demostró que si el proceso con media cero $x_t$ es estacionario en sentido débil, este se puede representar como
 
@@ -351,27 +354,24 @@ x_t = \sum_{j=0}^{\infty} \theta_j \varepsilon_{t-j} + \upsilon_t
 \end{equation}
 
 donde $\theta_0 = 1$, $\sum_{j=0}^{\infty} \theta_j < \infty$, $\varepsilon_t$ cumple con las propiedas del procesos de innovación previamente definidas, $E[\upsilon_t \varepsilon_{t-j}] = 0$, y constantes $\alpha_0,\alpha_1,\alpha_2,\dots$  tal que $Var(\sum_{j=0}^{\infty}\alpha_j \upsilon_t)=0$ 
-\end{frame}
 
-\begin{frame}{Descomposición de Wold}
+#
 
 Si definimos $\upsilon_t$ como una variable con media cero $z$, tal que $z$ no depende de $t$, cualquier combinación que cumpla con $\sum_{j=0}^{\infty} \alpha_i = 0$ satisface la definición anterior. 
 
-\visible<2->{En general, si $\upsilon_t = - \sum_{j=0}^{\infty} \frac{\alpha_j}{\alpha_o}\upsilon_{t-j}$ cumple con la condición. Este es un proceso deterministico, ya que puede ser predicho perfectamente un periodo antes. } 
-
-
-\end{frame}
+En general, si $\upsilon_t = - \sum_{j=0}^{\infty} \frac{\alpha_j}{\alpha_o}\upsilon_{t-j}$ cumple con la condición. Este es un proceso deterministico, ya que puede ser predicho perfectamente un periodo antes.
 
 
 
-\begin{frame}{Procesos no estacionarios}
-\begin{itemize}
-    \item En economía existen diferentes series que no cumplen con el supuesto de estacionariedad, e.g. el producto interno bruto. Por lo tanto es importante incluir (algunos) procesos de este tipo en nuestros análisis.
-\end{itemize}
 
-\end{frame}
+# Procesos no estacionarios
 
-\begin{frame}{Procesos estacionarios en Tendencia}
+En economía existen diferentes series que no cumplen con el supuesto de estacionariedad, e.g. el producto interno bruto. Por lo tanto es importante incluir (algunos) procesos de este tipo en nuestros análisis.
+
+
+# Procesos estacionarios en Tendencia
+
+#
 
 consideremos el siguiente proceso con tendencia y $|\phi| < 1 $,
 
@@ -379,15 +379,14 @@ consideremos el siguiente proceso con tendencia y $|\phi| < 1 $,
     x_t = \delta + \alpha t + \phi x_{t-1} + \varepsilon_t 
 \end{equation}
 
-\visible<2->{Si estimamos la media de este proceso vemos que depende del tiempo,
+Si estimamos la media de este proceso vemos que depende del tiempo,
 
 \begin{align*}
     E[x_t] & = E[\delta + \alpha t + \phi x_{t-1} + \varepsilon_t] 
 \end{align*}
-}    
-\end{frame}
 
-\begin{frame}{Procesos estacionarios en Tendencia}
+
+#
 
 reemplazando obtenemos,
 
@@ -398,10 +397,7 @@ reemplazando obtenemos,
            & = \sum_{i=0}^n \phi^i (\delta + \alpha (t-i))  
 \end{align*}
 
-dado que $|\phi| < 1 $ y $n \rightarrow \infty $
-
-    
-\end{frame}
+dado que $|\phi| < 1$ y $n \rightarrow \infty$
 
 
 \begin{frame}{Procesos estacionarios en Tendencia}
@@ -547,39 +543,7 @@ por lo tanto el proceso $x_t$ se obtiene sumando o integrando el proceso $w_t$
 
 
 
-\begin{frame}{Autocovarianza}
-\label{Prueba:ac}    
-\begin{equation*}
-\begin{matrix}
-E[(x_{t_1}-\mu_{t_1})(x_{t_2}-\mu_{t_2})] & = & E[(x_{t_1}x_{t_2} - x_{t_1}\mu_{t_2} -  \mu_{t_1}x_{t_2} +  \mu_{t_1}\mu_{t_2})] \\
-\visible<2->{& = & E[x_{t_1}x_{t_2}] - E[x_{t_1}\mu_{t_2}] - E[\mu_{t_1}x_{t_2}] + E[\mu_{t_1}\mu_{t_2}] }\\
-\visible<3->{& = & E[x_{t_1}x_{t_2}] - E[x_{t_1}]\mu_{t_2} - \mu_{t_1}E[x_{t_2}] +  \mu_{t_1}\mu_{t_2} }\\
-\visible<4->{ & = & E[x_{t_1}x_{t_2}] - \mu_{t_1}\mu_{t_2} - \mu_{t_1}\mu_{t_2} + \mu_{t_1}\mu_{t_2} }\\
-\visible<5->{& = & E[x_{t_1}x_{t_2}] - \mu_{t_1}\mu_{t_2}}
-\end{matrix}
-\end{equation*}
-    
-\hyperlink{Autoco}{\beamergotobutton{Autocovarianza}}
-\end{frame}
 
-
-\begin{frame}{Ejemplo Serie estacionaria}\label{estacionaria}
-
-   \begin{figure}
-       \centering
-      \includegraphics[width=2.5in,height=2in]{estacionaria.pdf}
-   \end{figure}
-    \hyperlink{ergodicidad}{\beamergotobutton{Volver}}
-\end{frame}
-
-\begin{frame}{Ejemplo Serie no estacionaria}
-
-   \begin{figure}
-       \centering
-      \includegraphics[width=2.5in,height=2in]{noestacionaria.pdf}
-   \end{figure}
-    \hyperlink{ergodicidad}{\beamergotobutton{Volver}}
-\end{frame}
 
 
 \begin{frame}{Propiedades de la esperanza}
