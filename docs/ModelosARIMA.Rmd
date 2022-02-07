@@ -421,38 +421,35 @@ Asumiendo estacionariedad y realizando el mismo proceso que vimos para el proces
 
 Así en el caso sin constante $\mu = 0$
 
-\end{frame}
 
-\begin{frame}{Modelo AR(p)}
+#
     
 Ahora para estimar las auto-covarianzas usando la misma estrategia que utilizamos para el modelo AR(2).
 
-\begin{align*}
+\begin{align}
 E[x_t x_{t-j}] & =  E[(\phi_1 x_{t-1} + \phi_2 x_{t-2} + \dots + \phi_p x_{t-p} +  \varepsilon_t) x_{t-j}] \\
 E[x_t x_{t-j}] & = \phi_1 E[x_{t-1}x_{t-j}] + \phi_2 E[x_{t-2}x_{t-j}] + \dots + \phi_p E[x_{t-p} x_{t-j}] \\
 & + E[\varepsilon_t x_{t-j}] \\
-\visible<2-> { \gamma_j & = \phi_1 \gamma_{j-1} + \phi_2 \gamma_{j-2} + \dots + \phi_p \gamma_{j-p} + E[\varepsilon_t x_{t-j}]
-}
-\end{align*}
-\end{frame}
+\gamma_j & = \phi_1 \gamma_{j-1} + \phi_2 \gamma_{j-2} + \dots + \phi_p \gamma_{j-p} + E[\varepsilon_t x_{t-j}]
+\end{align}
 
-\begin{frame}{Modelo AR(p)}
+
+#
+
 Ahora podemos estimar la varianza, como $\gamma_0$
 
 \begin{equation}
     \gamma_j  = \phi_1 \gamma_{1} + \phi_2 \gamma_{2} + \dots + \phi_p \gamma_{p} + \sigma^2
 \end{equation}
 
-\visible<2->{Y para valores de $j>0$
+Y para valores de $j>0$
 
 \begin{equation}\label{gamma:arp}
     \gamma_j = \phi_1 \gamma_{j-1} + \phi_2 \gamma_{j-2} + \dots + \phi_p \gamma_{j-p} 
 \end{equation}
 
-}
-\end{frame}
 
-\begin{frame}{Modelo AR(p)}
+#
     
 Y para las auto-correlaciones dividimos la ecuación \ref{gamma:arp} por $\gamma_0$ y obtenemos
 
@@ -460,18 +457,16 @@ Y para las auto-correlaciones dividimos la ecuación \ref{gamma:arp} por $\gamma
    \rho_j = \phi_1 \rho_{j-1} + \phi_2 \rho_{j-2} + \dots + \phi_p \rho_{j-p}  
 \end{equation}
    
-\visible<2->{con esto podemos estimar las ecuaciones de Yule-Walker, 
+con esto podemos estimar las ecuaciones de Yule-Walker, 
  
- \begin{align*}
+ \begin{align}
     \rho_1  & = \phi_1  + \phi_2 \rho_1 + \dots + \phi_p \rho_{p-1}  \\
     \rho_2  & = \phi_1 \rho_1 + \phi_2  + \dots + \phi_p \rho_{p-2} \\
             &  \vdots \\
     \rho_p  & = \phi_1 \rho_{p-1} + \phi_2 \rho_{p-2} + \dots + \phi_p 
-\end{align*}
-}
-\end{frame}
+\end{align}
 
-\begin{frame}{Modelo AR(p)}
+#
 
 Y en forma matricial para los términos de $\phi$,
 
@@ -498,51 +493,46 @@ Y en forma matricial para los términos de $\phi$,
 \end{equation}
 
     
-\end{frame}
 
-\section{Modelos de Medias Móviles}
-\frame{\tableofcontents[currentsection]}
 
-\begin{frame}{MA(1)}
+# Modelos de Medias Móviles
+
+#
 
 Ahora miramos  los modelos de medias móviles, empezamos por el modelo de medias móviles de orden 1, o MA(1).
 
-\visible<2->{Un modelo MA(1) se define como,
+Un modelo MA(1) se define como,
 
 \begin{equation}
     x_t = \varepsilon_t - \theta \varepsilon_{t-1}
 \end{equation}
 
 usando el operador de rezagos $x_t = (1-\theta L) \varepsilon_{t}$
-}
-\end{frame}
 
-\begin{frame}{MA(1)}
+#
+
 Ahora calculamos la esperanza de este proceso,
 
-\begin{align*}
+\begin{align}
     E[x_t] & = E[\varepsilon_t - \theta \varepsilon_{t-1}] \\
     E[x_t] & = E[\varepsilon_t] - \theta E[\varepsilon_{t-1}] \\
     E[x_t] & = 0
-\end{align*}
+\end{align}
 
-\end{frame}
-
-\begin{frame}{MA(1)}
+#
 
 Y la varianza
 
-\begin{align*}
+\begin{align}
     \gamma_0 & = E[x_t x_t] \\
              &  = E[(\varepsilon_t - \theta \varepsilon_{t-1})^2] \\
-\visible<2->{  & = E[\varepsilon_t^2] - 2\theta E[\varepsilon_t \varepsilon_{t-1}] + \theta^2 E[\varepsilon_{t-1}^2]} \\
-\visible<3->{    & = \sigma^2 + \theta^2 \sigma^2 \\
-                & = \sigma^2 (1+\theta^2)}
-\end{align*}
+  & = E[\varepsilon_t^2] - 2\theta E[\varepsilon_t \varepsilon_{t-1}] + \theta^2 E[\varepsilon_{t-1}^2] \\
+  & = \sigma^2 + \theta^2 \sigma^2 \\
+                & = \sigma^2 (1+\theta^2)
+\end{align}
     
-\end{frame}
 
-\begin{frame}{MA(1)}
+#
 
 Ahora, estimamos la auto-covarianza $\gamma_j$ del proceso,
 
