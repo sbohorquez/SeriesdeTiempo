@@ -225,6 +225,14 @@ Sin embargo, esto nos da la solución para $\lambda$ pero nuestros parámetros d
 
 Afortunadamente, se puede probar que siempre y cuando los valores $\lambda_1, \lambda_2$ caigan dentro del circulo de unidad. i.e. $|| \lambda_i || < 1$ para todo $i$ la serie es estacionaria (Esto no lo probaremos en clase pero si están interesados la sección 5.1.2 de Econometric theory de Davidson lo demuestra).
 
+
+## Solución operador de rezagos
+
+##
+
+La ecuación del operador de rezagos \ref{eq:Lar2} es el reciproco de la ecuación en función de $\lambda$, por lo cual en varios textos encontraran que se refiere a la estacionariedad como las soluciones $L_1, L_2$ caen fuera del circulo de unidad. Esta implicación es idéntica a lo que expuesto en la diapositiva anterior
+
+
 #
 
 Con esta solución podemos encontrar las restricciones que debemos imponer a los $\phi_i$ para lograr que los $\lambda_i$ cumplan con esta restricción, estas son 
@@ -536,117 +544,144 @@ Y la varianza
 
 Ahora, estimamos la auto-covarianza $\gamma_j$ del proceso,
 
-\begin{align*}
+\begin{align}
     \gamma_j & = E[x_t x_{t-j}] \\
              & = E[(\varepsilon_t - \theta \varepsilon_{t-1})((\varepsilon_{t-j} - \theta \varepsilon_{t-j-1})] \\
-\visible<2->{     & = E[\varepsilon_t \varepsilon_{t-j}] - \theta E[ \varepsilon_{t-1} \varepsilon_{t-j}] 
-                        - \theta E[ \varepsilon_{t} \varepsilon_{t-j-1}] + \theta^2 E[ \varepsilon_{t-1} \varepsilon_{t-j-1}]}
-\end{align*}    
-    
-\end{frame}
+     & = E[\varepsilon_t \varepsilon_{t-j}] - \theta E[ \varepsilon_{t-1} \varepsilon_{t-j}] - \theta E[ \varepsilon_{t} \varepsilon_{t-j-1}] + \theta^2 E[ \varepsilon_{t-1} \varepsilon_{t-j-1}]
+\end{align}    
 
-\begin{frame}{MA(1)}
+#
 
 Si  $j = 1$ obtenemos,
 
-\begin{align*}
-    \gamma_1     & = E[\varepsilon_t \varepsilon_{t-1}] - \theta E[ \varepsilon_{t-1} \varepsilon_{t-1}] 
-                        - \theta E[ \varepsilon_{t} \varepsilon_{t-2}] + \theta^2 E[ \varepsilon_{t-1} \varepsilon_{t-2}] \\
-\visible<2->{                 & =  0  - \theta \sigma^2 - 0 + 0 \\
-                & =   - \theta \sigma^2 }      
-\end{align*}    
+\begin{align}
+    \gamma_1     & = E[\varepsilon_t \varepsilon_{t-1}] - \theta E[ \varepsilon_{t-1} \varepsilon_{t-1}] - \theta E[ \varepsilon_{t} \varepsilon_{t-2}] + \theta^2 E[ \varepsilon_{t-1} \varepsilon_{t-2}] \\
+    & =  0  - \theta \sigma^2 - 0 + 0 \\
+                & =   - \theta \sigma^2
+\end{align}    
 
-\visible<3->{si $j=2$,
-\begin{align*}
-    \gamma_2     & = E[\varepsilon_t \varepsilon_{t-2}] - \theta E[ \varepsilon_{t-1} \varepsilon_{t-2}] 
-                        - \theta E[ \varepsilon_{t} \varepsilon_{t-3}] + \theta^2 E[ \varepsilon_{t-1} \varepsilon_{t-3}] \\
+si $j=2$,
+\begin{align}
+    \gamma_2     & = E[\varepsilon_t \varepsilon_{t-2}] - \theta E[ \varepsilon_{t-1} \varepsilon_{t-2}]   - \theta E[ \varepsilon_{t} \varepsilon_{t-3}] + \theta^2 E[ \varepsilon_{t-1} \varepsilon_{t-3}] \\
                  & = 0
-\end{align*} 
-}
+\end{align} 
 
-\end{frame}
-
-\begin{frame}{MA(1)}
+#
 
 En general, para todo $j>1$, obtenemos
 
 
-\begin{align*}
-    \gamma_j     & =  E[\varepsilon_t \varepsilon_{t-j}] - \theta E[ \varepsilon_{t-1} \varepsilon_{t-j}] 
-                        - \theta E[ \varepsilon_{t} \varepsilon_{t-j-1}] + \theta^2 E[ \varepsilon_{t-1} \varepsilon_{t-j-1}] \\
+\begin{align}
+    \gamma_j     & =  E[\varepsilon_t \varepsilon_{t-j}] - \theta E[ \varepsilon_{t-1} \varepsilon_{t-j}] - \theta E[ \varepsilon_{t} \varepsilon_{t-j-1}] + \theta^2 E[ \varepsilon_{t-1} \varepsilon_{t-j-1}] \\
                  & = 0
-\end{align*} 
+\end{align} 
 
-\visible<2->{Noten que para cualquier valor de $\theta$, el proceso es estacionario débil, ya que no se deben imponer restricciones sobre el parámetro para obtener la media, varianza o auto-covarianzas }
+#
+
+Noten que para cualquier valor de $\theta$, el proceso es estacionario débil, ya que no se deben imponer restricciones sobre el parámetro para obtener la media, varianza o auto-covarianzas
     
-\end{frame}
-
-\begin{frame}{MA(1)}
+#
 
 Finalmente, estimamos las auto-correlaciones $\rho_i$,
 
-\begin{align*}
+\begin{align}
     \rho_1 & = \frac{\gamma_1}{\gamma_0} \\
            & = \frac{- \theta \sigma^2}{\sigma^2 (1+\theta^2)} \\
-\visible<2->{     & = \frac{- \theta }{ (1+\theta^2)} }
-\end{align*}
+     & = \frac{- \theta }{ (1+\theta^2)}
+\end{align}
 
-\visible<3->{y dado que $\gamma_j=0$ para todo $j>1$, esto implica que $\rho_j=0$ para todo $j>1$}
-    
-\end{frame}
+y dado que $\gamma_j=0$ para todo $j>1$, esto implica que $\rho_j=0$ para todo $j>1$
 
-\begin{frame}{MA(1)}
+#
 
 Para un proceso AR(1) vimos que se cumplía la condición $|\rho| < 1$, sin embargo para procesos MA(1) si maximizamos el posible valor de $\rho_1$ encontramos
 
-\begin{align*}
+\begin{align}
 \frac{\mathrm{d} \rho_1 }{\mathrm{d} \theta} & = \frac{-(1+\theta^2) + 2\theta^2}{(1+\theta^2)^2} = 0 \\
 & -1 + \theta^2 = 0 \\
 & \theta = \pm 1
-\end{align*}
+\end{align}
 
-\visible<2->{reemplazando en $\rho_1$, obtenemos $| \rho_1 | \leq \frac{1}{2}$}
+reemplazando en $\rho_1$, obtenemos $| \rho_1 | \leq \frac{1}{2}$
 
-\end{frame}
-
-\begin{frame}{MA(1)}
+#
 
 Ahora, miremos la invertibilidad del proceso, para esto expresamos el proceso MA(1) en términos similares al AR(1), 
 
-\begin{align*}
+\begin{align}
   \varepsilon_t & = x_t + \theta \varepsilon_{t-1} \\
               & = x_t + \theta (x_{t-1} + \theta \varepsilon_{t-2}) \\
-\visible<2->{  & = x_t + \theta x_{t-1} + \theta^2 (x_{t-2} + \theta \varepsilon_{t-3}) } \\
-\visible<3->{  &     \vdots \\
-              & = x_t + \theta x_{t-1} + \theta^2 x_{t-2} + \dots + \theta^n \varepsilon_{t-n}}
-\end{align*}
+  & = x_t + \theta x_{t-1} + \theta^2 (x_{t-2} + \theta \varepsilon_{t-3})  \\
+  &     \vdots \\
+              & = x_t + \theta x_{t-1} + \theta^2 x_{t-2} + \dots + \theta^n \varepsilon_{t-n}
+\end{align}
 
-\end{frame}
+#
 
-\begin{frame}{MA(1)}
+Si $| \theta | < 1$ el termino $\theta^n \varepsilon_{t-n} \rightarrow 0$ cuando $n \rightarrow \infty$, por lo cual bajo esta condición podemos expresar el proceso como
 
-Si $| \theta | < 1$ el termino $\theta^n \varepsilon_{t-n} \rightarrow 0$ cunado $n \rightarrow \infty$, por lo cual bajo esta condición podemos expresar el proceso como
-
-\begin{align*}
+\begin{align}
   \varepsilon_t  & = x_t + \theta x_{t-1} + \theta^2 x_{t-2} + \dots + \theta^{n-1} x_{t-n-1} 
-\end{align*}
+\end{align}
 
-\visible<2->{De esta forma pasamos de un modelo MA(1) a un AR($\infty$), a la condición $|\theta| < 1$ la llamamos la condición de invertibilidad}
+De esta forma pasamos de un modelo MA(1) a un AR($\infty$), a la condición $|\theta| < 1$ la llamamos la condición de invertibilidad
 
-\end{frame}
 
-\begin{frame}{MA(1)}
+#
 
 También, si $| \theta | < 1$, podemos escribir el proceso como
 
-\begin{equation}\label{inv:ma1}
+\begin{equation}
     \varepsilon_ = \frac{1}{1-\theta L} x_t
 \end{equation}
 
-Como se ve en la ecuación \ref{inv:ma1} la condición de invertibilidad de un MA(1) es equivalente a la condición de estacionariedad de un modelo AR(1). \visible<2->{Cabe recalcar de nuevo que el proceso MA(1) siempre es estacionario!, y la condición de invertibilidad es solo para poder pasar a un modelo AR($\infty$)}
-\end{frame}
+#
 
-\begin{frame}{MA(q)}
+Como se ve en la ecuación la condición de invertibilidad de un MA(1) es equivalente a la condición de estacionariedad de un modelo AR(1). Cabe recalcar de nuevo que el proceso MA(1) siempre es estacionario!, y la condición de invertibilidad es solo para poder pasar a un modelo AR($\infty$)
+
+## Invertibilidad MA(1)
+
+##
+
+Noten que la invertibilidad tiene otras implicaciones, asumamos un valor $\theta^* > 1$ de forma tal que el proceso es no-invertible, la auto-correlación sería 
+\begin{align}
+  \rho_1 & = \frac{- \theta^* }{ (1+\theta^{**^2})} 
+\end{align}
+
+##
+
+ahora, si tomamos $\theta^{**} = \frac{1}{\theta^*}$ este es un proceso invertible y la auto-correlación sería
+
+\begin{align}
+  \rho_1 & = \frac{- \theta^{**} }{ (1+\theta^{**^2})} \\
+& = \frac{\frac{1}{\theta^*}}{1+ ( \frac{1}{\theta^*})^2} \\
+    &  =  \frac{- \theta^*}{(1+\theta^{*^2})}
+\end{align}
+
+##
+
+por lo tanto, se puede ver que para todo proceso no-invertible corresponde un proceso invertible con el mismo coeficiente de auto-correlación
+
+
+## Invertibilidad AR(1)
+
+##
+
+Noten que podemos escribir el modelo AR(1) en términos de rezagos del proceso de innovación,
+
+\begin{align}
+    x_t & = \phi x_{t-1} + \varepsilon_t \\
+        & = \phi (\phi x_{t-2} + \varepsilon_{t-1}) + \varepsilon_t \\
+        & \vdots \\
+        & = \phi^n x_{t-n} + \sum_{j=0}^n \phi^j  \varepsilon_{t-j}
+\end{align}
+
+Si, $|\phi| <1$ podemos escribir $x_t$ como un proceso $MA(\infty)$. En general, para los modelos AR estacionariedad implica invertibilidad  
+
+
+# MA(q)
+
+#
 
 Ahora generalizamos para el caso con $q$ rezagos. Definimos el proceso MA(q) como,
 
@@ -656,115 +691,91 @@ Ahora generalizamos para el caso con $q$ rezagos. Definimos el proceso MA(q) com
 
 usando el operador de rezagos $x_t = (1-\theta_1 L - \theta_2 L^2 - \dots - \theta_q) \varepsilon_{t}$
 
-\end{frame}
+#
 
-\begin{frame}{MA(q)}
 Calculamos la esperanza de este proceso,
 
-\begin{align*}
+\begin{align}
     E[x_t] & = E[\varepsilon_t - \theta_1 \varepsilon_{t-1} - \theta_2 \varepsilon_{t-2} - \dots - \theta_q \varepsilon_{t-q}] \\
     E[x_t] & = E[\varepsilon_t] - \theta E[\varepsilon_{t-1}] - \theta_2 E[\varepsilon_{t-2}] - \dots - \theta_q E[\varepsilon_{t-q}] \\
     E[x_t] & = 0
-\end{align*}
+\end{align}
 
-\end{frame}
-
-\begin{frame}{MA(q)}
+#
 
 Y la varianza
 
-\begin{align*}
+\begin{align}
     \gamma_0 & = E[x_t x_t] \\
-             &  = E[(\varepsilon_t - \theta_1 \varepsilon_{t-1} - \theta_2 \varepsilon_{t-2} \dots - \theta_q \varepsilon_{t-q})^2] \\
-\visible<2->{  &  \text{Dado que la esperanza de todos los términos cruzados es cero,} } \\
-\visible<3->{    & = \sigma^2 + \theta_1^2 \sigma^2 + \theta_2^2 \sigma^2 + \dots + \theta_q^2 \sigma^2 \\
-                & = \sigma^2 (1+\theta_1^2 + \theta_2^2 + \dots + \theta_q^2) }
-\end{align*}
-    
-\end{frame}
+             &  = E[(\varepsilon_t - \theta_1 \varepsilon_{t-1} - \theta_2 \varepsilon_{t-2} \dots - \theta_q \varepsilon_{t-q})^2] \\ \\
+   & = \sigma^2 + \theta_1^2 \sigma^2 + \theta_2^2 \sigma^2 + \dots + \theta_q^2 \sigma^2 \\
+                & = \sigma^2 (1+\theta_1^2 + \theta_2^2 + \dots + \theta_q^2)
+\end{align}
 
-\begin{frame}{MA(q)}
+#
 
 Ahora, estimamos la auto-covarianza $\gamma_j$ del proceso,
 
-\begin{align*}
+\begin{align}
     \gamma_j & = E[x_t x_{t-j}] \\
              & = E[(\varepsilon_t - \theta_1 \varepsilon_{t-1} - \theta_2 \varepsilon_{t-2} - \dots - \theta_q \varepsilon_{t-q}) \\
             & (\varepsilon_{t-j} - \theta_1 \varepsilon_{t-j-1} - \theta_2 \varepsilon_{t-j-2} - \dots - \theta_q \varepsilon_{t-j-q})] \\
-\end{align*}    
-    
-\end{frame}
+\end{align}    
 
-\begin{frame}{MA(q)}
+#
 
 Veamos para el caso de $\gamma_1$,
 
-\begin{align*}
+\begin{align}
      \gamma_1  & = E[(\varepsilon_t - \theta_1 \varepsilon_{t-1} - \theta_2 \varepsilon_{t-2} - \dots - \theta_q \varepsilon_{t-q}) \\
             & (\varepsilon_{t-1} - \theta_1 \varepsilon_{t-2}  - \theta_2 \varepsilon_{t-3} - \dots - \theta_q \varepsilon_{t-q-1})] \\
-\end{align*}
+\end{align}
     
-\visible<2->{Sabemos que la esperanza de los términos $\varepsilon$ que no estén en el mismo periodo es 0. Entonces, en este caso obtendríamos,
+Sabemos que la esperanza de los términos $\varepsilon$ que no estén en el mismo periodo es 0. Entonces, en este caso obtendríamos,
 
-\begin{align*}
+\begin{align}
      \gamma_1  & = - \theta_1 \sigma^2 +  \theta_1\theta_2 \sigma^2 + \dots +   \theta_{q-1}\theta_q \sigma^2 \\
-\end{align*}
-}    
-\end{frame}
+\end{align}
 
-\begin{frame}{MA(q)}
+#
 
 Ahora para $\gamma_2$,
 
-\begin{align*}
+\begin{align}
      \gamma_2  & = E[(\varepsilon_t - \theta_1 \varepsilon_{t-1} - \theta_2 \varepsilon_{t-2} - \dots - \theta_q \varepsilon_{t-q}) \\
             & (\varepsilon_{t-2} - \theta_1 \varepsilon_{t-3}  - \theta_2 \varepsilon_{t-4} - \dots - \theta_q \varepsilon_{t-q-2})] \\
-\end{align*}
+\end{align}
     
-\visible<2->{Entonces, en este caso obtendríamos,
+Entonces, en este caso obtendríamos,
 
-\begin{align*}
+\begin{align}
      \gamma_2  & = - \theta_2 \sigma^2 +  \theta_1\theta_3 \sigma^2 + \dots +  \theta_{q-2}\theta_q \sigma^2 \\
-\end{align*}
-}    
-\end{frame}
+\end{align}
+ 
+#
 
-\begin{frame}{MA(q)}
+Para el caso donde $1 \leq j \leq q$
 
-Ahora para el caso general donde $1 \leq j \leq q$
-
-\begin{align*}
+\begin{align}
      \gamma_j  & = (-\theta_j + \theta_1 \theta_{j+1} + \theta_2 \theta_{j+2} + \dots + \theta_{q-j} \theta_q) \sigma^2
-\end{align*}
+\end{align}
     
 Y $\gamma_j=0$ para $j>q$
-\end{frame}
 
-\begin{frame}{MA(q)}
 
-Ahora para el caso general donde $1 \leq j \leq q$
+#
 
-\begin{align*}
-     \gamma_j  & = (-\theta_j + \theta_1 \theta_{j+1} + \theta_2 \theta_{j+2} + \dots + \theta_{q-j} \theta_q) \sigma^2
-\end{align*}
-    
-Y $\gamma_j=0$ para $j>q$
-\end{frame}
+Estimamos las auto-correlaciones $\rho_j$,
 
-\begin{frame}{MA(q)}
-
-Ahora, estimamos las auto-correlaciones $\rho_j$,
-
-\begin{align*}
+\begin{align}
     \rho_j & = \frac{\gamma_j}{\gamma_0} \\
            & = \frac{-\theta_j + \theta_1 \theta_{j+1} + \theta_2 \theta_{j+2} + \dots + \theta_{q-j} \theta_q}{1+\theta_1^2 + \theta_2^2 + \dots + \theta_q^2}
- \end{align*}
+ \end{align}
  
  para todo $1 \leq j \leq q$ y $\rho_j=o$ para todo $j>q$ 
-\end{frame}
 
 
-\begin{frame}{MA(q)}\label{inv:maq}
+#
 
 Finalmente para invertibilidad del proceso MA(q) se debe cumplir que las soluciones de la ecuación, 
 
@@ -772,16 +783,11 @@ Finalmente para invertibilidad del proceso MA(q) se debe cumplir que las solucio
     \lambda^q - \theta_1 \lambda^{q-1} - \theta_2 \lambda^{q-2} - \dots - \theta_q = 0  
 \end{equation}
 
-caigan dentro del circulo de unidad. Este problema es equivalente al que realizamos para encontrar la estacionariedad del proceso AR(p). \hyperlink{inv:ar1}{\beamergotobutton{Invertibilidad}}
+caigan dentro del circulo de unidad. Este problema es equivalente al que realizamos para encontrar la estacionariedad del proceso AR(p). \frame{\tableofcontents[currentsection]}
 
+# ARMA(p,q)
 
-\end{frame}
-
-
-\section{Modelos ARMA}
-\frame{\tableofcontents[currentsection]}
-
-\begin{frame}{ARMA(p,q)}
+#
 
 Definimos el proceso ARMA(p,q) como,
 
@@ -791,84 +797,65 @@ Definimos el proceso ARMA(p,q) como,
 
 o usando el operado de rezagos $\phi(L)x_t = \theta(L)\varepsilon_t$
 
-    
-\end{frame}
-
-\begin{frame}{ARMA(p,q)}
+#
 
 El proceso es estacionario si las soluciones para $\lambda$ de la ecuación $\lambda^p + \phi_1 \lambda^{p-1} + \dots + \phi_p = 0 $ caen dentro del circulo de unidad y bajo este supuesto es fácil ver que para nuestro modelo 
 
-\begin{align*}
+\begin{align}
     E[x_t] & = 0
-\end{align*}
+\end{align}
 
-
-    
-\end{frame}
-
-
-\begin{frame}{ARMA(p,q)}
+#
 
 Y la varianza,
 
-\begin{align*}
+\begin{align}
     \gamma_0 & = E[x_t^2] \\
             & = E[(\phi_1 x_{t-1} + \phi_2 x_{t-2} + \dots +  \phi_p x_{t-p} + \varepsilon_t - \theta_1 \varepsilon_{t-1} - \\
             & \theta_2 \varepsilon_{t-2} - \dots - \theta_q\varepsilon_{t-q} )^2] \\ 
            & = \phi_1^2 E[x_{t-1}^2] + \phi_2^2 E[x_{t-2}^2] + \dots + E[\varepsilon_t^2] + \theta^2 E[\varepsilon_{t-1}^2] + \dots  \\
            & + 2 \phi E[x_{t-1}\varepsilon_t]  - 2 \theta \phi  E[x_{t-1}\varepsilon_{t-1}] - 2 \theta E[\varepsilon_t \varepsilon_{t-1}] + \dots \\
           & - 2 \phi_p \theta_q E[x_{t-p}\varepsilon_{t-q}]
-\end{align*}
+\end{align}
 
-\end{frame}
-
-\begin{frame}{ARMA(p,q)}
+#
 
 Bajo el supuesto de estacionariedad, y sabiendo que $E[x_t\varepsilon_t] = \sigma^2$, obtenemos 
 
-\begin{align*}
+\begin{align}
     \gamma_0 &  = \phi_1^2 \gamma_0 + \phi_2^2 \gamma_0 + \dots + \sigma^2 + \theta_1^2 \sigma^2 + \dots \\
     & - 2 \theta_1 \phi_1 \sigma^2 - \dots - \phi_j \theta_j \sigma^2  \\
 \gamma_0 & = \frac{(1+\theta_1^2 + \dots + \theta_q^2 - 2 \theta_1 \phi_1 - \dots - 2 \theta_i \phi_i) \sigma^2}{1-\phi_1^2 - \dots - \phi_p^2}
-\end{align*}
+\end{align}
 
-donde $i = Min(p,q)$
 
-\end{frame}
-
-\begin{frame}{ARMA(p,q)}
+#
 
 Para las auto-covarianzas tenemos,
-\begin{align*}
+\begin{align}
 \gamma_j & = E[x_t x_{t-j}] \\
          & = \phi_1 E[x_{t-1} x_{t-j}] + \phi_2 E[x_{t-2} x_{t-j}] + \dots + E[\varepsilon_t  x_{t-j}] \\
          & - \theta_1 E[\varepsilon_{t-1} x_{t-j}] - \dots - \theta_q E[\varepsilon_{t-q} x_{t-j}]  \\
-\visible<2->{         & = \phi_1 \gamma_{j-1} + \dots + \phi_p \gamma_{j-p} + E[\varepsilon_t  x_{t-j}] \\
+         & = \phi_1 \gamma_{j-1} + \dots + \phi_p \gamma_{j-p} + E[\varepsilon_t  x_{t-j}] \\
          & - \theta_1 E[\varepsilon_{t-1} x_{t-j}] - \dots - \theta_q E[\varepsilon_{t-q} x_{t-j}] }
-\end{align*}
+\end{align}
 
-\end{frame}
-
-
-
-\begin{frame}{ARMA(p,q)}
+#
 
 para $\gamma_j$ donde $1 \leq j \leq q$ sería,
 
-\begin{align*}
+\begin{align}
 \gamma_j & = \phi_1 \gamma_{j-1} + \dots + \phi_p \gamma_{j-p}  \\
          & - \theta_1 E[\varepsilon_{t-1} x_{t-j}] - \dots - \theta_q E[\varepsilon_{t-q} x_{t-j}]
-\end{align*}
+\end{align}
 
-\visible<2->{Y para $j>q$ obtenemos
-\begin{align*}
+Y para $j>q$ obtenemos
+
+\begin{align}
 \gamma_j & = \phi_1 \gamma_{j-1} + \dots + \phi_p \gamma_{j-p} 
-\end{align*}
+\end{align}
 
-}
-\end{frame}
-
-\begin{frame}{ARMA(p,q)}
+#
 
 Por lo tanto la auto-correlación para $1 \leq j \leq q$ sería,
 
@@ -877,17 +864,13 @@ Por lo tanto la auto-correlación para $1 \leq j \leq q$ sería,
          & + \frac{- \theta_1 E[\varepsilon_{t-1} x_{t-j}] - \dots - \theta_q E[\varepsilon_{t-q} x_{t-j}]}{\gamma_0}
 \end{align}
 
-\visible<2->{y para $j>q$
+y para $j>q$
 
 \begin{align*}
     \rho_j & =\phi_1 \rho_{j-1} + \dots + \phi_p \rho_{j-p} 
 \end{align*}
-}
 
-\end{frame}
-
-
-\begin{frame}{ARMA(p,q)}
+#
 
 En los modelos ARMA(p,q) es conveniente factorizar las raíces de la parte autorregresiva y la parte de medias moviles, 
 
@@ -895,31 +878,14 @@ En los modelos ARMA(p,q) es conveniente factorizar las raíces de la parte autor
     \lambda^p + \phi_1 \lambda^{p-1} + \dots + \phi_p = 0
 \end{equation}
 
-\visible<2->{y,
+y,
 
 \begin{equation}
     \delta^q + \theta_1 \delta^{q-1} + \dots + \theta_q = 0
 \end{equation}
-}
-\end{frame}
 
-\begin{frame}{ARMA(p,q)}
 
-En los modelos ARMA(p,q) es conveniente factorizar las raíces de la parte autorregresiva y la parte de medias moviles, 
-
-\begin{equation}
-    \lambda^p + \phi_1 \lambda^{p-1} + \dots + \phi_p = 0
-\end{equation}
-
-\visible<2->{y,
-
-\begin{equation}
-    \delta^q + \theta_1 \delta^{q-1} + \dots + \theta_q = 0
-\end{equation}
-}
-\end{frame}
-
-\begin{frame}{ARMA(p,q)}
+#
 
 Por lo tanto el ARMA(p,q) se puede expresar como,
 
@@ -927,15 +893,13 @@ Por lo tanto el ARMA(p,q) se puede expresar como,
     (1-\lambda_1 L) (1-\lambda_2 L) \dots (1-\lambda_p L) x_t = (1-\delta_1 L) (1-\delta_2 L) \dots (1-\delta_q L) \varepsilon_t
 \end{equation}
 
-\visible<2->{Si existen dos raíces iguales, digamos $\lambda_1 = \delta_q$ podemos expresar el procesos como un ARMA(p-1,q-1),
+Si existen dos raíces iguales, digamos $\lambda_1 = \delta_q$ podemos expresar el procesos como un ARMA(p-1,q-1),
 
 \begin{equation}
      (1-\lambda_2 L) \dots (1-\lambda_p L) x_t = (1-\delta_1 L) (1-\delta_2 L) \dots (1-\delta_{q-1} L) \varepsilon_t
 \end{equation}
-}
-\end{frame}
 
-\begin{frame}{ARMA(p,q)}
+#
 
 Finalmente, para invertibilidad noten que el proceso se puede escribir como MA($\infty$) o AR($\infty$), lo podemos reescribir como
 
@@ -943,91 +907,17 @@ Finalmente, para invertibilidad noten que el proceso se puede escribir como MA($
     x_t = \frac{\theta(L)}{\phi(L)} \varepsilon_t
 \end{equation}
 
-Para escribir el proceso como un MA($\infty$) necesitamos entonces que $|\phi| < 1$, y de la misma forma para un AR($\infty$) se puede ver que $|\theta| < 1$
-
-\end{frame}
 
 
-\begin{frame}{ARIMA(p,d,q)}\label{arima}
+# ARIMA(p,d,q)
+
+#
 
 A un proceso integrado $x_t$ se le denomina como ARIMA(p,d,q), si aplicando primeras diferencias $d$ veces se obtiene un un proceso estacionario $w_t$ del tipo ARMA(p,q). Este se define como,
 
-\begin{align*}
+\begin{align}
     (1-\phi_1 L - \dots - \phi_p L^p) w_t & = (1-\theta_1 L - \dots - \theta_q L^q) \varepsilon_t \\
     (1-\phi_1 L - \dots - \phi_p L^p) (1 - L)^d x_t & = (1-\theta_1 L - \dots - \theta_q L^q) \varepsilon_t
-\end{align*}
+\end{align}
 
-\visible<2->{O usando el operado de rezagos, $\phi(L)(1-L)^dx_t = \theta(L)\varepsilon_t $}
-\end{frame}
-
-
-\appendix
-
-\begin{frame}
-
-\end{frame}
-
-
-\begin{frame}{Prueba No correlación}
-\label{prueba:LIE}
-\begin{align*}
-    E[\varepsilon_t x_{t-j}] & = E[E(\varepsilon_t x_{t-j} | \mathcal{E}_{t-1})]  \\
-             & = E[E(\varepsilon_t | \mathcal{E}_{t-1}) x_{t-j}] \\
-             & = 0
-\end{align*}
-
-para todo $j>0$.       \hyperlink{var:ar1}{\beamergotobutton{Volver}} 
-
-\end{frame}
-
-
-\begin{frame}{Solución operador de rezagos}\label{sol:L}
-    
-La ecuación del operador de rezagos \ref{eq:Lar2} es el reciproco de la ecuación en función de $\lambda$, por lo cual en varios textos encontraran que se refiere a la estacionariedad como las soluciones $L_1, L_2$ caen fuera del circulo de unidad. Esta implicación es idéntica a lo que expuesto en la diapositiva anterior
-
-\hyperlink{sol:lambda}{\beamergotobutton{Volver}} 
-
-
-\end{frame}
-
-
-\begin{frame}{Invertibilidad MA(1)}\label{inver:ma1}
-
-Noten que la invertibilidad tiene otras implicaciones, asumamos un valor $\theta^* > 1$ de forma tal que el proceso es no-invertible, la auto-correlación sería 
-\begin{align*}
-  \rho_1 & = \frac{- \theta^* }{ (1+\theta^{*^2})} 
-\end{align*}
-
-\end{frame}
-
-\begin{frame}{Invertibilidad MA(1)}
-ahora, si tomamos $\theta^{**} = \frac{1}{\theta^*}$ este es un proceso invertible y la auto-correlación sería
-
-\begin{align*}
-  \rho_1 & = \frac{- \theta^{**} }{ (1+\theta^{**^2})} \\
-         & = \frac{- \frac{1}{\theta^*} }{1+\left(\frac{1}{\theta^*}\right)^2} \\
-\visible<2->{         & = \frac{- \frac{1}{\theta^*} }{\frac{\theta^{*^2}+1}{\theta^{*^2}}} } \\
-\visible<3->{       &  =  \frac{- \theta^* }{ (1+\theta^{*^2})} }
-\end{align*}
-
-\visible<3->{ por lo tanto, se puede ver que para todo proceso no-invertible corresponde un proceso invertible con el mismo coeficiente de auto-correlación}
-\end{frame}
-
-
-\begin{frame}{Invertibilidad AR(1)}\label{inv:ar1}
-
-Noten que podemos escribir el modelo AR(1) en términos de rezagos del proceso de innovación,
-
-\begin{align*}
-    x_t & = \phi x_{t-1} + \varepsilon_t \\
-        & = \phi (\phi x_{t-2} + \varepsilon_{t-1}) + \varepsilon_t \\
-        & \vdots \\
-        & = \phi^n x_{t-n} + \sum_{j=0}^n \phi^j  \varepsilon_{t-j}
-\end{align*}
-
-Si, $|\phi| <1$ podemos escribir $x_t$ como un proceso $MA(\infty)$. En general, para los modelos AR estacionariedad implica invertibilidad  \hyperlink{inv:maq}{\beamergotobutton{Volver}}  
-\end{frame}
-
-
-
-\end{document}
+O usando el operado de rezagos, $\phi(L)(1-L)^dx_t = \theta(L)\varepsilon_t $
