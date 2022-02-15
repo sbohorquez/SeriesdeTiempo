@@ -799,7 +799,7 @@ o usando el operado de rezagos $\phi(L)x_t = \theta(L)\varepsilon_t$
 
 #
 
-El proceso es estacionario si las soluciones para $\lambda$ de la ecuación $\lambda^p + \phi_1 \lambda^{p-1} + \dots + \phi_p = 0 $ caen dentro del circulo de unidad y bajo este supuesto es fácil ver que para nuestro modelo 
+El proceso es estacionario si las soluciones para $\lambda$ de la ecuación $\lambda^p + \phi_1 \lambda^{p-1} + \dots + \phi_p = 0$ caen dentro del circulo de unidad y bajo este supuesto es fácil ver que para nuestro modelo 
 
 \begin{align}
     E[x_t] & = 0
@@ -837,7 +837,7 @@ Para las auto-covarianzas tenemos,
          & = \phi_1 E[x_{t-1} x_{t-j}] + \phi_2 E[x_{t-2} x_{t-j}] + \dots + E[\varepsilon_t  x_{t-j}] \\
          & - \theta_1 E[\varepsilon_{t-1} x_{t-j}] - \dots - \theta_q E[\varepsilon_{t-q} x_{t-j}]  \\
          & = \phi_1 \gamma_{j-1} + \dots + \phi_p \gamma_{j-p} + E[\varepsilon_t  x_{t-j}] \\
-         & - \theta_1 E[\varepsilon_{t-1} x_{t-j}] - \dots - \theta_q E[\varepsilon_{t-q} x_{t-j}] }
+         & - \theta_1 E[\varepsilon_{t-1} x_{t-j}] - \dots - \theta_q E[\varepsilon_{t-q} x_{t-j}]
 \end{align}
 
 #
@@ -920,4 +920,4 @@ A un proceso integrado $x_t$ se le denomina como ARIMA(p,d,q), si aplicando prim
     (1-\phi_1 L - \dots - \phi_p L^p) (1 - L)^d x_t & = (1-\theta_1 L - \dots - \theta_q L^q) \varepsilon_t
 \end{align}
 
-O usando el operado de rezagos, $\phi(L)(1-L)^dx_t = \theta(L)\varepsilon_t $
+O usando el operado de rezagos, $\phi(L)(1-L)^dx_t = \theta(L)\varepsilon_t$
