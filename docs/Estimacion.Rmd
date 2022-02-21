@@ -1,0 +1,638 @@
+---
+title: "Estimación"
+author: |
+        | Santiago Bohorquez Correa
+        |
+        | Universidad EAFIT
+        | Escuela de Economía y Finanzas
+output:
+  revealjs::revealjs_presentation:
+    css: EAFIT.css
+    highlight: pygments
+    center: true
+    transition: slide
+---
+
+#
+
+Para la estimación del modelo trabajaremos siempre con la serie estacionaria, es decir el primer paso siempre sera diferenciar en caso de ser necesario, así:
+
+\begin{equation}
+    w_t = (1 - L)^d x_t^{\lambda}
+\end{equation}
+    
+#
+
+Y hacemos los siguientes supuestos para la estimación:
+
+\begin{align}
+    \varepsilon_t & \sim N(0, \sigma^2 I) \\
+    w_t & \text{ es estacionario} \\
+    w_t & \text{ es invertible} \\
+    \hat{\beta} & = (\phi_1, \phi_2, \dots , \phi_p ; \theta_1, \theta_2, \dots , \theta_q )
+\end{align}
+
+#
+
+Podemos adoptar el enfoque de mínimos cuadrados usando:
+
+\begin{equation}
+    S = \sum \varepsilon_t^2
+\end{equation}
+
+y $\varepsilon_t = w_t - \phi_1 w_{t-1} - \phi_2 w_{t-2} - \dots -  \phi_p w_{t-p} + \theta_1 \varepsilon_{t-1} +\theta_2 \varepsilon_{t-2}$ $+ \dots + \theta_q \varepsilon_{t-q}$
+
+#
+
+Si se tiene una muestra $n$ del proceso $w_t$, es necesario hacer supuestos sobre el comportamiento de los valores iniciales. Veamos en el caso de $t=1$ tendríamos
+
+\begin{align}
+    \varepsilon_t & = w_t - \phi_1 w_{0} - \phi_2 w_{-1} - \dots -  \phi_p w_{-p+1} + \theta_1 \varepsilon_{0} \\
+    & +\theta_2 \varepsilon_{-1} + \dots + \theta_q \varepsilon_{-q+1}
+\end{align}
+
+Los valores $w_{0}, w_{-1},\dots,w_{-p+1}$ y $\varepsilon_{0},\varepsilon_{-1},\dots,\varepsilon_{-q+1}$ son desconocidos
+
+#
+
+Estos valores constituyen las condiciones iniciales,
+
+\begin{align}
+    w^0 & = (w_{0}, w_{-1},\dots,w_{-p+1}) \\
+    \varepsilon^0 & = (\varepsilon_{0},\varepsilon_{-1},\dots,\varepsilon_{-q+1})
+\end{align}
+
+Dependiendo de como tratemos estos valores iniciales en muestra minimización nos referiremos al enfoque condicional o no condicional.
+
+#
+
+Otra consideración que debemos tener en cuenta para nuestra estimación es que cuando $q\geq 0$ usando el operador de rezagos podemos ver que el modelo se puede escribir como,
+
+\begin{equation}
+    \varepsilon_t = \frac{\phi(L)}{\theta(L)} w_t
+\end{equation}
+
+Esto hace que el modelo sea no lineal en los parámetros por lo cual no se pueden lograr soluciones analíticas y se debe recurrir a métodos numéricos.
+
+# Estimación condicional
+
+#
+
+Primero, veremos como estimar un modelo AR(p) sin componentes MA. Sea el modelo AR(p)
+
+\begin{equation}
+    w_t = \phi_1 w_{t-1} + \phi_2 w_{t-2} + \dots + \phi_p w_{t-p} + \varepsilon_t
+\end{equation}
+
+Si el proceso es estacionario entonces, $E[w_t] = E[w_{t-1}]=\dots=E[w_{t-p}]=\mu_w$, que por simplificación asumimos que es cero
+
+#
+
+Una solución entonces al problema de valores iniciales es suponer que son iguales a su media, es decir,
+
+\begin{equation*}
+    w_{0}= w_{-1}=\dots=w_{-p+1}=0
+\end{equation*}
+
+Sin embargo, esta solución puede ser inadecuada en muchos casos ya que el valor de la serie puede estar alejado del valor teórico de la serie. 
+
+#
+
+Para evitar este problema, otra solución al problema de valores iniciales es dividir la muestra en dos, la primera conocida como pre-muestra se utiliza para la determinación de los valores iniciales y la segunda parte se utiliza ara la estimación, así
+
+\begin{align*}
+    w^0 & = (w_{0}, w_{-1},\dots,w_{-p+1}) \\
+    w & = (w_{1}, w_{2},\dots,w_{T})
+\end{align*}
+
+#
+
+Teniendo en cuenta ambas posibilidades podemos escribir el problema de minimización como,
+
+\begin{equation}
+    S = \sum_{t=m}^T \varepsilon_t^2 = \sum_{t=m}^T  (w_t - \phi_1 w_{t-1} - \phi_2 w_{t-2} - \dots -  \phi_p w_{t-p})^2
+\end{equation}
+
+donde, $m=1$ si se hace $w_{0}= w_{-1}=\dots=w_{-p+1}=\mu_w = 0$ y $m=p+1$ si se toma $w^0$ como valores iniciales.
+
+#
+
+La minimización de $S$ es idéntica al caso de MCO, por lo tanto:
+
+\begin{equation}
+    \hat{\beta} = \begin{bmatrix}
+    \hat{\phi}_1 \\
+    \hat{\phi}_2 \\
+    \vdots \\
+    \hat{\phi}_p
+    \end{bmatrix} = (Z'Z)^{-1} Z' W
+\end{equation}
+
+#
+
+siendo,
+
+\begin{align*}
+W & = \begin{bmatrix}
+w_m \\
+w_{m+1} \\
+\vdots\\
+w_T
+\end{bmatrix}, & Z & = \begin{bmatrix}
+w_{m-1} & w_{m-2} & \dots &  w_{m-p} \\
+w_{m} & w_{m-1} & \dots &  w_{m-p+1} \\
+\vdots & \vdots & \ddots & \vdots \\
+w_{T-1} & w_{T-2} & \dots &  w_{T-p} \\
+\end{bmatrix}    
+\end{align*}
+
+#
+
+Ahora para el modelo MA(q), mostraremos la estimación del modelo MA(1) y con esto se mostraran los problemas de estimación de este tipo de modelos. Sea
+
+\begin{equation}
+   \varepsilon_t = w_t + \theta_1 \varepsilon_{t-1} 
+\end{equation}
+
+En este tipo de modelos el problema de valores iniciales no es tan importante ya que por hipótesis los $\varepsilon_t$ no están correlacionados, por lo cual asumir $\varepsilon_0  = 0$ es razonable
+
+#
+
+Fijado este valor, debemos expresar el modelo en función de la variable observable, $w_t$, el parámetro $\theta_1$ y $\varepsilon_0$, haciendo sustituciones sucesivas obtenemos:
+
+\begin{align*}
+    \varepsilon_t & = w_t + \theta_1 \varepsilon_{t-1} \\
+                  & = w_t + \theta_1 w_{t-1} + \theta_1 \varepsilon_{t-2} \\
+                  & \vdots \\
+                  & = w_t + \theta_1 w_{t-1} + \theta_1^2 w_{t-2}+ \dots  + \theta_1^{t-1} w_1 + \theta_1^{t} \varepsilon_{0}
+\end{align*}
+
+de donde se puede observar que $\varepsilon_t$ no es una función lineal de $\theta_1$   
+
+
+#
+
+Por lo tanto necesitamos expresar $\varepsilon_t$ en función del $\theta_1$
+
+\begin{equation}
+    \varepsilon_t = f(\theta_1)
+\end{equation}
+
+y aplicar una expansión de Taylor en torno a un valor $\theta_1^0$, tomando los dos primeros valores de esta expresión, obtenemos:
+
+\begin{equation}
+    \varepsilon_t \simeq  \varepsilon_t^0 + (\theta_1 - \theta_1^0) \left( \frac{\partial \varepsilon_t}{\partial \theta_1} \right)_{\theta_1 = \theta_0}
+\end{equation}
+
+
+#
+
+Podemos encontrar esta ultima derivada en forma analítica o numérica, de forma analítica tenemos,
+
+\begin{equation}
+    \frac{\partial \varepsilon_t}{\partial \theta_1} = \theta_1 \frac{\partial \varepsilon_{t-1}}{\partial \theta_1} + \varepsilon_{t-1}
+\end{equation}
+
+Tendríamos entonces que hacer este calculo de forma recursiva, sustituyendo $\theta_1$ por $\theta_1^0$  hasta que lleguemos a $\frac{\partial \varepsilon_0}{\partial \theta_1} = 0$ ya que asumimos que $\varepsilon_0 =0$.
+
+#
+
+De forma numérica, aplicamos el concepto de derivada como incrementos finitos, así
+
+\begin{equation}
+    \frac{\partial \varepsilon_t}{\partial \theta_1} = \frac{w_t + (\theta_1^0 + h) \varepsilon_{t-1} - (w_t + \theta_1^0 \varepsilon_{t-1}) }{h} 
+\end{equation}
+
+donde $h$ es un numero arbitrariamente pequeño.
+
+#
+
+Si definimos,
+
+\begin{equation}
+    z_t^0 = - \left( \frac{\partial \varepsilon_t}{\partial \theta_1} \right)_{\theta_1 = \theta_0}
+\end{equation}
+
+
+#
+
+Y consideramos la aproximación lineal definida previamente
+
+\begin{equation}
+    \varepsilon_t^0 =  (\theta_1 - \theta_1^0) z_t^0 + \varepsilon_t
+\end{equation}
+
+
+#
+
+Calculamos la regresión $\varepsilon_t^0$ sobre $z_t^0$ obtendríamos el estimador,
+
+\begin{equation}
+\widehat{(\theta_1 - \theta_1^0)}  = \frac{\sum \varepsilon_t^0 z_t^0}{\sum (z_t^0)^2}  
+\end{equation}
+
+Con esto obtenemos una aproximación al valor $\hat{\theta_1}$ óptimo. De ahí en adelante lo que necesitamos es iterar hasta que logremos convergencia. 
+
+#
+
+Esto se logra, haciendo
+
+\begin{equation}
+    \theta_1^h = \theta_1^{h-1} + \widehat{(\theta_1 - \theta_1^0)}
+\end{equation}
+
+Y definiendo un criterio de convergencia,
+
+\begin{equation}
+   | \theta_1^h - \theta_1^{h-1} | < r
+\end{equation}
+
+#
+
+Ahora para el proceso ARMA(p,q)
+\begin{align}
+    w_t & = \phi_1 w_{t-1} + \phi_2 w_{t-2} + \dots +  \phi_p w_{t-p} + \varepsilon_t \\
+    & - \theta_1 \varepsilon_{t-1} - \theta_2 \varepsilon_{t-2} - \dots - \theta_q\varepsilon_{t-q} 
+\end{align}
+
+podemos generalizar el algoritmo que usamos para el MA. 
+
+#
+
+Tomando el $\hat{\beta}$ definido anteriormente y usando la aproximación de Taylor, tenemos
+
+\begin{equation}
+    \varepsilon_t \simeq  \varepsilon_t^0 - \sum_{i=1}^{p+q} (\beta_i - \beta_i^0) Z_{ti}^0 
+\end{equation}
+
+donde
+
+\begin{equation}
+    Z_{ti}^0 = \left( \frac{\partial \varepsilon_t}{\partial \beta_i} \right)_{\beta_i = \beta_i^0}
+\end{equation}
+
+#
+
+Si escribimos,
+
+\begin{equation}
+    Z^0 =  \begin{bmatrix}
+    Z_{11}^0 & Z_{12}^0 & \dots & Z_{1p+q}^0 \\
+    Z_{21}^0 & Z_{22}^0 & \dots & Z_{2p+q}^0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    Z_{T1}^0 & Z_{T2}^0 & \dots & Z_{Tp+q}^0
+    \end{bmatrix}
+\end{equation}
+
+#
+
+Podemos expresar la ecuación de Taylor como,
+
+\begin{equation}
+ \varepsilon^0 = Z^0[\beta - \beta^0] + \varepsilon 
+\end{equation}
+
+donde $\varepsilon^0$ y $\varepsilon$ son vectores de T elementos
+
+#
+
+La estimación por mínimos cuadrados sería,
+
+\begin{equation}
+\widehat{\beta - \beta^0}  = (Z^{0'}Z^0)^{-1}Z^{0'}\varepsilon^0
+\end{equation}
+
+y el mecanismo de actualización sería,
+
+\begin{equation}
+\beta^h = \beta^{h-1} + [\widehat{\beta - \beta^{h-1}}] 
+\end{equation}
+
+y la convergencia se daría cuando  $|| \beta^h - \beta^{h-1} || < r$
+
+#
+
+Finalmente, podemos usar la iteración final (H) para estimar la matriz de varianzas y covarianzas con la finalidad de hacer tests estadísticos, 
+
+\begin{equation}
+    V = s^2[X^{H'}X^{H}]^{-1}
+\end{equation}
+
+donde
+
+\begin{equation}
+    s^2 =  \frac{\varepsilon^{H'}\varepsilon^H}{T-p-q}
+\end{equation}
+
+#
+
+Ahora, miremos la estimación condicional bajo máxima verosimilitud.
+
+bajo el supuesto de $\varepsilon_t \sim N(0, \sigma^2 I)$ la función de densidad de $\varepsilon_t$ es,
+
+\begin{align}
+    f(\varepsilon_t | \sigma^2_{\varepsilon}, \beta, w^0, \varepsilon^0) &  = 
+    (2\pi)^{-0.5} (\sigma^2_{\varepsilon})^{-0.5} {\rm e}^{-\frac{1}{2\sigma^2_{\varepsilon}}\varepsilon_t^2} \\
+    & = (2\pi)^{-0.5} (\sigma^2_{\varepsilon})^{-0.5} {\rm e}^{-\frac{1}{2\sigma^2_{\varepsilon}}(w_t - \dots -  \phi_p w_{t-p} + \theta_1 \varepsilon_{t-1} + \dots + \theta_q\varepsilon_{t-q})^2} \nonumber
+\end{align}
+
+#
+
+La función de densidad conjunta de $\varepsilon_1,\varepsilon_2,\dots,\varepsilon_T$ sera igual al producto de las funciones de densidad marginales, ya que por hipótesis no tiene auto-correlación, por lo tanto:
+
+\begin{align}
+    f(\varepsilon_t | \sigma^2_{\varepsilon}, \beta, w^0, \varepsilon^0) &  = 
+    (2\pi)^{\frac{-T}{2}} (\sigma^2_{\varepsilon})^{\frac{-T}{2}} {\rm e}^{-\frac{1}{2\sigma^2_{\varepsilon}}\sum \varepsilon_t^2} \\
+    & = (2\pi)^{\frac{-T}{2}} (\sigma^2_{\varepsilon})^{\frac{-T}{2}} {\rm e}^{-\frac{1}{2\sigma^2_{\varepsilon}}\sum (w_t - \dots -  \phi_p w_{t-p} + \theta_1 \varepsilon_{t-1} + \dots + \theta_q\varepsilon_{t-q})^2} \nonumber
+\end{align}
+
+#
+
+<ul>
+<li> La maximización de esta función con respecto a $\beta$ nos da los estimadores máximo verosímiles.</li> 
+<li> Se puede observar que maximizar la función anterior corresponde a minimizar la sumatoria del exponencial, lo cual coincide con  el estimador de MCO.</li>
+</ul>
+
+# Estimación No Condicional
+
+#
+
+<ul>
+<li> El enfoque no condicional se caracteriza porque los valores iniciales no se consideran como dados.</li>
+<li> En lugar de minimizar $\sum \varepsilon_t^2$, en este enfoque debemos minimizar la suma de los cuadrados de las esperanzas condicionales del proceso de innovación dada la muestra $w_1,w_2,\dots,w_T$</li> 
+
+#
+
+Asumiendo que el proceso se inicia en un pasado remoto, la expresión a minimizar sería:
+
+\begin{equation}
+    S = \sum_{t=-\infty}^T E_c[\varepsilon_t]^2
+\end{equation}
+
+Dado que tenemos un proceso estacionario, las esperanzas condicionales se hacen pequeñas a medida que se alejan del periodo muestral.
+
+#
+
+ En un proceso MA(q) se verifica que $E_c(\varepsilon_t)=0$ para $t < -q+1$
+ 
+Ya que solamente $\varepsilon_{-q+1},\dots,\varepsilon_0,\varepsilon_1,\dots,\varepsilon_T$ son necesarios para la generación de la muestra $w_1,w_2,\dots,w_T$.
+
+En general, consideramos que si $t < -Q + 1$, siendo $Q$ suficientemente grande, entonces $E_c(\varepsilon_t)=0$
+
+#
+
+Así, la suma a minimizar en la practica sería,
+
+\begin{equation}
+    S^* = \sum_{t=-Q+1}^T E_c[\varepsilon_t]^2
+\end{equation}
+
+
+
+#
+
+Veamos como estimar un modelo ARMA(1,1) con la estimación no condicional. Sea el proceso,
+
+\begin{equation}
+    w_t - \phi w_{t-1} = \varepsilon_t - \theta \varepsilon_{t-1}
+\end{equation}
+
+En esta expresión los valores de $w_t$ son determinados por los valores pasados de $w_t$, $\varepsilon_t$ y los valores pasados de $\varepsilon_t$
+
+#
+
+En un proceso estacionario e invertible, se podría imaginar una determinación en sentido inverso, es decir
+
+\begin{equation}
+    w_t - \phi w_{t+1} = \eta_t - \theta \eta_{t+1}
+\end{equation}
+
+donde $\eta_t$ es ruido blanco con la misma varianza que $\varepsilon_t$
+
+#
+
+Tomando esperanzas condicionadas en las dos expresiones anteriores obtenemos,
+
+\begin{align}
+    E_c[w_t] - \phi E_c[w_{t-1}] & = E_c[\varepsilon_t] - \theta E_c[\varepsilon_{t-1}] \\
+    E_c[w_t] - \phi E_c[w_{t+1}] & = E_c[\eta_t] - \theta E_c[\eta_{t+1}]
+\end{align}
+
+Y calculamos la esperanza condicional dados los datos de la muestra, es decir $w_1,w_2,\dots,w_T$
+
+#
+
+Con esto se verifica que, 
+
+\begin{equation}
+       E_c[w_t] = w_t \quad t=1,2,\dots,T
+\end{equation}
+
+También se verifica que, 
+
+\begin{equation}
+    E_c[\varepsilon_{T+j}] = E[\varepsilon_{T+j}] = 0 \quad j=1,2,\dots
+\end{equation}
+
+#
+
+También se verifica que, 
+
+\begin{equation}
+    E_c[\eta_{1-j}] = E[\eta_{1-j}] = 0 \quad j=1,2,\dots
+\end{equation}
+
+#
+
+Haciendo supuestos sobre los valores finales, como hicimos sobre los valores iniciales en el enfoque condicionado, podemos calcular de forma recursiva $E_c[\eta_{T}], E_c[\eta_{T-1}],\dots$. 
+
+Empezando en $t=T$
+
+\begin{equation}
+     E_c[w_T] - \phi E_c[w_{T+1}] = E_c[\eta_T] - \theta E_c[\eta_{T+1}]
+\end{equation}
+
+#
+
+Suponiendo que $E_c[w_{T+1}] = \mu = 0$ y $E_c[\eta_{T+1}]=0$, obtenemos
+
+\begin{equation}
+    E_c[\eta_T] = E_c[w_T] = w_T
+\end{equation}
+
+Y para $t= T-1$, 
+
+\begin{equation}
+      E_c[\eta_{T-1}] = E_c[w_{T-1}] - \phi E_c[w_{T}] + \theta E_c[\eta_{T}] = w_{T-1} -  \phi w_{T} + \theta w_T
+\end{equation}
+
+#
+
+Análogamente calculamos $E_c[\eta_{T-2}],E_c[\eta_{T-3}],\dots$ hasta, 
+
+\begin{equation}
+      E_c[\eta_{1}] = w_{1} -  \phi w_{2} + \theta E_c[\eta_{2}]
+\end{equation}
+
+#
+
+Ahora, dado que $E_c[\eta_{0}]=E_c[\eta_{-1}]=\dots=0$, podemos obtener $E_c[w_{0}],E_c[w_{-1}],\dots$ 
+
+\begin{align}
+    E_c[w_0] & = \phi w_{1} + E_c[\eta_0] - \theta E_c[\eta_{1}] = \phi w_{1} - \theta E_c[\eta_{1}] \\
+    E_c[w_{-1}] & = \phi   E_c[w_0] \\
+    E_c[w_{-2}] & = \phi   E_c[w_{-1}] \\
+    & \vdots 
+\end{align}
+
+Así los valores se irían acercando a cero.
+
+
+
+#
+
+<ul>
+<li> Una vez obtenemos valores suficientemente cercanos a cero, podemos empezar la estimación de los valores $E_c[\varepsilon_{t}]$.</li>
+<li> Estos van a estar en función de la muestra, y de los valores $E_c[w_t]$ obtenidos.</li>
+<li> En consecuencia, podemos evaluar $S^*$ para valores dados de los parámetros.</li>
+</ul>
+
+#
+
+<ul>
+<li> El enfoque por MCO se hará dando unos valores iniciales $\beta^0$.</li>
+<li> Luego la estimación de los parámetros sera análoga a lo visto para la estimación condicional, donde usamos el mecanismo de actualización.</li>
+<li> La diferencia radica en el uso de los $ E_c[\varepsilon_{t}]$ para la estimación no condicional.</li>
+</ul>
+
+#
+
+Ahora veamos como se realiza la estimación no condicional usando el método de Máxima verosimilitud.
+
+Al igual que en el caso de mínimos cuadrados maximizamos desde el inicio del proceso, la función de densidad sigue siendo 
+    \begin{align}
+    f(\varepsilon_t | \sigma^2_{\varepsilon}, \beta) &  = 
+    (2\pi)^{-0.5} (\sigma^2_{\varepsilon})^{-0.5} {\rm e}^{-\frac{1}{2\sigma^2_{\varepsilon}}\varepsilon_t^2} \\
+    & = (2\pi)^{-0.5} (\sigma^2_{\varepsilon})^{-0.5} {\rm e}^{-\frac{1}{2\sigma^2_{\varepsilon}}(w_t - \dots -  \phi_p w_{t-p} + \theta_1 \varepsilon_{t-1} + \dots + \theta_q\varepsilon_{t-q})^2} \nonumber
+\end{align}
+
+#
+
+La función de densidad conjunta de $\dots, \varepsilon_{-1}, \varepsilon_0, \varepsilon_1, \varepsilon_2, \dots, \varepsilon_T$ sera igual al producto de las funciones de densidad marginales, ya que por hipótesis no tiene auto-correlación, por lo tanto:
+
+\begin{align}
+    f(\varepsilon_t | \sigma^2_{\varepsilon}, \beta) &  = 
+    (2\pi)^{\frac{-T}{2}} (\sigma^2_{\varepsilon})^{\frac{-T}{2}} {\rm e}^{-\frac{1}{2\sigma^2_{\varepsilon}}\sum \varepsilon_t^2} \\
+    & = (2\pi)^{\frac{-T}{2}} (\sigma^2_{\varepsilon})^{\frac{-T}{2}} {\rm e}^{-\frac{1}{2\sigma^2_{\varepsilon}}\sum_{t=-\infty}^{T} E_c(w_t - \dots -  \phi_p w_{t-p} + \theta_1 \varepsilon_{t-1} + \dots + \theta_q\varepsilon_{t-q})^2} \nonumber
+\end{align}
+
+#
+
+Y de nuevo bajo el supuesto de estacionariedad sabemos que para un Q suficientemente grande $E_c(\varepsilon_t)=0$ para $t<-Q+1$, por lo tanto:
+
+\begin{align}
+    f(\varepsilon_t | \sigma^2_{\varepsilon}, \beta)
+    & = (2\pi)^{\frac{-T}{2}} (\sigma^2_{\varepsilon})^{\frac{-T}{2}} {\rm e}^{-\frac{1}{2\sigma^2_{\varepsilon}}\sum_{t=-Q+1}^{T} E_c(w_t - \dots -  \phi_p w_{t-p} + \theta_1 \varepsilon_{t-1} + \dots + \theta_q\varepsilon_{t-q})^2} \nonumber
+\end{align}
+
+Lo cual corresponde a minimizar el $S^*$ definido anteriormente. Por lo cual la estimación es similar a la vista para MC
+
+# Verosimilitud exacta
+
+#
+
+Un caso de consideración especial cuando estimamos usando Máxima verosimilitud es el uso de la verosimilitud exacta. 
+
+En esta no ignoramos los primeros valores como en la verosimilitud condicional, sino que calculamos la contribución a la verosimilitud de cada observación.
+
+#
+
+ Para ver esto veamos el caso del AR(2) y con esto podemos generalizar.
+ 
+Podemos escribir los errores de este modelo como,
+
+\begin{equation}
+      \varepsilon_t = w_t - \phi_1 w_{t-1} - \phi_2 w_{t-2}
+\end{equation}
+
+Por lo tanto, las observaciones 3 a T hacen contribuciones a la verosimiltud,
+    \begin{equation}
+        f(\varepsilon_t | \sigma^2_{\varepsilon}, \beta) = (2\pi)^{-0.5} (\sigma^2_{\varepsilon})^{-0.5} {\rm e}^{-\frac{1}{2\sigma^2_{\varepsilon}}(w_t - \phi_1 w_{t-1}  - \phi_2 w_{t-2})^2}
+\end{equation}
+
+#
+
+Para la primera observación la única información que tenemos, gracias a los supuestos de normalidad y estacionariedad es que sigue la misma distribución que el resto de la muestra,
+
+  \begin{equation}
+      w_1 \sim N\left( 0,\sigma_e^2\frac{1 - \phi_2}{(1+\phi_2)[(1-\phi_2)^2-\phi_1^2} \right)
+    \end{equation}
+     
+#
+
+Por construcción, $\varepsilon_1$ tiene la misma distribución que los $\varepsilon_t$ para $t \geq 3$, $\varepsilon_1 \sim N(0, \sigma_{\varepsilon})$, así
+
+\begin{equation}
+  \varepsilon_1 = \left( \frac{(1+\phi_2)[(1-\phi_2)^2-\phi_1^2}{1 - \phi_2} \right)^{\frac{1}{2}} w_1
+    \end{equation}
+    
+Dado que $\varepsilon_t$ es un proceso de innovación, para $t > 1$ $\varepsilon_t$ es independiente de $w_1$ y por consiguiente de $\varepsilon_1$
+
+#
+
+Así, la contribución de esta observación será la densidad de $\varepsilon_1$, más un termino Jacobiano que es la derivada de $\varepsilon_1$ con respecto a $w_1$, 
+
+\begin{align*}
+      f(\varepsilon_1 | \sigma^2_{\varepsilon}, \beta) = & (2\pi)^{-0.5} (\sigma^2_{\varepsilon})^{-0.5}  \left( \frac{(1+\phi_2)[(1-\phi_2)^2-\phi_1^2}{1 - \phi_2} \right)^{\frac{1}{2}} \\
+        & {\rm e}^{-\frac{(1+\phi_2)[(1-\phi_2)^2-\phi_1^2}{2\sigma^2_{\varepsilon} (1 - \phi_2) }w_1^2}
+    \end{align*}
+
+#
+
+Encontrar una expresión  para $\varepsilon_2$ es un poco más complejo. 
+
+Lo que buscamos es una combinación lineal de $w_1$ y $w_2$ tal que tenga varianza igual a $\sigma_{\varepsilon}$ y sea independiente de $w_1$.
+
+Por construcción, esta combinación lineal será independiente de $\varepsilon_t$ para $t>2$.
+
+#
+
+Un poco de álgebra muestra que la combinación apropiada para esto es,
+
+\begin{equation*}
+    \sigma_{\varepsilon}\left( \frac{\gamma_0}{\gamma_0^2-\gamma_1^2} \right)^{0.5}\left( w_2 - \frac{\gamma_1}{\gamma_0}w_1 \right)
+\end{equation*}
+
+#
+
+Remplazando por $\gamma_0$ y $\gamma_1$ para el AR(2) obtenemos,
+\begin{equation}
+    \varepsilon_2 = (1-\phi_2^2)^{0.5}\left( w_2 - \frac{\phi_1}{1-\phi_2}w_1 \right)
+\end{equation}
+
+#
+
+La derivada de $\varepsilon_2$ con respecto a $w_2$ es $(1-\phi_2^2)^{0.5}$, así la contribución a la verosimilitud de la segunda observación es,
+
+\begin{align*}
+        f(\varepsilon_2 | \sigma^2_{\varepsilon}, \beta) = & (2\pi)^{-0.5} (\sigma^2_{\varepsilon})^{-0.5}  \left( 1-\phi_2^2 \right)^{\frac{1}{2}} \\
+        & {\rm e}^{-\frac{1-\phi_2^2}{2\sigma^2_{\varepsilon}} \left( w_2 - \frac{\phi_1}{1-\phi_2}w_1 \right)^2}
+    \end{align*}
+
+#
+
+La verosimilitud será entonces la multiplicación de estas contribuciones gracias a que son independientes. Y maximizar con respecto a los parámetros.
+
+Para un proceso AR(p) entonces será necesario encontrar la contribución de cada observación bajo los supuestos vistos en el caso del AR(2)
+
+Para procesos ARMA(p,q) encontrar estas posibles combinaciones lineales se hace extremadamente complejo por lo cual se utiliza el filtro de Kalman para calcular estas contribuciones. 
+
+## Filtro de Kalman
+
+##
+
+La idea de este filtro es expresar un sistema dinámico en una forma particular llamada la representación estado-espacio. 
+
+El filtro es un algoritmo que actualiza secuencialmente una proyección lineal del sistema.
+
+Este algoritmo permite calcular predicciones exactas de muestra finita y la función exacta de máxima verosimilitud para procesos ARMA, teniendo en cuenta la función generadora de la matriz de auto-covarianzas y densidades espectrales.
