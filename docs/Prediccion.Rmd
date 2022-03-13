@@ -1,0 +1,332 @@
+---
+title: "Predicción"
+author: |
+        | Santiago Bohorquez Correa
+        |
+        | Universidad EAFIT
+        | Escuela de Economía y Finanzas
+output:
+  revealjs::revealjs_presentation:
+    css: EAFIT.css
+    highlight: pygments
+    center: true
+    transition: slide
+    reveal_options:
+      slideNumber: true
+---
+
+#
+
+La construcción de un modelo ARIMA está motivada por su utilización para la predicción.
+
+Antes de hacer predicciones lo que queremos saber es si el modelo para el periodo muestral sigue siendo valido para periodos futuros. Este es el problema de estabilidad estructural del modelo.
+
+# Estabilidad
+
+#
+
+ Para esta finalidad podemos aplicar el test de Chow (1960),
+\begin{equation}
+    F_{k,T-2k} = \frac{\left[\sum_{t=1}^T \hat{\varepsilon}_t^2 - \left( \sum_{t=1}^{T_1} \hat{\varepsilon}_{t1}^2 + \sum_{t=T_1+1}^{T_2} \hat{\varepsilon}_{t2}^2 \right) \right] }{\frac{\left( \sum_{t=1}^{T_1} \hat{\varepsilon}_{t1}^2 + \sum_{t=T_1+1}^{T_2} \hat{\varepsilon}_{t2}^2 \right)}{T - 2k}}
+\end{equation}
+
+donde $\hat{\varepsilon}_t$ son los residuales del modelo usando toda la muestra, $\hat{\varepsilon}_{t1}$ son los residuales del modelo usando los primeros $T_1$ datos, $\hat{\varepsilon}_{t2}$ son los residuales del modelo usando los últimos $T_2$ datos
+
+#
+
+Varios autores recomiendan definir $T_2$ como el ultimo tercio o cuarto de los datos. De esta forma, podemos corroborar si el ultimo tramo muestral es generado por el mismo proceso que el resto de las observaciones. Ya que si queremos hacer predicciones estas por lo general serán para las futuras observaciones de la muestra.
+
+# Función de perdida
+
+#
+
+Si el modelo es estable podemos proceder a hacer predicciones.
+
+El investigador se encuentra en general en una situación en la cual en el periodo $t$ tiene que hacer juicios sobre futuros valores de $x_1,x_2,\dots,x_K$. Para esto se conoce el p.g.d y un conjunto de información en el periodo t.
+
+#
+
+Formalmente, sea el proceso generador de datos descrito por un ARIMA(p,d,q), y $\Omega_t = \{x_s | s \leq t \}$ el conjunto de información relevante.
+
+El periodo $t$ donde se hace la predicción es el periodo de origen y el número de periodos en el futuro que se desea hacer la predicción es el horizonte de la predicción.
+ 
+
+#
+
+Cuando deseamos hacer predicciones para un propósito en particular, una función de de perdida especifica sera asociada con el error de predicción.
+
+Un predictor sera óptimo si minimiza la perdida derivada del error de predicción.
+
+Encontrar un predictor que cumpla esta condición no es usualmente posible en la practica. Por lo cual nuestro objetivo sera minimizar la perdida esperada de la predicción.  
+
+#
+
+En general, el predictor óptimo dependerá de la función de perdida que escojamos. Dado que las predicciones de series económicas tienden a ser publicadas para uso general, las funciones de perdida especificas de todos los usuarios potenciales no pueden ser tenidas en cuenta a la hora de hacer la predicción.
+
+En esta situación las propiedades estadísticas de las predicciones es de interés para permitir al usuario sacar conclusiones sobre sus propias necesidades. 
+
+ 
+# ECMP
+
+#
+
+También es deseable escoger una función que minimice un amplio rango de funciones de perdida plausibles. 
+
+En el contexto de series de tiempo, predictores que minimizan el error cuadratico medio predicho (ECMP) son los más usados,
+\begin{equation}
+    ECMP = E[(x_{i} - \hat{x}_i)^2]
+\end{equation}
+donde $\hat{x}_i$ es la predicción de $x_i$
+
+
+##
+
+Para calcular el ECMP muestral usamos la siguiente formula
+ \begin{equation}
+    ECMP = \frac{1}{h} \sum_{i=1}^h (x_{i} - \hat{x}_i)^2
+\end{equation}
+donde $\hat{x}_i$ es la predicción de $x_i$
+
+#
+
+Granger(1969), y Granger y Newbold (1986) demostraron que predictores que minimizan esta función de perdida también minimizan un rango de funciones distintas al ECMP.
+
+Además, para varias funciones de perdida los predictores optimos son funciones de los predictores optimos del ECMP.
+
+Finalmente, para predictores insesgados, el ECMP es igual a la varianza del error de predicción. 
+
+
+#
+
+La función que minimiza el Error cuadrado promedio para el predictor $h$ periodos adelante es es la esperanza condicional en $t$,
+
+\begin{equation}
+    E_t(x_{t+h}) :=  E(x_{t+h} | \Omega_t) = E(x_{t+h} | \{y_s | s \leq t \})
+\end{equation}
+
+#
+
+Este predictor minimiza el ECMP para cada componente de $x_t$. Es decir, si $\bar{x}_t(h)$ es un predictor de $h$ periodos de origen $t$,
+ \begin{align}
+     ECM[\bar{x}_t(h)] & = E[(x_{t+h} - \bar{x}_t(h))^2] \\
+     & \geq ECM[E_t(x_{t+h})] = E[(x_{t+h} - E_t(x_{t+h}))^2]
+ \end{align}
+
+##
+
+La optimalidad de la esperanza condicional se puede ver haciendo,
+ \begin{align}
+     ECM[\bar{x}_t(h)] & = E\{[x_{t+h} - E_t(x_{t+h}) + E_t(x_{t+h}) - \bar{x}_t(h)] \\
+                       & \times [x_{t+h} - E_t(x_{t+h}) + E_t(x_{t+h}) - \bar{x}_t(h)] \} \\
+        & = ECM[ E_t(x_{t+h})] + E\{[E_t(x_{t+h}) - \bar{x}_t(h)]^2\} 
+ \end{align*}
+
+##
+
+Donde, usamos la condición $E\{[x_{t+h} - E_t(x_{t+h}] [E_t(x_{t+h} - \bar{x}_t(h)]^2\} = 0$ dado que el primer termino es una función de innovaciones después del periodo $t$ que no están correlacionadas con el segundo termino.
+
+Cabe anotar que la esperanza condicional es un estimador insesgado del ECMP, $E[x_{t+h} - E_t(x_{t+h})]=0 $
+
+
+
+#
+
+Podemos definir el predictor para un AR(p) como,
+
+\begin{equation}
+    E_t(x_{t+h}) =   \phi_1 E_t(x_{t+h-1}) + \phi_2 E_t(x_{t+h-2}) + \dots + \phi_p E_t(x_{t+h-p})  
+\end{equation}
+
+empezando con $h=1$,
+
+\begin{align*}
+    E_t(x_{t+1}) & =  \phi_1 x_{t} + \phi_2 x_{t-1} + \dots + \phi_p x_{t-p+1} \\
+    E_t(x_{t+2}) & =  \phi_1 E_t(x_{t+1}) + \phi_2 x_{t} + \dots + \phi_p x_{t-p+2} \\
+    & \vdots \\
+    E_t(x_{t+h}) & =  \phi_1 E_t(x_{t+h-1}) + \phi_2 E_t(x_{t+h-2}) + \dots + \phi_p E_t(x_{t-p+h})
+\end{align*}
+
+
+#
+
+Así el ECMP se puede calcular como,
+ \begin{align*}
+    ECM[E_t(x_{t+1})] & =  E[\phi_1 x_{t} + \phi_2 x_{t-1} + \dots + \phi_p x_{t-p+1} + \varepsilon_{t+1}\\
+    & - (\phi_1 x_{t} + \phi_2 x_{t-1} + \dots + \phi_p x_{t-p+1})]^2 \\
+    & = E[\varepsilon_{t+1}^2] \\
+    & = \sigma_{\varepsilon}^2
+\end{align*}
+
+#
+
+para la segunda predicción,
+ \begin{align*}
+    ECM[E_t(x_{t+2})] & =  E[\phi_1 x_{t+1} + \phi_2 x_{t} + \dots + \phi_p x_{t-p+2} + \varepsilon_{t+2}\\
+    & - (\phi_1 E_t(x_{t+1}) + \phi_2 x_{t} + \dots + \phi_p x_{t-p+2})]^2 \\
+    & = E[(\phi_1 [x_{t+1} - E_t(x_{t+1})] + \varepsilon_{t+2})^2] \\
+    & = E[(\phi_1 \varepsilon_{t+1} + \varepsilon_{t+2})^2] \\
+    & = (1 + \phi_1^2) \sigma_{\varepsilon}^2
+\end{align*}
+
+#
+
+y la tercera,
+ \begin{align*}
+    ECM[E_t(x_{t+3})] & =  E[\phi_1 x_{t+2} + \phi_2 x_{t+1} + \dots + \phi_p x_{t-p+3} + \varepsilon_{t+3}\\
+    & - (\phi_1 E_t(x_{t+2}) + \phi_2 E_t(x_{t+1}) + \dots + \phi_p x_{t-p+3})]^2 \\
+    & = E[(\phi_1 [x_{t+2} - E_t(x_{t+2})] +\\
+    & (\phi_2 [x_{t+1} - E_t(x_{t+1})] +  \varepsilon_{t+2})^2] \\
+    & = E[\phi_1 (\phi_1 \varepsilon_{t+1} + \varepsilon_{t+2}) + \phi_2 \varepsilon_{t+3} \\
+    & = (1 +  \phi_1^2 + (\phi_1 + \phi_2)^2 ) \sigma_{\varepsilon}^2
+\end{align*}
+
+#
+
+Como podemos ver el ECMP en un proceso AR(p) se hace cada vez más grande mientras más periodos en el futuro estemos midiendo, esto es debido a que los errores de predicción se acumulan en cada periodo.
+
+Ya que para cada nueva predicción tenemos que usar no los valores observados sino los valores predichos.
+ 
+#
+
+Ahora veamos la predicción para un modelo MA(q)
+ \begin{equation}
+    E_t(x_{t+h}) =   - \theta_1 E_t(\varepsilon_{t+h-1}) - \theta_2 E_t(\varepsilon_{t+h-2}) - \dots - \theta_q E_t(\varepsilon_{t+h-q})  
+\end{equation}
+
+#
+
+empezando con $h=1$,
+
+\begin{align*}
+    E_t(x_{t+1}) & =  \theta_1 \varepsilon_{t} + \theta_2 \varepsilon_{t-1}) - \dots - \theta_q \varepsilon_{t-q+1})  \\
+    E_t(x_{t+2}) & =  - \theta_1 E_t(\varepsilon_{t+1}) - \theta_2 \varepsilon_{t} - \dots - \theta_q \varepsilon_{t-q+2} \\
+                & = -\theta_1 0 -  \theta_2 \varepsilon_{t} - \dots - \theta_q \varepsilon_{t-q+2} \\
+                & = -\theta_2 \varepsilon_{t} - \dots - \theta_q \varepsilon_{t-q+2}
+\end{align*}
+
+#
+
+Por lo tanto si seguimos prediciendo hacia adelante, para $h>q$ tenemos,
+  \begin{equation}
+      E_t(x_{t+h}) =  0
+  \end{equation}
+
+Esto es debido a que los $\varepsilon_t$ son ruido blanco, por lo cual en procesos MA puros la información pasada no sirve para hacer predicciones de los choques futuros.
+
+#
+
+Así el ECMP se puede calcular como,
+ \begin{align*}
+    ECM[E_t(x_{t+1})] & =  E[ \varepsilon_{t+1} - \theta_1 \varepsilon_{t} - \theta_2 \varepsilon_{t-1}) - \dots - \theta_q \varepsilon_{t-q+1})\\
+    & - (\theta_1 \varepsilon_{t} - \theta_2 \varepsilon_{t-1}) - \dots - \theta_q \varepsilon_{t-q+1})]^2 \\
+    & = E[\varepsilon_{t+1}^2] \\
+    & = \sigma_{\varepsilon}^2
+\end{align*}
+
+#
+
+para la segunda predicción,
+ \begin{align*}
+    ECM[E_t(x_{t+2})] & =  E[\varepsilon_{t+2} - \theta_1 \varepsilon_{t+1} - \theta_2 \varepsilon_{t} - \dots - \theta_q \varepsilon_{t-q+2})\\
+    & - (- \theta_2 \varepsilon_{t}) - \dots - \theta_q \varepsilon_{t-q+2})^2] \\
+    & = E[(\varepsilon_{t+2} - \theta_1 \varepsilon_{t+1})^2] \\
+    & = (1 + \theta_1^2) \sigma_{\varepsilon}^2
+\end{align*}
+ \end{itemize}
+ 
+#
+
+ para la tercera predicción,
+ \begin{align*}
+    ECM[E_t(x_{t+3})] & =  E[\varepsilon_{t+3} - \theta_1 \varepsilon_{t+2} - \theta_2 \varepsilon_{t+1}) - \dots - \theta_q \varepsilon_{t-q+2})\\
+    & - (- \theta_3 \varepsilon_{t} - \dots - \theta_q \varepsilon_{t-q+3})^2] \\
+    & = E[(\varepsilon_{t+3} - \theta_1 \varepsilon_{t+2} - \theta_2 \varepsilon_{t+1})^2] \\
+    & = (1 + \theta_1^2 + \theta_2^2) \sigma_{\varepsilon}^2
+\end{align*}
+ \end{itemize}
+ 
+#
+
+Debido a que el error de predicción depende de los $\varepsilon_t$ podemos ver que para $h \geq  q$ el ECMP es,
+ \begin{equation}
+    ECM[E_t(x_{t+h})] = (1 + \theta_1^2 + \theta_2^2 + \dots + \theta_q^2) \sigma_{\varepsilon}^2 
+ \end{equation}
+
+A diferencia de los modelos AR el ECM de los modelos MA es acotado y no sigue creciendo a medida que crece el h.
+
+ 
+#
+
+Dado que $E[x_{t+h} - E_t(x_{t+h})]=0 $, el ECM es igual a la varianza del error de predicción.
+
+Si asumimos que los $\varepsilon_t$ se distribuyen normal podemos generar un intervalo de confianza para la predicción,
+ \begin{align*}
+     Prob[E_t(x_{t+h}) & -1.96\sqrt{ECM[E_t(x_{t+h})]} \\
+      & < x_{t+h} < E_t(x_{t+h})+1.96\sqrt{ECM[E_t(x_{t+h})]}] = 0.95
+
+## Otras formas de Predicción
+
+ En diferentes aplicaciones se observa una predicción distinta a la vista en clase. Esta predicción es hecha en general como:
+ \begin{equation}
+     E_t(x_{t+h}) = \phi_1^h x_t +  \phi_2^h x_{t-1} + \dots + \phi_p^h x_{t-p+1} - \theta_1^h \varepsilon_{t} -  \dots - \theta_q^h \varepsilon_{t-q+1} 
+ \end{equation}
+
+Es decir para cada horizonte de tiempo $h$ se re-estima el modelo $ARIMA(p,q)$ usando solo los valores observados. 
+
+##
+
+La razón por la cual se realiza este tipo de predicción es evitar el uso de predicciones iterativas, es decir, con esta predicción se puede predecir $h$ sin necesidad de hacer predicciones de $h-1$.
+
+Sin embargo, esta predicción, no es insesgada, ya que ignora las autocorrelaciones de los periodos anteriores.
+
+
+# Selección de Modelos - Predicción
+
+#
+
+En la clase pasada hablamos de validación de modelos, y vimos diferentes criterios de información.
+
+En ese caso los criterios miden la bondad de ajuste del modelo sobre la muestra. Escoger el modelo de esta forma puede llevar a un sobreajuste del modelo a la muestra.
+
+#
+
+Por esta razón, puede ser deseable hacer la selección usando la capacidad de predicción.
+
+El caso ideal sería realizar los diferentes modelos, y una vez se observan las realizaciones se escoge el modelo que tuvo el mejor desempeño. Sin embargo, en la practica, quisiéramos escoger el mejor modelo antes de ver las realizaciones.
+
+#
+
+Para esto dividimos la muestra en dos partes:
+
+<b> Training set:</b> Estos datos son usados para estimar los parámetros de los modelos escogidos.
+
+<b> Test set:</b> Estos datos se dejan por fuera de la estimación y se usan para corroborar que tan bien se adaptan los modelos estimados a nuevos datos.
+
+Un buen desempeño en el <b>test set</b> indica que no hubo sobre-parametrizaciónen el <b>training set</b>.
+
+#
+
+La idea es escoger aleatoriamente de la muestra ambos conjuntos de datos. Debido a que en series de tiempo no podemos ignorar las posibles auto-correlaciones entre los datos (a diferencia de los datos de corte transversal) estos sets se tienden a escoger por bloques.
+
+En estos casos el <b>training set</b> no puede contener datos futuros al <b>test set</b>.
+
+
+#
+
+En general se usa el 80\% - 85\% de la serie como <b>training set</b> y el resto como <b>test set</b>. Se podría pensar entonces que se escoge el primer 80\-85\% de la serie como <b>training set</b> y se utiliza el ultimo 20\%-15\% como <b>test set</b>.
+
+Sin embargo, si se basa el modelo escogido en solo una predicción esta tiende a ser poco estable.
+
+#
+
+Para solucionar esto se realiza un <b>Rolling cross-validation</b>, de la siguiente forma:
+
+
+<img src="img/CV1-1.png" alt="CV" width="900" height="450"> 
+ 
+#
+
+Donde los puntos azules son el <b>training set</b> y los puntos rojos el <b>test set</b>. También se puede hacer la predicción h periodos hacia adelante en caso de que sea de interés conocer el error después de varios periodos.
+  
+<img src="img/CV4-1.png" alt="CV" width="900" height="450"> 
+
