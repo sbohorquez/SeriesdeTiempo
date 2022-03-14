@@ -105,7 +105,14 @@ ggplot(df1) +
 
 
 
+library(fpp)
+far1 <- function(x, h){forecast(Arima(x, order=c(1,0,0)), h=h)}
+e <- tsCV(GDPGrowth, far1, h=1)
+sqrt(mean(e^2, na.rm=TRUE))
+## [1] 22.68249
+sqrt(mean(residuals(Arima(GDPGrowth, order=c(1,0,0)))^2, na.rm=TRUE))
+## [1] 22.49681
 
-
-
-
+#Fit the same model with a rolling window of length 30
+e <- tsCV(GDPGrowth, far1, h=1, window=30)
+sqrt(mean(e^2, na.rm=TRUE))
