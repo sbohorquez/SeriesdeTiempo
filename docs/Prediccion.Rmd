@@ -232,7 +232,7 @@ para la segunda predicción,
     & = E[(\varepsilon_{t+2} - \theta_1 \varepsilon_{t+1})^2] \\
     & = (1 + \theta_1^2) \sigma_{\varepsilon}^2
 \end{align*}
- \end{itemize}
+
  
 #
 
@@ -243,7 +243,7 @@ para la segunda predicción,
     & = E[(\varepsilon_{t+3} - \theta_1 \varepsilon_{t+2} - \theta_2 \varepsilon_{t+1})^2] \\
     & = (1 + \theta_1^2 + \theta_2^2) \sigma_{\varepsilon}^2
 \end{align*}
- \end{itemize}
+
  
 #
 
@@ -257,12 +257,13 @@ A diferencia de los modelos AR el ECM de los modelos MA es acotado y no sigue cr
  
 #
 
-Dado que $E[x_{t+h} - E_t(x_{t+h})]=0 $, el ECM es igual a la varianza del error de predicción.
+Dado que $E[x_{t+h} - E_t(x_{t+h})]=0$, el ECM es igual a la varianza del error de predicción.
 
 Si asumimos que los $\varepsilon_t$ se distribuyen normal podemos generar un intervalo de confianza para la predicción,
  \begin{align*}
      Prob[E_t(x_{t+h}) & -1.96\sqrt{ECM[E_t(x_{t+h})]} \\
-      & < x_{t+h} < E_t(x_{t+h})+1.96\sqrt{ECM[E_t(x_{t+h})]}] = 0.95
+     < x_{t+h} <  & E_t(x_{t+h})+1.96\sqrt{ECM[E_t(x_{t+h})]}] = 0.95
+\end{align*}
 
 ## Otras formas de Predicción
 
