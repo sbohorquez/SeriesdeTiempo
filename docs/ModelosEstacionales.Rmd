@@ -1,0 +1,236 @@
+---
+title: "Modelos Estacionales"
+author: |
+        | Santiago Bohorquez Correa
+        |
+        | Universidad EAFIT
+        | Escuela de Economía y Finanzas
+output:
+  revealjs::revealjs_presentation:
+    css: EAFIT.css
+    highlight: pygments
+    center: true
+    transition: slide
+    reveal_options:
+      slideNumber: true
+---
+
+# 
+
+En muchas ocasiones los datos económicos presentan efectos estacionales. Esto implica que existen oscilaciones estrictamente periódicas menores a un año (en su mayoría).
+
+Estos puede suceder debido a causas físicas por las estaciones, e.g. consumo de calefacción en el invierno, o por causas sociales, o económicas, e.g. Aumento del consumo en Diciembre por fiestas.
+
+#
+Este componente estacional debe de ser tratado correctamente para hacer predicciones de la serie. En general esto puede hacerse de dos formas:
+
+<ul>
+<li> Desestacionalizar la serie y trabajar con la serie resultante.</li>
+<li> Modelar la serie incluyendo el componente estacional.</li>
+
+#
+
+En la practica muchas veces se encuentran series desestacionalizadas disponibles. Para hacer esto, por lo general, se considera uno de los siguientes modelos:
+ \begin{align}
+     X_t = T_t + C_t + S_t + I_t \\
+     X_t = T_t \times C_t \times S_t \times I_t
+ \end{align}
+ donde $X_t$ es la series observada, $T_t$ es la tendencia de largo plazo, $C_t$ es el ciclo económico, $S_t$ es el componente estacional, e $I_t$ las variaciones residuales.
+
+#
+
+El modelo más sencillo para obtener el componente estacional, asumiendo una serie mensual, esta dado por:
+\begin{equation}
+    S_t = \sum_{j=1}^{12} \alpha_j d_{jt} + u_t, \quad d_{jt} \left\{\begin{matrix}
+1 & \text{si } j=k\pm 12n, k=0,1,2,\dots 11\\ 
+0 & \text{En cualquier otro caso}
+\end{matrix}\right. 
+\end{equation}
+donde $\sum_{j=1}^{12} \alpha_j = 0$ y $u_t$ es ruido blanco.
+$\alpha_j$ son los efectos estacionales y $d_{jt}$ son dummies
+
+#
+
+También se usan modelos con senos y cosenos de la siguiente forma,
+ \begin{equation}\label{seas}
+    S_t = \sum_{j=1}^{6} [\alpha_j  \cos (\lambda_jt) + \beta_j \sin (\lambda_jt) ]    
+\end{equation}
+ 
+ donde $\lambda_j = \frac{2\pi j}{12}$, para $j=1,2,\dots,6$ y $\beta_6 = 0$. Los $\lambda_j$ son conocidos como frecuencias estacionales, con $j$ correspondiente a ciclos de $12,6,4,3,2.4,2$ meses respectivamente
+
+#
+
+Los modelos anteriores asumen estacionalidad deterministica. Como cuando vimos tendencia también podemos tener estacionalidad estocástica.
+
+Para esto los $\alpha_j$ de la ecuación \ref{seas} se especifican como variables aleatorias y no como constantes.
+
+#
+ 
+Este modelo puede ser escrito como,
+ \begin{equation}
+     S_t = S_{t-12} + u_t
+ \end{equation}
+ 
+O, usando el operador de rezagos $(1 - L^{12})S_t = u_t$ donde $u_t$ es ruido blanco. Sujeto a la restricción, $\sum_{j=0}^{11} S_{t-j} = u_t$
+
+#
+
+Así el modelo estacional esta dado por,
+\begin{equation}\label{x11}
+    \sum_{j=0}^{s-1} S_{t-j} = u_t
+\end{equation}
+
+#
+
+Una importante variación a este modelo fue propuesta por Hillmer y Tiao (1982),
+ \begin{equation}
+      \sum_{j=0}^{s-1} S_{t-j} = \eta_s(L)b_t
+ \end{equation}
+donde $\eta_s(L)$ es una media móvil de orden mínimo $s-1$ y $b_t$ es ruido blanco $\sim (0, \sigma^2_b)$. Este componente MA permite que la estacionalidad cambie a través del tiempo.
+
+#
+
+El problema radica entonces en encontrar el componente $S_t$.Para esto se hace uso de diversos filtros basados en el modelo escogido para $X_t$.
+
+Los dos principales filtros usados en la practica son el método semi-param\'{e}trico X-11-ARIMA propuesto y utilizado por statistics Canada y el X-12-ARIMA usado por el U.S. Bureau of the census.
+
+#
+
+Las series desestacionalizadas encontradas en el DANE y el Banco de la Republica usan el método X-11-ARIMA. Usar series desestacionalizadas en vez de la serie original tiene la ventaja que permite encontrar relaciones que no se ven afectadas por factores exógenos como el clima o costumbres sociales.
+
+Sin embargo, la desventaja radica en que solose pueden realizar predicciones de las variables modificadas y no de la variable original.
+
+# Modelos SARIMA
+
+#
+
+Si queremos modelar la serie original, entonces hacemos uso de los modelos SARIMA (Seasonal ARIMA).
+
+Definimos a $s$ como el periodo estacional, e.g. para datos mensuales sería 12, trimestrales 4, etc. Un proceso estacional puro implica que solo existen relaciones entre las observaciones cada $s$ periodos o múltiplos de $s$
+
+# Modelo SAR(1)
+
+#
+
+Un modelo AR(1) estacional puro o SAR(1) es definido como,
+ \begin{equation}
+     w_t = \varphi w_{t-s} + \varepsilon_t
+ \end{equation}
+ 
+Al igual que en el caso del AR(1) la estacionariedad requiere que $|\varphi|<1$
+
+#
+
+La media del proceso es facil ver que es $\mu=0$
+
+La varianza es,
+ \begin{align*}
+    \gamma_0 & = E[(\varphi w_{t-s} + \varepsilon_t)^2] \\
+             & = \varphi^2 \gamma_0 + \sigma_{\varepsilon}^2 \\
+             & = \frac{\sigma_{\varepsilon}^2}{1 - \varphi^2}
+ \end{align*}
+ 
+#
+Las auto-covarianzas son,
+ \begin{align*}
+    \gamma_j & = E[(\varphi w_{t-s} + \varepsilon_t)w_{t-j}] \\
+             & = \varphi \gamma_{s-j}
+ \end{align*}
+
+Noten que si $s=j$ entonces $\gamma_s=\frac{\varphi_s}{1-\varphi_s^2}  \sigma_{\varepsilon}^2$, para $2s,3s,\dots$
+ \begin{equation}
+     \gamma_j = \frac{\varphi^{j/s}}{1-\varphi^2}\sigma_{\varepsilon}^2, \quad j=s,2s,3s,\dots
+ \end{equation}
+ 
+ y $\gamma_j=0$ para otros casos.
+
+#
+
+Y finalmente las autocorrelaciones,
+ \begin{equation}
+     \rho_j = \varphi^{j/s}, \quad j=s,2s,3s,\dots
+ \end{equation}
+ 
+ y $\rho_j=0$ para otros casos.
+
+Como pueden ver los resultados para el SAR(1) son similares a lo visto para el AR(1) solo que con periodicidad $s$
+
+# Modelo SARIMA(P,D,Q)
+
+#
+
+Ahora podemos escribir el modelo ARIMA estacional puro, SARIMA(P,D,Q) como:
+ \begin{equation}
+     \varphi(L^s)(1-L^s)^D x_t = \vartheta (L^s) \varepsilon_t
+ \end{equation}
+ 
+ Veamos como lucen los FACE y FACPE de estos modelos.
+    
+#
+
+Datos trimestrales, $w_t = 0.8 w_{t-4} + \varepsilon_t$
+
+<img src="img/plot_sar1.png" alt="Ejemplo" width="900" height="450"> 
+
+#
+
+Datos trimestrales, $w_t =  \varepsilon_t - 0.8 \varepsilon_{t-4}$ 
+<img src="img/plot_sma1.png" alt="Ejemplo" width="900" height="450">    
+
+#
+ 
+Datos trimestrales, $w_t =  0.5 w_{t-4} + \varepsilon_t - 0.2 \varepsilon_{t-4}$ 
+<img src="img/plot_sarma.png" alt="Ejemplo" width="900" height="450">
+
+#
+
+Hasta ahora nos hemos referido a los modelos como modelos estacionales puros.
+
+Esto es debido a que no presentan efectos ARIMA a parte de los efectos estacionales. Sin embargo, en muchas ocasiones tenemos ambos tipos de efectos, por lo cual es necesario examinar como lidiar con esto.
+
+# Modelos AR(1) $\times$ SAR(1)
+ 
+#
+
+Sea el modelo AR(1) $\times$ SAR(1), definido como:
+ \begin{equation}
+     (1-\phi L)(1-\varphi L^s) w_t = \varepsilon_t
+ \end{equation}
+
+#
+
+Desarrollando el modelo, obtenemos:
+  \begin{equation}
+     (1 -\phi L -\varphi L^s + \phi \varphi L^{s+1}) w_t = \varepsilon_t
+ \end{equation}
+ 
+#
+
+Así,
+ \begin{equation}
+     w_t = \phi w_{t-1} + \varphi w_{t-s} - \phi \varphi w_{t-s-1} + \varepsilon_t 
+ \end{equation}
+ 
+Como vemos el proceso ahora no solo se compone del rezago del  Ar y el SAR si no también de una combinación de ambos. Estos son conocidos como parámetros satélites.  
+ 
+#
+
+Finalmente, podríamos expresar este modelo como
+ \begin{equation}
+     w_t = \phi_1 w_{t-1} + \phi_s w_{t-s} - \phi_{s+1}  w_{t-s-1} + \varepsilon_t 
+ \end{equation}
+ 
+Así podríamos calcular los momentos como un AR(s+1) donde $\phi_1 = \phi$, $\phi_s=\varphi$, $\phi_{s+1}=\phi \varphi$ y $\phi_j=0$ en todo otro caso.
+ 
+
+# Modelos ARMA(p,q) $\times$ SARMA(P,Q)
+
+#
+
+El modelo ARMA(p,q) $\times$ SARMA(P,Q), usando el operador de rezagos,
+ \begin{equation}
+    \phi(L)\varphi(L^s) w_t = \theta(L)\vartheta(L^s)\varepsilon_t
+ \end{equation}
+ 
+De nuevo es un proceso multiplicativo en el cual tenemos los efectos ARMA, SARMA y combinaciones de ambos. Este entonces se puede expresar en términos de un ARMA(Ps+p,Qs+q) con restricciones
+ 
