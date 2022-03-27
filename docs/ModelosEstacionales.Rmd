@@ -233,4 +233,18 @@ El modelo ARMA(p,q) $\times$ SARMA(P,Q), usando el operador de rezagos,
  \end{equation}
  
 De nuevo es un proceso multiplicativo en el cual tenemos los efectos ARMA, SARMA y combinaciones de ambos. Este entonces se puede expresar en términos de un ARMA(Ps+p,Qs+q) con restricciones
- 
+
+# Modelos SARIMA(P,D,Q)
+
+#
+Hemos estudiado la diferenciación de series en los modelos ARIMA. Cuando tenemos datos estacionales, debemos utilizar la diferencia estacional de ordern $s$, $\Delta_s x_T$,
+
+\begin{equation}
+\Delta_s x_t = x_t- x_{t-s}
+\end{equation}
+
+#
+
+Para una serie mensual le diferencia estacional da el cambio de Enero a Enero, Febrero a Febrero, etc. Si es trimestral da elcambio entre el Trimestre 1 del año anterior y este, etc.
+
+Así, para una serie de tamaño T, la diferencia estacional contiene $T-s$ valores.
