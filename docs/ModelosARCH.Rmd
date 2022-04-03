@@ -1,0 +1,297 @@
+---
+title: "Modelos de heterocedasticidad condicionada"
+author: |
+        | Santiago Bohorquez Correa
+        |
+        | Universidad EAFIT
+        | Escuela de Economía y Finanzas
+output:
+  revealjs::revealjs_presentation:
+    css: EAFIT.css
+    highlight: pygments
+    center: true
+    transition: slide
+    reveal_options:
+      slideNumber: true
+---
+
+
+# Modelos ARCH
+
+#
+
+En la definición de estacionariedad débil, dijimos que el proceso debe de tener media, varianza y auto-covarianzas constantes.
+
+Sin embargo, hasta ahora nos hemos concentrado en modelos que buscan modelar la media del proceso. Ignorando posibles efectos en la varianza.
+
+
+#
+
+Con series de tiempo, a veces se observa que los residuales son pequeños en valor absoluto por un periodo de tiempo, y luego son bastante grandes por otro periodo. Este fenómeno de volatilidad que cambia en el tiempo es encontrada frecuentemente en modelos para retornos de acciones, tasas de cambio y otras series financieras.
+
+#
+
+Una forma popular de trabajar con este tipo de series es usando Heteroscedasticidad condicional auto-regresiva, o  ARCH por sus siglas en ingles.
+
+# 
+<img src="img/arch.png" alt="Ejemplo" width="900" height="450">
+
+
+#
+
+El concepto de ARCH fue introducido por Engle(1982), y le hizo ganador de primo nobel en 2003  "for methods of analyzing economic time series with time time series with time-varying volatility (ARCH)". 
+
+La idea básica de estos modelos es que la varianza del error en $t$ depende del valor de los errores cuadrados en periodos previos.
+
+#
+
+Si $u_t$ denota el error del modelo de regresión, y $\Omega_{t-1}$ el conjunto de información observado hasta $t-1$, Entonces, el proceso ARCH(q) se puede escribir como,
+\begin{equation}\label{arch}
+    u_t = \sigma_t \varepsilon_t; \quad \sigma^2_t \equiv E(u_t^2| \Omega_{t-1}) = \alpha_0 + \sum_{i=1}^q \alpha_i u_{t-i}^2
+\end{equation}
+donde $\alpha_i>0$, para $i=0,1,2,\dots,q$, $\varepsilon_t$ es ruido blanco con varianza 1, y $\sigma_t$ es la raíz positiva de $\sigma^2_t$
+
+
+#
+
+Como esta función depende de $t$, el modelo es, como su nombre lo indica, heterocedastico. El termino "condicional" se debe a que, a diferencia de las funciones de heteorcedasticidad vistas anteriormente, la función ARCH no es exógena.
+
+Por lo tanto, el modelo escribe la varianza de $u_t$ condicional al pasado del proceso.
+
+#
+
+Debido a que la varianza condicional de $u_t$ es una función de $u_{t-1}$, es claro que no son independientes. Sin embargo, no están auto-correlacionadas,
+\begin{align*}
+    E(u_t u_{t-1}) & = E(E(u_t u_{t-1} | \Omega_{t-1})) \\
+                   & = E(u_{t-1} \sigma_t E(\varepsilon_{t} | \Omega_{t-1})) = 0
+\end{align*}
+donde usamos $\sigma_t \in \Omega_{t-1}$ y  que $\varepsilon_t$ es una innovación.
+
+#
+
+Usando un razonamiento similar muestra que $E(u_t u_s)=0$ para todo $s<t$. Esto muestra que el proceso ARCH implica heterocedasticidad, no correlación serial!.
+
+
+#
+
+Si un ARCH(q) es estacionario en covarianza, entonces $\sigma^2$, la esperanza no condicional de $u^2_t$ existe y es independiente de $t$. Bajo el supuesto de estacionariedad. podemos tomar la esperanza incondicional de \ref{arch} y encontramos que,
+\begin{equation}
+    \sigma^2 = \alpha_0 + \sigma^2 \sum_{i=1}^q \alpha_i
+\end{equation}
+
+#
+ Por lo tanto,
+\begin{equation}
+    \sigma^2 = \frac{\alpha_0}{1 - \sum_{i=1}^q \alpha_i}
+\end{equation}
+La condición $\sum_{i=1}^q \alpha_i < 1$ es requerida para que $\sigma^2$ sea positiva, y entonces es una condición necesaria para estacionariedad. Claramente es necesario que las varianzas $\sigma_t$ sean positivas y por eso tenemos la restricción $\alpha_i > 0$ para todo $i$
+
+#
+
+Desafortunadamente, el modelo ARCH(q) no ha sido muy satisfactorio cuando ha sido usado en la practica. Muchas series financieras presentan volatilidad persistente, pero la correlación entre valores sucesivos de $u^2_t$ no es muy alta (Pagan, 19996)
+
+
+#
+Para acomodar estos hechos empíricos, $q$ debe de ser grande. Pero si $q$ es grande, el modelo ARCH(q) tiene muchos parámetros que se deben estimar.
+
+Y el requerimiento que todos las $\alpha_i$ sean positivos puede no ser satisfecho si no es impuesto explícitamente. Por lo cual, necesitamos un modelo que pueda modelar este tipo de fenómenos.
+
+# Modelos GARCH
+
+#
+
+El modelo ARCH generalizado, o GARCH(p,q), propuesto por Bollerslev (1986), es mucho más usado en la practica que el modelo ARCH original.Podemos escribir el proceso GARCH(p,q) como,
+\begin{equation}\label{garch}
+    u_t = \sigma_t \varepsilon_t; \quad \sigma^2_t \equiv E(u_t^2| \Omega_{t-1}) = \alpha_0 + \sum_{i=1}^q \alpha_i u_{t-i}^2 + \sum_{j=1}^p \delta_j \sigma_{t-j}^2
+\end{equation}
+
+#
+
+O usando el operador de rezagos,
+\begin{equation}\label{eq:garch}
+ \sigma^2_t = \alpha_0 + \alpha(L) u_{t}^2 + \delta(L) \sigma_{t-1}^2
+\end{equation}
+donde todos los parámetros en la representación auto-regresiva de orden infinito, $[1-\delta(L)]^-1\alpha(L)$, no puede ser negativo.
+
+
+#
+
+Esta notación nos muestra que hay un gran parecido entre el proceso GARCH(p,q) y el proceso ARMA(p,q). Si dejamos que $\delta(L) = \phi(L)$, $\alpha(L)=\theta(L)$, $\sigma^2_t=x_t$, y $u^2_t=\varepsilon_t$. El proceso GARCH es formalmente igual a un ARMA con el coeficiente de $\varepsilon_t$ igual a cero.
+
+#
+
+Estas similitudes esconden unas diferencias importantes, en un proceso GARCH, $\sigma^2_t$ no es observable y $E(u_t^2)=\sigma^2_t \neq 0$
+
+
+#
+
+El modelo más sencillo, y popular, es el GARCH(1,1), el cual podemos escribir como,
+\begin{equation}
+    \sigma^2_t = \alpha_0 + \alpha_1 u_{t-1}^2 + \delta_1 \sigma^2_{t-1}
+\end{equation}
+
+Bajo la hipótesis de estacionareidad de las covarianzas, encontramos,
+\begin{equation}
+    \sigma^2 = \frac{\alpha_0}{1-\alpha_1-\delta_1}
+\end{equation}
+Con las restricciones que, $\alpha_1+\delta_1 < 1$ y  $\alpha_0 > 0$
+
+#
+
+<ul>
+<li> El GARCH(1,1) funciona bastante bien en la practica.</li>
+<li> En muchos casos, este no puede ser rechazado contra modelos GARCH(p,q) más generales.</li>
+<li> Una regularidad empirica encontrada en muchos articulos es que el estimador $\hat{\alpha_1}$ es pequeño y positivo, y $\hat{\delta_1}$ más grande.</li>
+<li> Además, la suma de coeficientes $\hat{\alpha_1} + \hat{\delta_1}$, entre 0.9 y 1. Lo cual indica alta persistencia.</li>
+</ul>
+
+# GARCH - Extensiones
+
+#
+
+Una extensión es el modelo GARCH integrado o IGARCH, propuesto por Engle y Bollerslev (1986), este se define como:
+\begin{equation}\label{Igarch}
+    u_t = \sigma_t \varepsilon_t; \quad \sigma^2_t \equiv E(u_t^2| \Omega_{t-1}) = \alpha_0 + \sum_{i=1}^q \alpha_i u_{t-i}^2 + \sum_{j=1}^p \delta_j \sigma_{t-j}^2
+\end{equation}
+donde, $\sum_{i=1}^q \alpha_i + \sum_{j=1}^p \delta_j = 1$.
+
+#
+
+Un caso especial de este es el modelo EWMA (Exponential Weighted MA), tambien conocido como el modelo de Risk Metrics de JP Morgan, este es:
+\begin{equation}\label{ewma}
+    \sigma^2_t \equiv E(u_t^2| \Omega_{t-1}) = \alpha_0 + \lambda u_{t-i}^2 + (1-\lambda) \sigma_{t-j}^2
+\end{equation}
+
+# Identificación - Garch
+
+#
+
+Al igual que en los modelos ARMA podemos usar la FACE y la FACPE, en este caso, usando los residuales cuadrados del modelo.
+
+#
+
+<img src="img/afcsquared.png" alt="Ejemplo" width="750" height="600">
+
+
+# Distribución estacionaria - GARCH
+
+#
+
+Antes de estimar este tipo de procesos es importante conocer la distribución estacionaria de los errores. En un proceso ARMA, la distribución estacionaria de $u_t$ es normal cuando las innovaciones $\varepsilon_t$ son normal ruido blanco.
+
+Este no es el caso en los procesos ARCH y GARCH, ya que el mapeo de $\varepsilon_t$ a $u_t$ es no lineal. 
+
+# 
+Por simplicidad trataremos solo el caso del ARCH(1). Para un ARCH(1) con innovaciones ruido blanco normales la distribución condicional de $u_t$ a $\Omega_{t-1}$ es normal, En general, esto es verdad para cualquier proceso GARCH(p,q).
+
+Dado que la varianza de esta distribución es $\sigma_t^2$ el cuarto momento es $3\sigma_t^4$
+
+#
+
+Entonces, para un proceso ARCH(1), $\sigma^2_t = \alpha_0 + \alpha_1 u_{t-1}^2$, sería
+\begin{equation}
+    E(u_t^4 | \omega_{t-1}) = 3(\alpha_0 + \alpha_1 u_{t-1}^2)^2 = 3\alpha_0^2 + 6\alpha_0\alpha_1 u_{t-1}^2 + 3\alpha_1^2 u_{t-1}^4
+\end{equation}
+
+#
+
+Si asumimos que el cuarto momento incondicional, $m_4$ existe, obtenemos,
+\begin{equation}
+    m_4 = 3\alpha_0^2 + 6 \frac{\alpha_0^2\alpha_1}{1-\alpha_1} + 3\alpha_1^2 m_4
+\end{equation}
+
+#
+
+Resolviendo por $m_4$,
+\begin{equation}
+    m_4 = \frac{3\alpha_0^2 (1 + \alpha_1)}{(1-\alpha_1)(1-3\alpha_1^2)}
+\end{equation}
+Este resultado implica que $3\alpha_1^2 < 1$ de lo contrario el momento no existe.
+
+Esta ecuación además implica que $m_4 > 3 \sigma^4 = \frac{3\alpha_0^2}{(1-\alpha_1)^2}$. Por lo tanto $u_t$ no puede ser normal.
+
+# Estimación - GARCH
+
+#
+
+La conclusión anterior dificulta un poco la estimación de estos modelos GARCH. La idea que surge dado que estamos estimando modelos heteroscedasticos es usar mínimos cuadrados generalizados factibles.
+
+El primer paso sería estimar la regresión MCO o MC no-lineales y obtener los residuales $\hat{u_t}$
+
+#
+
+El segundo paso consistiría en estimar los parámetros del GARCH, tratando los $\hat{u_t}^2$ como si fueran los errores cuadrados verdaderos, usando MCO.
+
+Y finalmente, estimar la regresión original, usando mínimos cuadrados ponderados, donde los pesos son proporcionales a la inversa de la raíz cuadrada de las predicciones de $\hat{u_t}^2$. Este método es poco usado ya que es asintoticamente ineficiente.
+
+# 
+
+El método más popular para estimar modelos GARCH es asumir que los errores se distribuyen normal y usar máxima verosimilitud. Podemos escribir un modelo de regresión con errores GARCH, definidos en función de un proceso de innovación como,
+\begin{equation}
+    \frac{x_t - Z_t\beta}{\sigma_t(\beta,\alpha,\delta)} = \varepsilon_t, \quad \varepsilon_t \sim N(0,1)
+\end{equation}
+
+#
+
+La función de heteroscedasticidad $\sigma_t(\beta,\alpha,\delta)$ es definida para nuestra elección de $p$ y $q$ con un modelo para la media $Z_t\beta$. Por lo tanto depende no solo de $\alpha$ y $\delta$, si no también de $\beta$.
+
+#
+
+La función de densidad condicional de $x_t$ en $\Omega_{t-1}$ es entonces,
+\begin{equation}\label{eq:dens}
+    \frac{1}{\sigma_t(\beta,\alpha,\delta)}\phi\left(\frac{x_t - Z_t\beta}{\sigma_t(\beta,\alpha,\delta)}\right)
+\end{equation}
+donde $\phi(.)$ es la función de densidad de una normal estándar.
+
+#
+
+El primer factor de la ecuación es un Jacobiano que refleja que la derivada de $\varepsilon_t$ con respecto a $x_t$ es $\sigma_t^{-1}(\beta,\alpha,\delta)$. Si tomamos el logaritmo, encontramos que la contribución de la observación $t$ es,
+\begin{equation}
+    l_t(\beta,\alpha,\delta) = -\frac{1}{2}\log 2\pi -\frac{1}{2}\log(\sigma_t(\beta,\alpha,\delta)) - \frac{1}{2}\frac{x_t - Z_t\beta}{\sigma_t(\beta,\alpha,\delta)}
+\end{equation}
+
+#
+
+Desafortunadamente esta expresión no puede ser evaluada de forma directa. El problema se deriva de la función $\sigma_t(\beta,\alpha,\delta)$ definida implícitamente por la ecuación GARCH. Esta ecuación recursiva no constituye una definición completa, ya que no tenemos valores iniciales. 
+
+Al tratar de encontrar estos valores nos encontramos con el problema que no existe una función de densidad estacionaria para el GARCH.
+
+#
+
+Si tenemos un ARCH(q), podemos solucionar este problema condicionando en las primeras q observaciones. Ya que, la función $\sigma_t(\beta,\alpha,\delta)$ depende solo de los $q$ rezagos del error. Sin embargo, en el modelo GARCH(p,q) también necesitamos los primeros p valores de $\sigma_t^2$. Lo cual hace necesario usar algún procedimiento ad-hoc para los valores iniciales.   
+
+#
+
+Una posible solución, no muy buena, es poner todos los valores pre-muestra $\hat{u_t}^2$ y $\hat{\sigma_t}^2$ iguales a cero. 
+
+Una mejor idea es reemplazarlos con un estimado de la esperanza no condicional. Existen dos practicas comunes para esto:
+
+<ul>
+<li> Reemplazarlo por la función dado el modelo escogido.</li>
+<li> Usar la SSR del OLS dividida por n.</li>
+</ul>
+
+##
+
+Otra opción es estimar la máxima verosimilitud no condicionada, pero estos métodos se encuentran con problemas de estimación numérica.
+
+# Validación - GARCH
+
+#
+
+Podemos usar ARCH-LM, este consiste en obtener los residuales cuadrados, y estimar la regresión de nuevo incluyendo estos residuales como la variable dependiente y los residuales cuadrados rezagados como regresores.
+
+#
+
+Y se calcula el estadístico como $T*R^2$.Bajo la hipótesis nula de no auto-correlación este estadístico se distribuye $\chi^2$ con q grados de libertad, donde $q$ es el número de rezagos de los residuales al cuadrado.
+
+##
+
+También podemos usar el test de Ljung-Box usando los residuales al cuadrado.
+
+# Predicción - GARCH
+
+Los componentes GARCH no afectan la predicción de la media del proceso. Pero tendrán efectos sobre el error de la predicción, ya que este cambiara basado en los errores pasados.
+
+A medida que el horizonte de predicción crece este error de predicción converge al error de predicción del modelo ARIMA.
+
