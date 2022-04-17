@@ -98,7 +98,7 @@ Los dos principales filtros usados en la practica son el método semi-param\'{e}
 
 Las series desestacionalizadas encontradas en el DANE y el Banco de la Republica usan el método X-11-ARIMA. Usar series desestacionalizadas en vez de la serie original tiene la ventaja que permite encontrar relaciones que no se ven afectadas por factores exógenos como el clima o costumbres sociales.
 
-Sin embargo, la desventaja radica en que solose pueden realizar predicciones de las variables modificadas y no de la variable original.
+Sin embargo, la desventaja radica en que solo se pueden realizar predicciones de las variables modificadas y no de la variable original.
 
 # Modelos SARIMA
 

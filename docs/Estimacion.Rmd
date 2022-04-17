@@ -11,6 +11,8 @@ output:
     highlight: pygments
     center: true
     transition: slide
+    reveal_options:
+      slideNumber: true
 ---
 
 #
@@ -502,7 +504,7 @@ Así los valores se irían acercando a cero.
 <ul>
 <li> El enfoque por MCO se hará dando unos valores iniciales $\beta^0$.</li>
 <li> Luego la estimación de los parámetros sera análoga a lo visto para la estimación condicional, donde usamos el mecanismo de actualización.</li>
-<li> La diferencia radica en el uso de los $ E_c[\varepsilon_{t}]$ para la estimación no condicional.</li>
+<li> La diferencia radica en el uso de los $E_c[\varepsilon_{t}]$ para la estimación no condicional.</li>
 </ul>
 
 #
@@ -565,7 +567,7 @@ Por lo tanto, las observaciones 3 a T hacen contribuciones a la verosimiltud,
 Para la primera observación la única información que tenemos, gracias a los supuestos de normalidad y estacionariedad es que sigue la misma distribución que el resto de la muestra,
 
   \begin{equation}
-      w_1 \sim N\left( 0,\sigma_e^2\frac{1 - \phi_2}{(1+\phi_2)[(1-\phi_2)^2-\phi_1^2} \right)
+      w_1 \sim N\left( 0,\sigma_e^2\frac{1 - \phi_2}{(1+\phi_2)[(1-\phi_2)^2-\phi_1^2]} \right)
     \end{equation}
      
 #
@@ -573,7 +575,7 @@ Para la primera observación la única información que tenemos, gracias a los s
 Por construcción, $\varepsilon_1$ tiene la misma distribución que los $\varepsilon_t$ para $t \geq 3$, $\varepsilon_1 \sim N(0, \sigma_{\varepsilon})$, así
 
 \begin{equation}
-  \varepsilon_1 = \left( \frac{(1+\phi_2)[(1-\phi_2)^2-\phi_1^2}{1 - \phi_2} \right)^{\frac{1}{2}} w_1
+  \varepsilon_1 = \left( \frac{(1+\phi_2)[(1-\phi_2)^2-\phi_1^2]}{1 - \phi_2} \right)^{\frac{1}{2}} w_1
     \end{equation}
     
 Dado que $\varepsilon_t$ es un proceso de innovación, para $t > 1$ $\varepsilon_t$ es independiente de $w_1$ y por consiguiente de $\varepsilon_1$
@@ -583,7 +585,7 @@ Dado que $\varepsilon_t$ es un proceso de innovación, para $t > 1$ $\varepsilon
 Así, la contribución de esta observación será la densidad de $\varepsilon_1$, más un termino Jacobiano que es la derivada de $\varepsilon_1$ con respecto a $w_1$, 
 
 \begin{align*}
-      f(\varepsilon_1 | \sigma^2_{\varepsilon}, \beta) = & (2\pi)^{-0.5} (\sigma^2_{\varepsilon})^{-0.5}  \left( \frac{(1+\phi_2)[(1-\phi_2)^2-\phi_1^2}{1 - \phi_2} \right)^{\frac{1}{2}} \\
+      f(\varepsilon_1 | \sigma^2_{\varepsilon}, \beta) = & (2\pi)^{-0.5} (\sigma^2_{\varepsilon})^{-0.5}  \left( \frac{(1+\phi_2)[(1-\phi_2)^2-\phi_1^2]}{1 - \phi_2} \right)^{\frac{1}{2}} \\
         & {\rm e}^{-\frac{(1+\phi_2)[(1-\phi_2)^2-\phi_1^2}{2\sigma^2_{\varepsilon} (1 - \phi_2) }w_1^2}
     \end{align*}
 

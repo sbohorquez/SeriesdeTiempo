@@ -50,7 +50,7 @@ Por lo cual, si $\varepsilon_t$ es ruido blanco, se podría hacer la prueba, con
 El problema es entonces que $\varepsilon_t$ no es observable. Sustituyendo en la ecuación por los valores estimados de los parámetros, obtenemos $\hat{\varepsilon}_t$,
         
 \begin{equation}
-  \varepsilon_t = (1-\hat{\theta}_1 L - \dots - \hat{\theta}_q L^q)^{-1} (1-\hat{\phi}_1 L - \dots - \hat{\phi}_p L^p) (1 - L)^d x_t^{\lambda} 
+  \hat{\varepsilon}_t = (1-\hat{\theta}_1 L - \dots - \hat{\theta}_q L^q)^{-1} (1-\hat{\phi}_1 L - \dots - \hat{\phi}_p L^p) (1 - L)^d x_t^{\lambda} 
         \end{equation}
 
 Claramente, nuestros análisis tienen que hacerse sobre estos $\hat{\varepsilon}_t$.
@@ -82,7 +82,7 @@ La diferencia entre esta aproximación y $\frac{1}{T}$ puede ser bastante elevad
 Para $j=1$ obtenemos,
         
 \begin{equation}
- Var(\hat{\rho}_j) \simeq \frac{\phi_1^2)}{T} 
+ Var(\hat{\rho}_j) \simeq \frac{\phi_1^2}{T} 
  \end{equation}
 
 Suponiendo que $\phi=0.7$, obtenemos que la varianza es $\frac{0.49}{T}$ que es aproximadamente la mitad que la dada por $\frac{1}{T}$ 
@@ -126,7 +126,7 @@ que se distribuye como $\chi^2$ con M-p-q grados de libertad bajo la hipótesis 
 
 Otras pruebas un poco más informales sobre los residuales consisten en tomar primera diferencia de los $\hat{\varepsilon}_t$.
 
-Así si la serie se aproxima a un ruido blanco, $\hat{\varepsilon}_t \simeq \varepsilon_t $, entonces
+Así si la serie se aproxima a un ruido blanco, $\hat{\varepsilon}_t \simeq \varepsilon_t$, entonces
         \begin{equation}
             \Delta \hat{\varepsilon}_t = \varepsilon_t - \theta \varepsilon_{t-1}
         \end{equation}
