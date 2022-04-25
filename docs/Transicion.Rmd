@@ -1,0 +1,114 @@
+---
+title: "Modelos de Transición"
+author: |
+        | Santiago Bohorquez Correa
+        |
+        | Universidad EAFIT
+        | Escuela de Economía y Finanzas
+output:
+  revealjs::revealjs_presentation:
+    css: EAFIT.css
+    highlight: pygments
+    center: true
+    transition: slide
+    reveal_options:
+      slideNumber: true
+---
+
+#
+
+Hasta ahora hemos asumido que la variable que indica el quiebre es una función del tiempo. Sin embargo, podemos pensar en variables que dependen de otros factores, e.g. el ciclo económico, expectativas.
+
+Ahora, miremos como modelar este tipo de fenómenos económicos.
+
+
+# Árboles de Clasificación y regresión
+
+#
+
+Los modelos de transición son en general aplicaciones de los llamados arboles de clasificación y regresión, propuestos por Breiman et al (1984), que en los últimos años han crecido en popularidad como método de data mining.
+
+#
+
+Los arboles de clasificación se usan cuando la variable de interés es categórica y el árbol de decisión se usa para escoger en cual categoría se encuentra el valor de la variable. 
+
+#
+
+Los arboles de regresión se usan cuando la variable es continua y se quiere predecir el valor de esta. Este es el caso en las series de tiempo que nosotros venimos trabajando. 
+
+#
+
+El procedimiento en general para este método es:
+
+<ol>
+<li> Comenzamos con el grupo completo.
+<li>  Partimos el grupo tal que se minimice el error de predicción.
+<li>  Repetimos hasta que el error de predicción se minimice.
+</ol>
+
+  
+
+# Modelos de Transición
+
+#
+Definimos el modelo de transición, *threshold model*, como:
+\begin{equation}
+    x_t = \left\{ \begin{matrix}
+    Z_t\beta_1 + \varepsilon_t  & q_t < h \\
+     Z_t\beta_2 + \varepsilon_t & q_t \geq h
+\end{matrix} \right.
+\end{equation}
+donde $Z_t\beta_i$ representa el modelo a seguir, y puede incluir efectos ARMA y variables exógenas, $q_t$ es la variable umbral o variable de transición, y h es un valor umbral desconocido.
+
+#
+
+$Z_t$ puede contener rezagos, por lo cual debemos asegurarnos que los modelos sean estacionarios en ambos regímenes, $q_t$ sera en general un indicador del ciclo económico.
+
+#
+
+Un ejemplo de este tipo de modelos esta dado por la relación entre ciclo económico e inflación. Por lo general la inflación es más alta cuando estamos en expansión y más baja cuando estamos en recesión.
+
+#
+
+La pregunta obvia que surge en este caso es, ¿como estimamos el valor de $h$?.
+
+Para este propósito seguimos el siguiente procedimiento:
+<ol>
+<li> Ordenamos $q_t$ en orden ascendente.</li>
+<li> Calculamos el percentil $15$ y $85$.</li> 
+<li> Para cada $h$ calculamos la SSR de ambos regímenes y sumamos.</li>
+<li> Y el $\hat{h}$ es el valor que minimiza la SSR.</li>
+</ol>
+
+#
+
+Hasta ahora hemos asumido que el proceso se encuentra en un estado o el otro, sin importar que tan intenso es el proceso. Por ejemplo, en una recesión muy fuerte la inflación se podría convertir en deflación.
+
+Si queremos modelar este tipo de comportamiento podemos usar modelos de transición suavizada. 
+
+
+# Modelos de Transición Suavizada
+
+#
+
+La idea de este tipo de modelos es modelar el proceso usando la probabilidad de estar en un estado o el otro, así obtenemos:
+\begin{equation}
+    x_t = Z_t\beta_1 G(q_t,h,c) + Z_t\beta_2 [1-G(q_t,h,c)] +\varepsilon_t
+\end{equation}
+donde $G(q_t,h,c)$ es una función que toma valores entre 0 y 1. $h$ es el parámetro suavizador y $c$ es el valor umbral.
+
+#
+
+La función suavizadora más común es la función logística,
+\begin{equation}
+    G(q_t,h,c) = \frac{\exp(h(q_t-c))}{1+\exp(h(q_t-c))}
+\end{equation}
+
+Usualmente $q_t-c$ es dividido por su desviación estándar para normalizar esta expresión. Este modelo es llamado el modelo AR de suavización logística, o *LSTAR* por sus siglas en ingles.
+
+#
+
+Para estimar este modelo, noten que es simplemente un modelo no lineal.  Bajo el supuesto de exogeneidad de las variables podemos estimarlo usando Mínimos Cuadrados no lineales.
+
+Para estimar el modelo usamos una grilla de $h$ y $c$ y escogemos la combinación que minimiza la SSR.
+
