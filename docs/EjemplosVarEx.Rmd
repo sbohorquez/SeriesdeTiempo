@@ -1,0 +1,200 @@
+---
+title: "Ejemplos Variables Exógenas"
+author: "Santiago Bohorquez Correa"
+date: "5/1/2022"
+output: html_document
+---
+
+En este documento estimaremos los modelos con variables exógenas vistos en clase.
+
+```{r, include=FALSE}
+setwd("D:/OneDrive - Universidad EAFIT/EAFIT/Docencia/Series de Tiempo/2021 - 1")
+```
+
+Primero, cargamos los paquetes necesarios.
+
+```{r,  echo = T, results = 'hide', message=FALSE}
+library(readxl)
+library(dynlm)
+library(ggplot2)
+library(tseries)
+library(tsDyn)
+library(strucchange)
+library(fUnitRoots)
+library(forecast)
+library(tidyverse)
+library(zoo)
+library(lubridate)
+```
+
+Cargamos los datos que vamos a utilizar:
+
+```{r}
+data <- read_excel("dataUK.xlsx")
+
+int <- data[,2]
+ecosent <- data[,3]
+
+int <- ts(int, start = c(2004,1), frequency = 12)
+ecosent <- ts(ecosent, start = c(2004,1), frequency = 12)
+date <- as.yearmon(data$date,"%Y%B")
+
+plot(int, type="l", col="red", ylab="Interest Rate", xlab="")
+```
+
+# Pruebas de raíces unitarias
+
+```{r}
+unitrootTest(int)
+kpss.test(int)
+```
+
+# Modelo estacional
+
+## Dummies
+
+```{r}
+d_month <- month(date)
+dlm <- lm(int ~ as.factor(d_month))
+summary(dlm)
+```
+
+## SARIMA
+
+```{r}
+intseas <- arima(int, order=c(1,1,0), seasonal = list(order = c(1,0,0)))
+intseas
+```
+
+# Analisis de Intervención
+
+## Quiebre
+
+```{r}
+pq_int <- breakpoints(int ~ 1, breaks=1)
+summary(pq_int)
+
+ic_int <- confint(pq_int) 
+
+plot(int,xlab="years",ylab="Interest Rate")
+title("Punto de quiebre e intervalo de confianza")
+lines(pq_int)
+lines(ic_int)
+```
+
+## Variable Escalón
+
+```{r}
+
+escalon <- rep(0,164)
+escalon[60:164] <- 1
+
+arescalon <- arima(int, order=c(1,0,0), 
+                   seasonal = list(order = c(1,0,0)),
+                    xreg = escalon)
+```
+
+Estimación con modelos distintos antes y despues del quiebre
+
+```{r}
+tar <- setar(int,thVar = escalon, th=0.5, mL=1, mH=1)
+tar
+```
+
+Separamos la muestra en dos para ver si es estacionaria
+
+```{r}
+int1 <- window(int,start=c(2004,1),end=c(2008,10))
+int2 <- window(int, start=c(2008,11))
+
+unitrootTest(int1)
+kpss.test(int1)
+
+unitrootTest(int2)
+kpss.test(int2)
+```
+
+
+Vemos si es necesario incluir más quiebres
+```{r}
+pq_int2 <- breakpoints(int ~ 1)
+summary(pq_int2)
+```
+
+Calcula 5 quiebres, pero no tienen sentido economico, por lo cual parece indicar que el problema es de no estacionariedad.
+
+Diferencio la serie
+
+```{r}
+dint <- diff(int)
+
+plot(dint, type="l",col="red")
+```
+
+modelamos la serie diferenciada con un impulso
+
+```{r}
+impulso <- diff(escalon)
+
+arimpulso <- arima(dint, order=c(1,0,0), 
+                   xreg = impulso)
+arimpulso
+```
+
+# Variable Exógena estocastica
+
+```{r}
+
+ecosent2 <- (ecosent-mean(ecosent))/stdev(ecosent)
+
+fecha <- seq(as.Date("2004/1/1"),by="month",length.out=164)
+
+base <- data.frame(cbind(fecha,int,ecosent2))
+base$fecha <- as.Date(base$fecha)
+
+base <- base %>%
+        mutate(dint = c(NA,diff(int)))
+
+ggplot(base) +
+  geom_line((aes(x=fecha, y=dint, colour="Interes"))) +
+  geom_line((aes(x=fecha, y=ecosent2,colour="Ecosent")))+
+  scale_colour_manual("",
+                      breaks = c("Interes","Ecosent"),
+                      values = c("red","blue"))
+```
+
+Primer modelo con la tasa de interes en Niveles
+
+```{r}
+adl <- dynlm(int ~ L(int,1) + ecosent + L(ecosent,1))
+summary(adl)
+
+ecosent3 <-  ts(ecosent[2:164], start = c(2004,2), frequency = 12)
+
+adldiff <- dynlm(dint ~ L(dint,1) + L(ecosent3,1))
+summary(adldiff)
+```
+
+Modelos con variables umbral estocastica
+
+```{r}
+tar <- setar(dint,thDelay = 1, ML=1,MH=1,thVar = ecosent3,th=100)
+tar
+summary(tar)
+
+sel <- selectSETAR(dint,thDelay = 1,mL=1,mH=1,nthresh=1,
+                   criterion = "BIC",thVar = ecosent3)
+
+sel
+
+tar2 <- setar(dint,thDelay = 1, ML=1,MH=1,thVar = ecosent3,th=91.3)
+summary(tar2)
+
+
+
+ecosent4 <-  (ecosent3 - mean(ecosent3))/stdev(ecosent3)
+
+
+star <- lstar(dint,thDelay = 1,mL=1,mH=1,thVar = ecosent4)
+summary(star)
+```
