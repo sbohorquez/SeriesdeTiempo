@@ -1,0 +1,111 @@
+---
+title: "GARCH - Extensiones"
+author: |
+        | Santiago Bohorquez Correa
+        |
+        | Universidad EAFIT
+        | Escuela de Economía y Finanzas
+output:
+  revealjs::revealjs_presentation:
+    css: EAFIT.css
+    highlight: pygments
+    center: true
+    transition: slide
+---
+
+
+
+#
+
+En los modelos de transición vimos que la media de las series pueden reaccionar de forma distinta dependiendo de otras series. Este efecto también se puede dar sobre la varianza. 
+
+Hasta ahora los modelos asumen que choques positivos y negativos tienen el mismo efecto sobre la volatilidad de la series. Sin embargo, el precio de los activos financieros tienden a responder diferente a choques positivos o negativos.
+
+
+# GJR-GARCH
+
+#
+
+El Glosten-Jagannathan-Runkle GARCH (GJR-GARCH) trata de solucionar esto haciendo la siguiente extensión, 
+\begin{equation}
+    \sigma^2_t = \alpha_0 + (\alpha_1  + \gamma I_{t-1}) u_{t-1}^2 + \delta_1 \sigma^2_{t-1}
+\end{equation}
+por simplicidad presento el caso GJR-GARCH(1,1), donde $I_{t-1}=1$ si $u{t-1}<0$ y  $I_{t-1}=0$ si  $u_{t-1} \geq 0$
+\end{itemize}
+\end{frame}
+
+#
+
+El efecto de apalancamiento implica que $\gamma > 0$. ESte tipo de modelos ha mostrado en la practica que funciona mejor que los modelos GARCH tradicionales. Al igual que sucede con los modelos GARCH, los modelos GJR-GARCH(1,1) tienden a ser escogidos por encima de modelos GJR-GARCH(p,q) de orden superior. 
+
+# APARCH
+
+#
+
+Anteriormente, también hemos mencionado que en series financieras existen retornos anormales, muy altos o muy bajos, para solucionar el problema de datos outliers podemos usar el modelo poder asimétrico, APARCH,
+
+\begin{equation}
+    \sigma^{\varpi}_t = \alpha_0 + \alpha_1 (|u_{t-1}| - \gamma u_{t-1})^{\varpi} + \delta_1 \sigma^{\varpi}_{t-1}
+\end{equation}
+donde $\gamma>0$ implica efecto de apalancamiento y $\varpi = 1$ es más robusto a outliers. 
+
+
+# EGARCH
+
+#
+
+Nelson y Cao (1992) argumentaron que la restricción de positividad sobre los parámetros del modelo GARCH era demasiado restrictiva por lo cual propusieron un modelo que no impone estas restricciones,
+\begin{equation}
+   \ln(\sigma^2_t) = \alpha_0 + \alpha_1 \frac{|u_{t-1}| + \gamma u_{t-1}}{\sigma_{t-1}} + \delta_1 \ln(\sigma^2_{t-1})
+\end{equation}
+este modelo también es conocido como el Exponential GARCH dado que usamos los logaritmos de las varianzas.
+
+
+
+# GARCH-M
+
+#
+
+Finalmente, el modelo GARCH-M añade un termino de heterocedasticidad a la ecuación de la media,
+\begin{equation}
+   x_t = Z_t\beta + \lambda \sigma_t + u_t
+\end{equation}
+donde,
+\begin{equation}
+    u_t = \sigma_t \varepsilon_t; \quad \sigma^2_t = \alpha_0 + \sum_{i=1}^q \alpha_i u_{t-i}^2 + \sum_{j=1}^p \delta_j \sigma_{t-j}^2
+\end{equation}
+
+
+# Validación
+
+#
+
+Al introducir este tipo de extensiones debemos probar que los modelos escogidos son los correctos. Para esto usaremos diferentes pruebas sobe los residuales de los modelos.
+
+# Test de estabilidad de Nyblom
+
+#
+
+Este test mira si existe cambio estructural dentro de la serie. La hipótesis nula en este test es que los parámetros estimados no cambian a través del tiempo, i.e. la varianza de los residuales es cero, y la hipótesis alterna es que la varianza es diferente de cero.
+
+# Test de sesgo de signo
+
+#
+
+El test de sesgo de signo de Engle y Ng mira si la especificación del modelo es correcta o no. 
+
+Específicamente, el test examina si los residuales cuadrados son predecibles usando variables (dummy) indicativas de cierta información.
+
+
+#
+
+El test tiene una variable $S^-$ que es 1 cuando $\epsilon_{t-1}<0$. Y testea por efectos positivos y negativos sobre la volatilidad predecida del modelo.
+
+<ol>
+<li> Si usamos $S^-$ nos enfocamos en choques negativos.</li>
+<li> Si usamos $S^+=1-S^-$ nos enfocamos en choques positivos.</li>
+</ol>
+
+#
+
+La hipótesis nula es que los parámetros adicionales asociados a las variables (dummy) son iguales a cero. La hipótesis alterna es que estos parámetros adicionales son diferentes de cero, indicando que el modelo está mal especificado.
