@@ -17,7 +17,8 @@ Notas de Clase del curso de series de tiempo:
   <li><a href="https://sbohorquez.github.io/SeriesdeTiempo/VariablesExogenas.html#/">Modelos Dinámicos con Variables Exógenas</a></li>
   <li><a href="https://sbohorquez.github.io/SeriesdeTiempo/Intervencion.html#/">Análisis de Intervención</a></li>
   <li><a href="https://sbohorquez.github.io/SeriesdeTiempo/Transicion.html#/">Modelos de Transición</a></li>
-  <li><a href="https://sbohorquez.github.io/SeriesdeTiempo/EjemplosVarEx.html#/">Ejemplos de Variables Exógenas</a></li>
-    <li><a href="https://sbohorquez.github.io/SeriesdeTiempo/GARCHExt.html#/">Extensiones GARCH</a></li>
+   <li><a href="https://sbohorquez.github.io/SeriesdeTiempo/EjemplosVarEx.html#/">Ejemplos de Variables Exógenas</a></li>
+  <li><a href="https://sbohorquez.github.io/SeriesdeTiempo/GARCHExt.html#/">Extensiones GARCH</a></li>
+  <li><a href="https://sbohorquez.github.io/SeriesdeTiempo/EstadoEspacio.html#/">Modelos Estado Espacio</a></li>
 </ol> 
 
