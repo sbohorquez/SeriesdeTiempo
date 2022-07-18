@@ -11,6 +11,8 @@ output:
     highlight: pygments
     center: true
     transition: slide
+    reveal_options:
+      slideNumber: true
 ---
 
 
@@ -48,10 +50,6 @@ output:
 <li> Es decir, se espera que los datos sean observados durante todo el periodo de estudio.</li>
 </ul>
 
-
-
-# Introducción a los procesos Estocásticos
-
 #
 Para hacer predicciones sobre series económicas y testear teorías sobre su comportamiento, necesitamos hacer unos supuestos sobre su comportamiento:
 
@@ -60,20 +58,126 @@ Para hacer predicciones sobre series económicas y testear teorías sobre su com
 <li> También existen componentes aleatorios inexplicables, debido a shocks al sistema, errores de los agentes, y distorsiones creadas por errores de medición, y agregación de agentes, bienes y tiempo.</li>  
 </ul>
 
+# Conceptos básicos
+
+
 #
 Sea $x_t$ un vector de variables económicas de tamaño $m \times  1$ generadas en el tiempo $t$. Estas variables pueden estar correlacionadas contemporáneamente y a través del tiempo. La colección $\{ x_t, -\infty < t < \infty \}$ es llamada una secuencia (vectorial) aleatoria.   
 
 Un data set económico es un conjunto finito , e.g. $\left\{x_1,\dots,x_n\right\}$, de esta secuencia infinita.
 
+# Rezago Variable
+
+##
+<ul>
+<li> El primer rezago de una variable $x_t$ se define como $x_{t-1}$.</li>
+<li> De la misma forma el rezago $j$ de $x_t$ es $x_{t-j}$.</li>
+<li> Cabe anotar que el rezago depende de la unidad de medida de la variable, e.g. si la variable esta medida anualmente $t-1$ es el año anterior, pero si esta medida mensualmente, $t-1$ es el mes anterior.</li> 
+</ul>
+
+# El operador de rezagos
+
+##
+Sea $x_t$ una observación aleatoria de una serie de tiempo. Definimos el símbolo $L$ como:
+
+\begin{equation}
+    L x_t = x_{t-1}
+\end{equation}
+
+$L$ es lo que en matemáticas es conocido como un operador. No es un parámetro o un número pero puede ser tratado como tal para operaciones algebraicas, e.g. $L^2 x_t = L(L x_t) = L x_{t-1} = x_{t-2}$, en general $L^n x_t = x_{t-n}$  
+
+##
+    
+En adición, la expresión
+
+\begin{equation}
+    \alpha(L) = \alpha_0 + \alpha_1 L + \alpha_2 L^2 + \dots + \alpha_p L^p 
+\end{equation}
+
+es llamado el polinomio de orden p del operador de rezagos. 
+
+Y si lo aplicamos a un serie de tiempo, generamos una media móvil ponderada de la serie, i.e.
+
+\begin{equation}
+    \alpha(L)x_t = \alpha_0 + \alpha_1 x_{t-1} + \alpha_2 x_{t-2} + \dots + \alpha_p x_{t-p} 
+\end{equation}
+
+
+# El operador de diferencia
+
+##    
+Otro operador usado es
+
+\begin{equation}
+    \Delta = 1 - L
+\end{equation}
+
+el operador de diferencia. $\Delta x_t = x_t - x_{t-1}$ es el cambio en $x$ en el periodo $t$. 
+
+
+##
+Es importante anotar la diferencia de notación entre
+
+\begin{equation}
+    \Delta_n = 1 - L^n
+\end{equation}
+
+que el operador de la diferencia de $n$ periodos, y
+
+\begin{equation}
+    \Delta^n = (1 - L)^n
+\end{equation}
+
+el operador de la diferencia de orden $n$, e.g. $\Delta_2 x_t = x_t - x_{t-2}$ y $\Delta^2 x_t= \Delta x_t - \Delta x_{t-1} = (x_t - x_{t-1}) - (x_{t-1} - x_{t-2})$ 
+
+
+
+## 
+
+<ul>
+<li> La primera diferencia del logaritmo de $x_t$ es $\Delta \ln (x_t) = \ln (x_t) - \ln (x_{t-1})$.</li>
+<li> El cambio porcentual de una serie de tiempo $x_t$ entre los periodos $t-1$ y $t$ es aproximadamente $100*\Delta \ln (x_t)$. Esta aproximación funciona mejor cuando el cambio porcentual es pequeño.</li>
+<li> Es común usar esta aproximación para anualizar crecimientos, por ejemplo con datos trimestrales, se obtiene así,  $4*100*\Delta \ln (x_t)$.</li>
+
+
+## Cambio porcentual
+
+<ul>
+<li> El cambio del logaritmo de una variable es aproximadamente igual al cambio proporcional de dicha variable, i.e. $\ln (X + a) - \ln (X) \cong \frac{a}{X}$.</li> 
+<li> Ahora, remplazando $X$ con $x_{t-1}$ y $a$ con $\Delta x_t$. Y, sabiendo que, $x_t =  x_{t-1} + \Delta x_t$.</li>
+<li> Esto significa que el cambio proporcional entre los periodos $t$ y $t-1$ es aproximadamente, 
+    \begin{align}
+       \Delta  \ln (x_t) = \ln (x_t) - \ln (x_{t-1}) & =  \ln (x_{t-1} + \Delta x_t) - \ln (x_{t-1}) \\
+       & \cong \frac{\Delta x_t}{x_{t-1}}
+    \end{align}</li>
+</ul>    
+
+# Proceso de innovación
+
+##
+Finalmente, definimos el proceso de innovación . Sea $\{\varepsilon, -\infty < t < \infty \}$ un proceso estocástico (o secuencia aleatoria) y sea $\mathcal{E}_{t-1}$ el $\sigma$-algebra de eventos predecibles cuando el pasado de $\varepsilon_t$ es conocido.
+
+##
+Y asumimos
+
+\begin{align}
+    E(\varepsilon_t | \mathcal{E}_{t-1}) & = 0 \\
+    E(\varepsilon^2_t |  \mathcal{E}_{t-1}) & = \sigma^2 
+\end{align}
+
+Este es un proceso estacionario en el sentido débil, y no auto-correlacionado. Este tipo de proceso se conoce también como <em>ruido blanco</em>
+
+
 # Proceso Generador de datos
 
 #
 
-Definimos el proceso generador de datos (PGD) para estas variables como la función de probabilidad conjunta bajo la cual esta secuencia es generada, representando todas las influencias resaltadas.
+Definimos el proceso generador de datos (PGD) para el vector de variables $x_t$ como la función de probabilidad conjunta bajo la cual esta secuencia es generada, representando todas las influencias resaltadas.
 
 Gracias al hecho que el tiempo siempre fluye en la misma dirección, eventos pasados pueden ser tratados como dados para la explicación de eventos futuros. Esto es llamado condicionamiento secuencial y es fundamental para hacer predicciones. 
 
 #
+
 Asumamos, por simplicidad, que los datos tienen una función de distribución continua. Entonces, el PGD es representado por la densidad condicional
 
 \begin{equation}\label{eq:PGD}
@@ -84,7 +188,7 @@ donde $\chi_t=\sigma(x_{t-1},x_{t-2},x_{t-3},\dots)$. Esta notación es una simp
 
 
 #
-En la ecuación \ref{eq:PGD} la densidad $D_t$ depende de $t$, porque no asumimos estacionariedad, en particular debemos hacer concesiones para características como variaciones estacionales, cambios de régimen, cambios regulatorios, entre otros. 
+En la ecuación anterior la densidad $D_t$ depende de $t$, porque no asumimos estacionariedad, en particular debemos hacer concesiones para características como variaciones estacionales, cambios de régimen, cambios regulatorios, entre otros. 
 
 Estos conceptos los veremos en futuras clases.  
 
@@ -128,104 +232,6 @@ donde $X_t$ es la series observada, $T_t$ es la tendencia de largo plazo, $C_t$ 
 </ul>
 
 
-# Conceptos básicos
-
-# Rezago Variable
-
-<ul>
-<li> El primer rezago de una variable $x_t$ se define como $x_{t-1}$.</li>
-<li> De la misma forma el rezago $j$ de $x_t$ es $x_{t-j}$.</li>
-<li> Cabe anotar que el rezago depende de la unidad de medida de la variable, e.g. si la variable esta medida anualmente $t-1$ es el año anterior, pero si esta medida mensualmente, $t-1$ es el mes anterior.</li> 
-</ul>
-
-# El operador de rezagos
-
-Sea $x_t$ una observación aleatoria de una serie de tiempo. Definimos el símbolo $L$ como:
-
-\begin{equation}
-    L x_t = x_{t-1}
-\end{equation}
-
-$L$ es lo que en matemáticas es conocido como un operador. No es un parámetro o un número pero puede ser tratado como tal para operaciones algebraicas, e.g. $L^2 x_t = L(L x_t) = L x_{t-1} = x_{t-2}$, en general $L^n x_t = x_{t-n}$  
-
-#
-    
-En adición, la expresión
-
-\begin{equation}
-    \alpha(L) = \alpha_0 + \alpha_1 L + \alpha_2 L^2 + \dots + \alpha_p L^p 
-\end{equation}
-
-es llamado el polinomio de orden p del operador de rezagos. 
-
-Y si lo aplicamos a un serie de tiempo, generamos una media móvil ponderada de la serie, i.e.
-
-\begin{equation}
-    \alpha(L)x_t = \alpha_0 + \alpha_1 x_{t-1} + \alpha_2 x_{t-2} + \dots + \alpha_p x_{t-p} 
-\end{equation}
-
-
-# El operador de diferencia
-    
-Otro operador usado es
-
-\begin{equation}
-    \Delta = 1 - L
-\end{equation}
-
-el operador de diferencia. $\Delta x_t = x_t - x_{t-1}$ es el cambio en $x$ en el periodo $t$. 
-
-
-#
-Es importante anotar la diferencia de notación entre
-
-\begin{equation}
-    \Delta_n = 1 - L^n
-\end{equation}
-
-que el operador de la diferencia de $n$ periodos, y
-
-\begin{equation}
-    \Delta^n = (1 - L)^n
-\end{equation}
-
-el operador de la diferencia de orden $n$, e.g. $\Delta_2 x_t = x_t - x_{t-2}$ y $\Delta^2 x_t= \Delta x_t - \Delta x_{t-1} = (x_t - x_{t-1}) - (x_{t-1} - x_{t-2})$ 
-
-
-
-# 
-
-<ul>
-<li> La primera diferencia del logaritmo de $x_t$ es $\Delta \ln (x_t) = \ln (x_t) - \ln (x_{t-1})$.</li>
-<li> El cambio porcentual de una serie de tiempo $x_t$ entre los periodos $t-1$ y $t$ es aproximadamente $100*\Delta \ln (x_t)$. Esta aproximación funciona mejor cuando el cambio porcentual es pequeño.</li>
-<li> Es común usar esta aproximación para anualizar crecimientos, por ejemplo con datos trimestrales, se obtiene así,  $4*100*\Delta \ln (x_t)$.</li>
-
-
-## Cambio porcentual
-
-<ul>
-<li> El cambio del logaritmo de una variable es aproximadamente igual al cambio proporcional de dicha variable, i.e. $\ln (X + a) - \ln (X) \cong \frac{a}{X}$.</li> 
-<li> Ahora, remplazando $X$ con $x_{t-1}$ y $a$ con $\Delta x_t$. Y, sabiendo que, $x_t =  x_{t-1} + \Delta x_t$.</li>
-<li> Esto significa que el cambio proporcional entre los periodos $t$ y $t-1$ es aproximadamente, 
-    \begin{align}
-       \Delta  \ln (x_t) = \ln (x_t) - \ln (x_{t-1}) & =  \ln (x_{t-1} + \Delta x_t) - \ln (x_{t-1}) \\
-       & \cong \frac{\Delta x_t}{x_{t-1}}
-    \end{align}</li>
-</ul>    
-
-# Proceso de innovación
-
-Finalmente, definimos el proceso de innovación . Sea $\{\varepsilon, -\infty < t < \infty \}$ un proceso estocástico (o secuencia aleatoria) y sea $\mathcal{E}_{t-1}$ el $\sigma$-algebra de eventos predecibles cuando el pasado de $\varepsilon_t$ es conocido.
-
-#
-Y asumimos
-
-\begin{align}
-    E(\varepsilon_t | \mathcal{E}_{t-1}) & = 0 \\
-    E(\varepsilon^2_t |  \mathcal{E}_{t-1}) & = \sigma^2 
-\end{align}
-
-Este es un proceso estacionario en el sentido débil, y no auto-correlacionado. Este tipo de proceso se conoce también como <em>ruido blanco</em>
 
 # Auto-Correlación
 
@@ -325,19 +331,20 @@ En el caso especial de la distribución normal, estacionariedad débil si implic
 # Ergodicidad
 
 
+#
 Si $\{x_t\}$ es una secuencia estacionaria y ergódica, y $E(x_1)$ existe, entonces $\bar{x_n} \rightarrow E(x_1)$ con probabilidad 1.     
 
 
-Donde $\bar{x_n} = \frac{1}{n} \sum_{t=0}^n x_t $  
+Donde $\bar{x_n} = \frac{1}{n} \sum_{t=0}^n x_t$  
 
 
 
-## Ejemplo Serie estacionaria
+# Ejemplo Serie estacionaria
 
 <img src="img/estacionaria.png" alt="Ejemplo: Serie Estacionaria" width="900" height="450">  
 
 
-## Ejemplo Serie no estacionaria
+# Ejemplo Serie no estacionaria
 
 <img src="img/noestacionaria.png" alt="Ejemplo: Serie No Estacionaria" width="900" height="450">  
 
@@ -365,6 +372,19 @@ En general, si $\upsilon_t = - \sum_{j=0}^{\infty} \frac{\alpha_j}{\alpha_o}\ups
 
 
 # Procesos no estacionarios
+
+#
+
+
+La no-estacionariedad de una serie genera problemas de estimación de los parámetros, por ejemplo:
+
+<ul>
+<li> Los parámetros en una regresión pueden tener una distribución no-normal.
+<li> Los parámetros auto-regresivos están sesgados hacia cero.</li>
+<li> Obtenemos <a href="https://tylervigen.com/spurious-correlations">regresiones espurias.</a> 
+</ul>
+
+#
 
 En economía existen diferentes series que no cumplen con el supuesto de estacionariedad, e.g. el producto interno bruto. Por lo tanto es importante incluir (algunos) procesos de este tipo en nuestros análisis.
 
@@ -520,6 +540,6 @@ por lo tanto el proceso $x_t$ se obtiene sumando o integrando el proceso $w_t$
 
 <ul>
 <li> Por esta razón, el paseo aleatorio hace parte de la clase de modelos integrados.</li>
-<li> Los modelos integrados son aquellos que se pueden obtener mediante suma o integración de modelos estacionarios,</li>
+<li> Los modelos integrados son aquellos que se pueden obtener mediante suma o integración de modelos estacionarios.</li>
 
 

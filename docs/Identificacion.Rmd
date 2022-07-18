@@ -28,16 +28,10 @@ En las clases anteriores hemos hablado del supuesto de estacionariedad como algo
 # Procesos No-estacionario
 
 
-La no-estacionariedad de una serie genera problemas de estimación de los parámetros. Ahora discutiremos tres de ellos
-<ul>
-<li> El parámetro del proceso AR(1) es sesgado hacia cero.</li>
-<li> El parámetro puede tener una distribución no-normal.
-<li> Obtenemos <a href="https://tylervigen.com/spurious-correlations">regresiones espurias.</a> 
-</ul>
 
 #
 
-Por este motivo el primer paso para identificar el modelo que vamos a usar, es asegurarnos que la serie que vamos a usar es estacionaria.
+El primer paso para identificar el modelo que vamos a usar, es asegurarnos que la serie que vamos a usar es estacionaria.
 
 # Pruebas de Raíces unitarias
 
