@@ -28,18 +28,18 @@ Después de finalizar este curso los estudiantes deben de estar en capacidad de 
  <li> Características series de tiempo.</li> 
  <li> Modelos lineales.</li>
  <li> Modelos estacionales.</li>
- <li> Modelos de heterocedasticidad condicional.</li>
  <li> Modelos dinámicos con variables exógenas.</li>
  <li> Análisis de intervención y modelos de transferencia.</li>
- <li> Series de tiempo en el dominio de la frecuencia y modelos de  componentes no observables.</li> 
+ <li> Modelos de heterocedasticidad condicional.</li>
+ <li> Modelos de componentes no observables y series de tiempo en el dominio de la frecuencia.</li> 
 </ul>
 
 # Evaluaciones
 
 <ul>
  <li>Parcial 1 (25\%): Semana 9 </li>
- <li>Parcial 2 (25\%): Semana 16 </li>
- <li>Trabajo Aplicado (25\%): Semana 17 - Entrega y Presentaciones a programar </li>
+ <li>Parcial 2 (25\%): Semana 15 </li>
+ <li>Trabajo Aplicado (25\%): Semana 16 - Entrega y Presentaciones a programar </li>
  <li> Seguimiento (25\%): Entrega proyecto trabajo final (10\%), Aportes al proyecto de clase. (15\%) </li>
 
 # Bibliografía
