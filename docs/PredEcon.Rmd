@@ -18,7 +18,9 @@ output:
 # La predicción en el área económica
     
 # ¿Por qué hacer predicciones?
-  
+
+##
+
 <ul>  
 <li> Las series económicas y financieras no son deterministicas, por lo tanto existe incertidumbre sobre el futuro valor que estas pueden tomar.</li>
 <li> Por lo tanto hacemos predicciones para la toma de decisiones, elegimos una opción entre diversas alternativas con el objetivo de maximizar la utilidad esperada.</li>
@@ -33,7 +35,7 @@ Si queremos predecir la inflación. ¿Cómo podemos hacerlo?
 
 # Métodos posibles
 
-
+##
 Cualitativos;
 
 <ul>
