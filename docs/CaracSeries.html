@@ -2207,6 +2207,13 @@ E[\mu_{t_1}\mu_{t_2}] \\
 </section></section>
 <section id="section-23" class="title-slide slide level1">
 <h1></h1>
+<p>La autocovarianza de orden <span class="math inline">\(j\)</span> se
+define como <span class="math inline">\(\gamma_j =
+cov(x_{t},x_{t-j})\)</span>} de orden <span class="math inline">\(j\)</span>, para <span class="math inline">\(j&gt;0\)</span></p>
+</section>
+
+<section id="section-24" class="title-slide slide level1">
+<h1></h1>
 <p>Ahora, definimos la auto-correlación como</p>
 <p><span class="math display">\[\begin{equation}
     \rho_j = \frac{\gamma_j}{\gamma_0}
@@ -2216,7 +2223,7 @@ es que la auto-correlación siempre va a estar entre -1 y 1, dado que la
 covarianza siempre es igual o menor que la varianza.</p>
 </section>
 
-<section id="section-24" class="title-slide slide level1">
+<section id="section-25" class="title-slide slide level1">
 <h1></h1>
 <p>Las auto-covarianzas y auto-correlaciones expuestas anteriormente son
 los valores poblacionales, estas pueden ser estimadas en una muestra de
@@ -2228,7 +2235,7 @@ tamaño <span class="math inline">\(T\)</span> de la siguiente manera:
     \end{align}\]</span></p>
 </section>
 
-<section id="section-25" class="title-slide slide level1">
+<section id="section-26" class="title-slide slide level1">
 <h1></h1>
 <ul>
 <li>
@@ -2247,7 +2254,7 @@ diferentes ordenes de las auto-covarianzas.
 </li>
 </section>
 
-<section id="section-26" class="title-slide slide level1">
+<section id="section-27" class="title-slide slide level1">
 <h1></h1>
 <ul>
 <li>
@@ -2266,7 +2273,7 @@ series de tiempo.
 
 </section>
 
-<section id="section-27" class="title-slide slide level1">
+<section id="section-28" class="title-slide slide level1">
 <h1></h1>
 <p>Para la correcta estimación de los modelos necesitamos dos supuestos
 del comportamiento del PGD, primero los definiremos en plabras simples y
@@ -2284,23 +2291,24 @@ converge a la esperanza del conjunto.
 </li>
 </section>
 
-<section id="section-28" class="title-slide slide level1">
+<section id="section-29" class="title-slide slide level1">
 <h1></h1>
 <p><b>Estacionariedad débil:</b> Una secuencia aleatoria <span class="math inline">\(\{x_t\}\)</span> es estacionaria débil (o
 estacionaria en covarianza) si la media, varianza y la secuencia de
-autocovarianzas.</p>
-<p>La autocovarianza de orden <span class="math inline">\(j\)</span> se
-define como <span class="math inline">\(\gamma_j =
-cov(x_{t},x_{t-j})\)</span>} de orden <span class="math inline">\(j\)</span>, para <span class="math inline">\(j&gt;0\)</span> son independientes de <span class="math inline">\(t\)</span></p>
+autocovarianzas son independientes de <span class="math inline">\(t\)</span></p>
 </section>
 
-<section id="section-29" class="title-slide slide level1">
+<section id="section-30" class="title-slide slide level1">
 <h1></h1>
 <p><b>Estacionariedad Estricta:</b></p>
 <p>Una secuencia aleatoria <span class="math inline">\(\{x_t\}\)</span>
 es estacionaria estricta si para todo <span class="math inline">\(k&gt;0\)</span> la distribución conjunta de todas
 las colecciones <span class="math inline">\((x_t,x_{t+1},x_{t+2},\dots,x_{t+k})\)</span> no
 depende de <span class="math inline">\(t\)</span></p>
+</section>
+
+<section id="section-31" class="title-slide slide level1">
+<h1></h1>
 <p>Estacionariedad estricta implica estacionariedad débil, pero lo
 contrario no siempre aplica.</p>
 <p>En el caso especial de la distribución normal, estacionariedad débil
@@ -2312,7 +2320,7 @@ si implica estacionariedad estricta.</p>
 
 </section>
 
-<section id="section-30" class="title-slide slide level1">
+<section id="section-32" class="title-slide slide level1">
 <h1></h1>
 <p>Si <span class="math inline">\(\{x_t\}\)</span> es una secuencia
 estacionaria y ergódica, y <span class="math inline">\(E(x_1)\)</span>
@@ -2337,7 +2345,7 @@ E(x_1)\)</span> con probabilidad 1.</p>
 
 </section>
 
-<section id="section-31" class="title-slide slide level1">
+<section id="section-33" class="title-slide slide level1">
 <h1></h1>
 <p>Wold (1938) demostró que si el proceso con media cero <span class="math inline">\(x_t\)</span> es estacionario en sentido débil,
 este se puede representar como</p>
@@ -2352,7 +2360,7 @@ constantes <span class="math inline">\(\alpha_0,\alpha_1,\alpha_2,\dots\)</span>
 \upsilon_t)=0\)</span></p>
 </section>
 
-<section id="section-32" class="title-slide slide level1">
+<section id="section-34" class="title-slide slide level1">
 <h1></h1>
 <p>Si definimos <span class="math inline">\(\upsilon_t\)</span> como una
 variable con media cero <span class="math inline">\(z\)</span>, tal que
@@ -2370,7 +2378,7 @@ ser predicho perfectamente un periodo antes.</p>
 
 </section>
 
-<section id="section-33" class="title-slide slide level1">
+<section id="section-35" class="title-slide slide level1">
 <h1></h1>
 <p>La no-estacionariedad de una serie genera problemas de estimación de
 los parámetros, por ejemplo:</p>
@@ -2387,7 +2395,7 @@ espurias.</a>
 </ul>
 </section>
 
-<section id="section-34" class="title-slide slide level1">
+<section id="section-36" class="title-slide slide level1">
 <h1></h1>
 <p>En economía existen diferentes series que no cumplen con el supuesto
 de estacionariedad, e.g. el producto interno bruto. Por lo tanto es
@@ -2400,7 +2408,7 @@ análisis.</p>
 
 </section>
 
-<section id="section-35" class="title-slide slide level1">
+<section id="section-37" class="title-slide slide level1">
 <h1></h1>
 <p>consideremos el siguiente proceso con tendencia y $|| &lt; 1 $,</p>
 <p><span class="math display">\[\begin{equation}
@@ -2413,7 +2421,7 @@ tiempo,</p>
 \end{align*}\]</span></p>
 </section>
 
-<section id="section-36" class="title-slide slide level1">
+<section id="section-38" class="title-slide slide level1">
 <h1></h1>
 <p>reemplazando obtenemos,</p>
 <p><span class="math display">\[\begin{align*}
@@ -2427,7 +2435,7 @@ E[\varepsilon_t] \\
 <p>dado que <span class="math inline">\(|\phi| &lt; 1\)</span> y <span class="math inline">\(n \rightarrow \infty\)</span></p>
 </section>
 
-<section id="section-37" class="title-slide slide level1">
+<section id="section-39" class="title-slide slide level1">
 <h1></h1>
 <p>por lo tanto la media sería,</p>
 <p><span class="math display">\[\begin{equation}
@@ -2437,7 +2445,7 @@ E[\varepsilon_t] \\
 estacionaria bajo nuestra definición de estacionariedad.</p>
 </section>
 
-<section id="section-38" class="title-slide slide level1">
+<section id="section-40" class="title-slide slide level1">
 <h1></h1>
 <ul>
 <li>
@@ -2461,7 +2469,7 @@ tendencia. Y es común su uso para filtros en economía.
 
 </section>
 
-<section id="section-39" class="title-slide slide level1">
+<section id="section-41" class="title-slide slide level1">
 <h1></h1>
 <p>Ahora veamos el caso del proceso definido como,</p>
 <p><span class="math display">\[\begin{equation}\label{eq:rw}
@@ -2471,7 +2479,7 @@ tendencia. Y es común su uso para filtros en economía.
 </section>
 
 <section>
-<section id="section-40" class="title-slide slide level1">
+<section id="section-42" class="title-slide slide level1">
 <h1></h1>
 <p>Miremos la varianza de este proceso, asumiendo <span class="math inline">\(E[x_1]=0\)</span></p>
 <p><span class="math display">\[\begin{align}
@@ -2492,7 +2500,7 @@ Var(x_t) &amp; = E[(x_t - E[x_t])^2] \\
 \end{align}\]</span></p>
 <p>para todo <span class="math inline">\(j&gt;0\)</span>.</p>
 </section></section>
-<section id="section-41" class="title-slide slide level1">
+<section id="section-43" class="title-slide slide level1">
 <h1></h1>
 <p>Si seguimos iterando hacia atrás obtenemos</p>
 <p><span class="math display">\[\begin{align}
@@ -2508,7 +2516,7 @@ Var(x_t) &amp; = E[x_{t-n}^2] + E[\varepsilon_{t-n}^2 ] +
 \end{align}\]</span></p>
 </section>
 
-<section id="section-42" class="title-slide slide level1">
+<section id="section-44" class="title-slide slide level1">
 <h1></h1>
 <p>Asumiendo <span class="math inline">\(Var(x_1)=
 \sigma^2\)</span>,</p>
@@ -2519,7 +2527,7 @@ Var(x_t) &amp; = \sigma^2 + \sigma^2 + \dots  +  \sigma^2 + \sigma^2 \\
 <p>Por lo tanto el proceso es no estacionario.</p>
 </section>
 
-<section id="section-43" class="title-slide slide level1">
+<section id="section-45" class="title-slide slide level1">
 <h1></h1>
 <p>Finalmente, la auto-correlación esta dada por,</p>
 <p><span class="math display">\[\begin{align}
@@ -2531,7 +2539,7 @@ Var(x_t) &amp; = \sigma^2 + \sigma^2 + \dots  +  \sigma^2 + \sigma^2 \\
 \end{align}\]</span></p>
 </section>
 
-<section id="section-44" class="title-slide slide level1">
+<section id="section-46" class="title-slide slide level1">
 <h1></h1>
 <p>Sin embargo, podemos hacer uso del operador de diferencias para
 convertir esta serie en un proceso estacionario,</p>
@@ -2541,7 +2549,7 @@ convertir esta serie en un proceso estacionario,</p>
 <p>donde <span class="math inline">\(w_t\)</span> es estacionario.</p>
 </section>
 
-<section id="section-45" class="title-slide slide level1">
+<section id="section-47" class="title-slide slide level1">
 <h1></h1>
 <p>Acá pasamos de <span class="math inline">\(x_t\)</span> a <span class="math inline">\(w_t\)</span> pero siempre podemos hacer el proceso
 contrario en caso tal que deseemos conocer los valores de la serie
@@ -2556,7 +2564,7 @@ original</p>
 obtiene sumando o integrando el proceso <span class="math inline">\(w_t\)</span></p>
 </section>
 
-<section id="section-46" class="title-slide slide level1">
+<section id="section-48" class="title-slide slide level1">
 <h1></h1>
 <ul>
 <li>

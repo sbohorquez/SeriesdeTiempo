@@ -260,6 +260,11 @@ E[(x_{t_1}-\mu_{t_1})(x_{t_2}-\mu_{t_2})]  =    E[(x_{t_1}x_{t_2} - x_{t_1}\mu_{
 \end{matrix}
 \end{equation}
 
+#
+
+
+
+La autocovarianza de orden $j$  se define como $\gamma_j = cov(x_{t},x_{t-j})$} de orden $j$, para $j>0$ 
 
 #
 
@@ -311,9 +316,7 @@ Para la correcta estimación de los modelos necesitamos dos supuestos del compor
 #
 
 <b>Estacionariedad débil:</b>
-Una secuencia aleatoria $\{x_t\}$ es estacionaria débil (o estacionaria en covarianza) si la media, varianza y la secuencia de autocovarianzas.
-
-La autocovarianza de orden $j$  se define como $\gamma_j = cov(x_{t},x_{t-j})$} de orden $j$, para $j>0$ son independientes de $t$ 
+Una secuencia aleatoria $\{x_t\}$ es estacionaria débil (o estacionaria en covarianza) si la media, varianza y la secuencia de autocovarianzas son independientes de $t$ 
 
 
 #
@@ -321,6 +324,8 @@ La autocovarianza de orden $j$  se define como $\gamma_j = cov(x_{t},x_{t-j})$} 
 <b>Estacionariedad Estricta:</b>
 
 Una secuencia aleatoria $\{x_t\}$ es estacionaria estricta si para todo $k>0$ la distribución conjunta de todas las colecciones $(x_t,x_{t+1},x_{t+2},\dots,x_{t+k})$ no depende de $t$
+
+# 
 
 Estacionariedad estricta implica estacionariedad débil, pero lo contrario no siempre aplica.
 
